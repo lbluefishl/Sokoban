@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Return Form</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    div {
+      text-align: center; /* Center the content inside the div */
+    }
+    form {
+      display: inline-block;
+      text-align: left;
+      width: 500px; /* Set a fixed width to prevent elements from moving */
+    }
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+    /* Left-indent the radio options */
+    label input[type="radio"] {
+      margin-left: 20px;
+    }
+    #mediaTaskInput {
+      margin-top: 5px;
+      width: 100%;
+    }
+  </style>
+  
+</head>
+<body>
+  <div>
+    <h1>Return Form</h1>
+    <form id="returnForm">
+      <label for="digitalMedia">1. Did you use digital media during your break?</label>
+      <label><input type="radio" name="digitalMedia" value="yes"> Yes</label>
+      <label><input type="radio" name="digitalMedia" value="no"> No</label>
+
+      <div id="mediaTask" style="display: none; text-align: left;">
+        <label for="mediaTask">What application/task did you spend the most of your break on?</label>
+        <label><input type="radio" name="mediaTask" value="Browsing the web (news websites)"> Browsing the web (news websites)</label>
+        <label><input type="radio" name="mediaTask" value="Texting, checking emails"> Texting, checking emails</label>
+        <label><input type="radio" name="mediaTask" value="Browsing Social Media Posts (facebook, pinterest, reddit)"> Browsing Social Media Posts (facebook, pinterest, reddit)</label>
+        <label><input type="radio" name="mediaTask" value="Short Form Video (tiktok, instagram reels)"> Short Form Video (tiktok, instagram reels)</label>
+        <label><input type="radio" name="mediaTask" value="Long Form Video (youtube)"> Long Form Video (youtube)</label>
+        <label><input type="radio" name="mediaTask" value="Prefer not to say"> Prefer not to say</label>
+      
+        <label><input type="radio" name="mediaTask" value="Not Listed"> Not Listed</label>
+        <input type="text" name="mediaTaskInput" id="mediaTaskInput" placeholder="Please describe" style="display: block;">
+
+      </div>
+
+      <label for="mindWander">2. How often did your mind wander during the break?</label>
+      <label><input type="radio" name="mindWander" value="notAtAll"> Not at all</label>
+      <label><input type="radio" name="mindWander" value="aLittle"> A little</label>
+      <label><input type="radio" name="mindWander" value="quiteABit"> About half the time</label>
+      <label><input type="radio" name="mindWander" value="aLot"> Most of the time</label>
+      <label><input type="radio" name="mindWander" value="aLot"> All of the time</label>
+
+      <button class="button" type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script defer>
+    const form = document.getElementById("returnForm");
+    const digitalMediaInput = document.getElementsByName("digitalMedia");
+    const mediaTaskInput = document.getElementById("mediaTask");
+
+    // Event listener to show the media task input field when 'yes' is selected
+    for (let i = 0; i < digitalMediaInput.length; i++) {
+      digitalMediaInput[i].addEventListener("click", function () {
+        mediaTaskInput.style.display = digitalMediaInput[i].value === "yes" ? "block" : "none";
+      });
+    }
+
+    // Event listener for form submission
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      // Get the form values
+      const digitalMediaValue = document.querySelector('input[name="digitalMedia"]:checked').value;
+      const mediaTaskInputValue = document.getElementById("mediaTaskInput").value;
+      const mindWanderValue = document.querySelector('input[name="mindWander"]:checked').value;
+
+
+      // Do something with the form values (e.g., send data to the server)
+
+      // Redirect back to index.html after form submission
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

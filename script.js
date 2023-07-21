@@ -16,7 +16,7 @@ function parseLevelData(levelData) {
 function findPlayerStartingPosition(levelArray) {
   for (let y = 0; y < levelArray.length; y++) {
     for (let x = 0; x < levelArray[y].length; x++) {
-      if (levelArray[y][x] === "%" || levelArray[y][x]==="@") {
+      if (levelArray[y][x] === "+" || levelArray[y][x]==="@") {
         return { x, y };
       }
     }
@@ -44,9 +44,9 @@ function handlePlayerMove(dx, dy) {
   const boxTarget = levelArray[targetY + dy][targetX + dx];
 
   // Check if the target cell is an empty space, a target tile, or a box
-  if (targetCell === " " || targetCell === "." || targetCell === "$" || targetCell === "&") {
+  if (targetCell === " " || targetCell === "." || targetCell === "$" || targetCell === "*") {
     // If the target cell is a box, check if it can be pushed in the specified direction
-    if ((targetCell === "$" || targetCell === "&") && !canPushBox(targetX, targetY, dx, dy)) {
+    if ((targetCell === "$" || targetCell === "*") && !canPushBox(targetX, targetY, dx, dy)) {
       // If the box cannot be pushed, ignore the move
       return;
     }
@@ -54,27 +54,29 @@ function handlePlayerMove(dx, dy) {
     // Update the level array with the new player position
     if (targetCell === " " || targetCell === "$") {
       levelArray[targetY][targetX] = "@"; // Move to an empty space
-    } else { levelArray[targetY][targetX] = "%"; 
+    } else { levelArray[targetY][targetX] = "+"; 
   }// Move to a target tile
     
 
-    if (boxTarget === " " && (targetCell === "$" || targetCell === "&")) {
+    if (boxTarget === " " && (targetCell === "$" || targetCell === "*")) {
       levelArray[targetY + dy][targetX + dx] = "$"
-    } else if(boxTarget === "." && (targetCell === "$" || targetCell === "&"))
+    } else if(boxTarget === "." && (targetCell === "$" || targetCell === "*"))
     {
-      levelArray[targetY + dy][targetX + dx] = "&"
+      levelArray[targetY + dy][targetX + dx] = "*"
     }
     // move box
 
     // Update the cell the player was originally in if it was a target tile
-    if (playerCell === "%") {
+    if (playerCell === "+") {
       levelArray[playerPos.y][playerPos.x] = "."; // Change player's previous cell to regular target tile
     } else {
       levelArray[playerPos.y][playerPos.x] = " ";
     }
 
+    gameStateHistory.push(JSON.parse(JSON.stringify(levelArray)));
     // Render the updated game state
     renderLevel(levelArray);
+    checkWinCondition();
   }
 }
 
@@ -95,8 +97,12 @@ document.addEventListener("keydown", function (event) {
     case 40: // Down arrow key
       handlePlayerMove(0, 1);
       break;
+    case 85:
+      undoLastMove();
+      break;
     default:
       break;
+
   }
 });
 
@@ -159,13 +165,13 @@ function renderLevel(levelArray) {
           ctx.fillStyle = GREEN_COLOR; 
           ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE); 
           break;
-        case "%":
+        case "+":
           // Draw the player on target tile
           ctx.fillStyle = GREEN_COLOR; 
           ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE); 
           ctx.drawImage(playerSprite, x + xOffset, y + yOffset, spriteSize, spriteSize);
           break;
-        case "&":
+        case "*":
           // Draw the brown box on top of the green target background
           ctx.fillStyle = GREEN_COLOR; 
           ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE); // 
@@ -220,4 +226,37 @@ document.addEventListener("keydown", event => {
     resetLevel();
   }
 });
+
+let levelArray; // Define levelArray as a global variable to access it across functions
+let gameStateHistory = []; // Array to store the game state history
+
+function undoLastMove() {
+  // Check if there's a previous state in the history
+  if (gameStateHistory.length > 0) {
+    // Pop the last state from the history and set it as the current state
+    levelArray = gameStateHistory.pop();
+
+    // Render the game state after undoing the move
+    renderLevel(levelArray);
+  }
+}
+
+// Assuming you have the levelArray defined and filled with the level data
+
+function checkWinCondition() {
+  for (let row = 0; row < levelArray.length; row++) {
+    for (let col = 0; col < levelArray[row].length; col++) {
+      if (levelArray[row][col] === "$") {
+        return false; // There is still at least one box left, so the player has not won
+      }
+    }
+  }
+  redirectToSummary();
+}
+
+function redirectToSummary() {
+  alert("Congrats! You win.");
+    window.location.href = "summary.html";
+}
+
 

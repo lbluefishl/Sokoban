@@ -15,11 +15,53 @@
       margin: auto;
       border: 1px solid black;
     }
+    h1 {
+      display: block;
+      margin: auto;
+    }
+    div {
+      text-align: center;
+    }
+    .button-container {
+      margin: 20px 0;
+    }
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
   <canvas id="gameCanvas" width="640" height="480"></canvas>
+  <div>
+    <h1>Instructions</h1>
+    <p>Move all of the boxes into the green squares. </p>
+    <p>Use arrow keys to move.</p>
+    <p>Press the (r) key to restart the level.</p>
+    <h1>The buttons below are just for demo purposes and not shown in the final implementation.</h1>
+    <div class="button-container">
+      <button onclick="redirectToBreak()" style="font-size: 20px;">Break</button>
+      <a href="summary.html" class="button">Summary</a>
+    </div>
+  </div>
 
+  <script>
+    function redirectToBreak() {
+      const confirmed = confirm("It seems like you are stuck. Please take a break and return to this task after 15 minutes.");
+      if (confirmed) {
+        window.location.href = "break.html";
+      }
+    }
+  </script>
   <script src="script.js" defer></script>
 </body>
 </html>
