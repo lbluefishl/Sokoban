@@ -106,14 +106,11 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-// Assuming you have the Canvas element with the id "gameCanvas" in your HTML
+
 
 const TILE_SIZE = 50; // Define the size of each tile on the canvas
 const BROWN_COLOR = "#D2B48C"; // Light brown color for background
-const DARK_BROWN_COLOR = "#8B4513"; // Darker brown color for boxes
 const GREEN_COLOR = "#008000"; // Green color for target tiles
-const BLUE_COLOR = "#0000FF"; // Blue color for player tile
-const DARK_GRAY_COLOR = "#A9A9A9"; // Dark gray color for walls
 const wallSprite = new Image();
 const boxSprite = new Image();
 const playerSprite = new Image();
