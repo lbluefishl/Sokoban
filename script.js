@@ -118,6 +118,7 @@ const wallSprite = new Image();
 const boxSprite = new Image();
 const playerSprite = new Image();
 const spriteSize = TILE_SIZE * 0.8;
+let currentLevel = "levels/level30.txt";
 
 wallSprite.src = "images/wall.jpg";
 boxSprite.src = "images/box.png";
@@ -188,7 +189,7 @@ function renderLevel(levelArray) {
 }
 
 // Load and parse the level data
-loadLevelData("levels/level1.txt")
+loadLevelData(currentLevel)
   .then(levelData => {
     levelArray = parseLevelData(levelData);
 
@@ -207,7 +208,7 @@ loadLevelData("levels/level1.txt")
 
   // Function to reset the level to its initial state
 function resetLevel() {
-  loadLevelData("levels/level1.txt")
+  loadLevelData(currentLevel)
     .then(levelData => {
       levelArray = parseLevelData(levelData);
       const playerStartPosition = findPlayerStartingPosition(levelArray);
