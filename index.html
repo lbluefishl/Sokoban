@@ -54,20 +54,12 @@
     <p>Press the (u) key to undo a move and the (r) key to restart the level.</p>
     <h1>The buttons below are just for demo purposes and not shown in the final implementation.</h1>
     <div class="button-container">
-      <button onclick="redirectToBreak()" style="font-size: 20px;">Break</button>
+      <button id="redirect" style="font-size: 20px;">Break</button>
       <a href="summary.html" class="button">Summary</a>
       <button id="newLevel" style="font-size: 20px;">Random Level</button>
     </div>
   </div>
 
-  <script>
-    function redirectToBreak() {
-      const confirmed = confirm("It seems like you are stuck. Please take a break and return to this task after 15 minutes.");
-      if (confirmed) {
-        window.location.href = "break.html";
-      }
-    }
-  </script>
   <script src="script.js" defer></script>
 </body>
 </html>

@@ -1,3 +1,56 @@
+const redirectButton = document.getElementById('redirect');
+const newLevelButton = document.getElementById('newLevel');
+const TILE_SIZE = 50; // Define the size of each tile on the canvas
+const BROWN_COLOR = "#D2B48C"; // Light brown color for background
+const GREEN_COLOR = "#008000"; // Green color for target tiles
+const wallSprite = new Image();
+const boxSprite = new Image();
+const playerSprite = new Image();
+const spriteSize = TILE_SIZE * 0.8;
+const levelFiles = [
+  "level1.txt",
+  "level2.txt",
+  "level3.txt",
+  "level4.txt",
+  "level5.txt",
+  "level6.txt",
+  "level7.txt",
+  "level8.txt",
+  "level9.txt",
+  "level10.txt",
+  "level11.txt",
+  "level12.txt",
+  "level13.txt",
+  "level14.txt",
+  "level15.txt",
+  "level16.txt",
+  "level17.txt",
+  "level18.txt",
+  "level19.txt",
+  "level20.txt",
+  "level21.txt",
+  "level22.txt",
+  "level23.txt",
+  "level24.txt",
+  "level25.txt",
+  "level26.txt",
+  "level27.txt",
+  "level28.txt",
+  "level29.txt",
+  "level30.txt"
+];
+let currentLevel = `levels/level${Math.floor(Math.random() * levelFiles.length)}.txt`
+let levelArray; // Define levelArray as a global variable to access it across functions
+let gameStateHistory = []; // Array to store the game state history
+
+wallSprite.src = "images/wall.jpg";
+boxSprite.src = "images/box.png";
+playerSprite.src = "images/player.png"
+
+
+const xOffset = (TILE_SIZE - spriteSize) / 2;
+const yOffset = (TILE_SIZE - spriteSize) / 2;
+
 // Function to load the level data from a file
 function loadLevelData(filename) {
   return fetch(filename)
@@ -16,7 +69,7 @@ function parseLevelData(levelData) {
 function findPlayerStartingPosition(levelArray) {
   for (let y = 0; y < levelArray.length; y++) {
     for (let x = 0; x < levelArray[y].length; x++) {
-      if (levelArray[y][x] === "+" || levelArray[y][x]==="@") {
+      if (levelArray[y][x] === "+" || levelArray[y][x] === "@") {
         return { x, y };
       }
     }
@@ -51,21 +104,21 @@ function handlePlayerMove(dx, dy) {
       return;
     }
 
-        // Record the previous state only if the move is successful
+    // Record the previous state only if the move is successful
     const previousState = JSON.parse(JSON.stringify(levelArray));
 
 
     // Update the level array with the new player position
     if (targetCell === " " || targetCell === "$") {
       levelArray[targetY][targetX] = "@"; // Move to an empty space
-    } else { levelArray[targetY][targetX] = "+"; 
-  }// Move to a target tile
-    
+    } else {
+      levelArray[targetY][targetX] = "+";
+    }// Move to a target tile
+
 
     if (boxTarget === " " && (targetCell === "$" || targetCell === "*")) {
       levelArray[targetY + dy][targetX + dx] = "$"
-    } else if(boxTarget === "." && (targetCell === "$" || targetCell === "*"))
-    {
+    } else if (boxTarget === "." && (targetCell === "$" || targetCell === "*")) {
       levelArray[targetY + dy][targetX + dx] = "*"
     }
     // move box
@@ -110,58 +163,6 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-// Assuming you have the Canvas element with the id "gameCanvas" in your HTML
-
-const levelFiles = [
-"level1.txt",
-"level2.txt",
-"level3.txt",
-"level4.txt",
-"level5.txt",
-"level6.txt",
-"level7.txt",
-"level8.txt",
-"level9.txt",
-"level10.txt",
-"level11.txt",
-"level12.txt",
-"level13.txt",
-"level14.txt",
-"level15.txt",
-"level16.txt",
-"level17.txt",
-"level18.txt",
-"level19.txt",
-"level20.txt",
-"level21.txt",
-"level22.txt",
-"level23.txt",
-"level24.txt",
-"level25.txt",
-"level26.txt",
-"level27.txt",
-"level28.txt",
-"level29.txt",
-"level30.txt"
-];
-
-
-const newLevelButton = document.getElementById('newLevel');
-const TILE_SIZE = 50; // Define the size of each tile on the canvas
-const BROWN_COLOR = "#D2B48C"; // Light brown color for background
-const GREEN_COLOR = "#008000"; // Green color for target tiles
-const wallSprite = new Image();
-const boxSprite = new Image();
-const playerSprite = new Image();
-const spriteSize = TILE_SIZE * 0.8;
-let currentLevel = `levels/level${Math.floor(Math.random() * levelFiles.length)}.txt`
-
-wallSprite.src = "images/wall.jpg";
-boxSprite.src = "images/box.png";
-playerSprite.src = "images/player.png"
-
-const xOffset = (TILE_SIZE - spriteSize) / 2;
-const yOffset = (TILE_SIZE - spriteSize) / 2;
 
 function getRandomLevelIndex() {
   return Math.floor(Math.random() * levelFiles.length);
@@ -228,18 +229,18 @@ function renderLevel(levelArray) {
           break;
         case ".":
           // target tile
-          ctx.fillStyle = GREEN_COLOR; 
-          ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE); 
+          ctx.fillStyle = GREEN_COLOR;
+          ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
           break;
         case "+":
           // Draw the player on target tile
-          ctx.fillStyle = GREEN_COLOR; 
-          ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE); 
+          ctx.fillStyle = GREEN_COLOR;
+          ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
           ctx.drawImage(playerSprite, x + xOffset, y + yOffset, spriteSize, spriteSize);
           break;
         case "*":
           // Draw the brown box on top of the green target background
-          ctx.fillStyle = GREEN_COLOR; 
+          ctx.fillStyle = GREEN_COLOR;
           ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE); // 
           ctx.drawImage(boxSprite, x + xOffset, y + yOffset, spriteSize, spriteSize);
           break;
@@ -257,7 +258,7 @@ function renderLevel(levelArray) {
 loadLevelData(currentLevel)
   .then(levelData => {
     levelArray = parseLevelData(levelData);
-    
+
     // Get the player's starting position
     const playerStartPosition = findPlayerStartingPosition(levelArray);
     playerX = playerStartPosition.x;
@@ -271,7 +272,7 @@ loadLevelData(currentLevel)
   });
 
 
-  // Function to reset the level to its initial state
+// Function to reset the level to its initial state
 function resetLevel() {
   loadLevelData(currentLevel)
     .then(levelData => {
@@ -295,8 +296,7 @@ document.addEventListener("keydown", event => {
   }
 });
 
-let levelArray; // Define levelArray as a global variable to access it across functions
-let gameStateHistory = []; // Array to store the game state history
+
 
 function undoLastMove() {
   // Check if there's a previous state in the history
@@ -324,7 +324,47 @@ function checkWinCondition() {
 
 function redirectToSummary() {
   alert("Congrats! You win.");
-    window.location.href = "summary.html";
+  window.location.href = "summary.html";
+}
+
+function initializeGame() {
+  // Check if there is a stored game state in localStorage
+  const storedGameState = localStorage.getItem('gameState');
+  if (storedGameState) {
+    // Parse and set the game state variables
+    const gameState = JSON.parse(storedGameState);
+    currentLevel = gameState.currentLevel;
+    levelArray = gameState.levelArray;
+    gameStateHistory = gameState.gameStateHistory;
+    // Render the level with the restored game state
+    renderLevel(levelArray);
+  } else {
+    // No stored game state, load a random level
+    loadAndRenderLevel(currentLevel);
+  }
 }
 
 
+
+
+
+function redirectToBreak() {
+  const gameState = {
+    currentLevel: currentLevel,
+    levelArray: levelArray,
+    gameStateHistory: gameStateHistory
+  };
+  localStorage.setItem('gameState', JSON.stringify(gameState));
+
+  const confirmed = confirm("It seems like you are stuck. Please take a break and return to this task after 15 minutes.");
+  if (confirmed) {
+    window.location.href = "break.html";
+  }
+
+}
+
+redirectButton.addEventListener('click', redirectToBreak);
+
+
+
+initializeGame();
