@@ -265,7 +265,7 @@ loadLevelData(currentLevel)
     playerY = playerStartPosition.y;
 
     // Render the level on the canvas
-    renderLevel(levelArray);
+    initializeGame();
   })
   .catch(error => {
     console.error("Error loading or parsing the level data:", error);
@@ -349,15 +349,16 @@ function initializeGame() {
 
 
 function redirectToBreak() {
-  const gameState = {
-    currentLevel: currentLevel,
-    levelArray: levelArray,
-    gameStateHistory: gameStateHistory
-  };
-  localStorage.setItem('gameState', JSON.stringify(gameState));
+
 
   const confirmed = confirm("It seems like you are stuck. Please take a break and return to this task after 15 minutes.");
   if (confirmed) {
+    const gameState = {
+      currentLevel: currentLevel,
+      levelArray: levelArray,
+      gameStateHistory: gameStateHistory
+    };
+    localStorage.setItem('gameState', JSON.stringify(gameState));
     window.location.href = "break.html";
   }
 
@@ -367,4 +368,3 @@ redirectButton.addEventListener('click', redirectToBreak);
 
 
 
-initializeGame();
