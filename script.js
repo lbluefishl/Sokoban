@@ -51,6 +51,10 @@ function handlePlayerMove(dx, dy) {
       return;
     }
 
+        // Record the previous state only if the move is successful
+    const previousState = JSON.parse(JSON.stringify(levelArray));
+
+
     // Update the level array with the new player position
     if (targetCell === " " || targetCell === "$") {
       levelArray[targetY][targetX] = "@"; // Move to an empty space
@@ -73,8 +77,8 @@ function handlePlayerMove(dx, dy) {
       levelArray[playerPos.y][playerPos.x] = " ";
     }
 
-    gameStateHistory.push(JSON.parse(JSON.stringify(levelArray)));
-    // Render the updated game state
+    gameStateHistory.push(previousState);
+
     renderLevel(levelArray);
     checkWinCondition();
   }
@@ -106,8 +110,43 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
+// Assuming you have the Canvas element with the id "gameCanvas" in your HTML
+
+const levelFiles = [
+"level1.txt",
+"level2.txt",
+"level3.txt",
+"level4.txt",
+"level5.txt",
+"level6.txt",
+"level7.txt",
+"level8.txt",
+"level9.txt",
+"level10.txt",
+"level11.txt",
+"level12.txt",
+"level13.txt",
+"level14.txt",
+"level15.txt",
+"level16.txt",
+"level17.txt",
+"level18.txt",
+"level19.txt",
+"level20.txt",
+"level21.txt",
+"level22.txt",
+"level23.txt",
+"level24.txt",
+"level25.txt",
+"level26.txt",
+"level27.txt",
+"level28.txt",
+"level29.txt",
+"level30.txt"
+];
 
 
+const newLevelButton = document.getElementById('newLevel');
 const TILE_SIZE = 50; // Define the size of each tile on the canvas
 const BROWN_COLOR = "#D2B48C"; // Light brown color for background
 const GREEN_COLOR = "#008000"; // Green color for target tiles
@@ -115,7 +154,7 @@ const wallSprite = new Image();
 const boxSprite = new Image();
 const playerSprite = new Image();
 const spriteSize = TILE_SIZE * 0.8;
-let currentLevel = "levels/level30.txt";
+let currentLevel = `levels/level${Math.floor(Math.random() * levelFiles.length)}.txt`
 
 wallSprite.src = "images/wall.jpg";
 boxSprite.src = "images/box.png";
@@ -123,6 +162,35 @@ playerSprite.src = "images/player.png"
 
 const xOffset = (TILE_SIZE - spriteSize) / 2;
 const yOffset = (TILE_SIZE - spriteSize) / 2;
+
+function getRandomLevelIndex() {
+  return Math.floor(Math.random() * levelFiles.length);
+}
+
+function loadAndRenderLevel(levelFile) {
+  loadLevelData(levelFile)
+    .then(levelData => {
+      levelArray = parseLevelData(levelData);
+      const playerStartPosition = findPlayerStartingPosition(levelArray);
+      playerX = playerStartPosition.x;
+      playerY = playerStartPosition.y;
+      gameStateHistory = [];
+      renderLevel(levelArray);
+    })
+    .catch(error => {
+      console.error("Error loading or parsing the level data:", error);
+    });
+}
+
+// Event listener for the "New Level" button
+newLevelButton.addEventListener("click", function () {
+  let randomLevelIndex = getRandomLevelIndex();
+  while (levelFiles[randomLevelIndex] === currentLevel) {
+    randomLevelIndex = getRandomLevelIndex();
+  }
+  currentLevel = `levels/${levelFiles[randomLevelIndex]}`;
+  loadAndRenderLevel(currentLevel);
+});
 
 
 function renderLevel(levelArray) {
@@ -189,7 +257,7 @@ function renderLevel(levelArray) {
 loadLevelData(currentLevel)
   .then(levelData => {
     levelArray = parseLevelData(levelData);
-
+    
     // Get the player's starting position
     const playerStartPosition = findPlayerStartingPosition(levelArray);
     playerX = playerStartPosition.x;
@@ -207,10 +275,12 @@ loadLevelData(currentLevel)
 function resetLevel() {
   loadLevelData(currentLevel)
     .then(levelData => {
+
       levelArray = parseLevelData(levelData);
       const playerStartPosition = findPlayerStartingPosition(levelArray);
       playerX = playerStartPosition.x;
       playerY = playerStartPosition.y;
+      gameStateHistory = [];
       renderLevel(levelArray);
     })
     .catch(error => {
