@@ -13,8 +13,8 @@ app.get('/', (req, res) => {
 });
 
 const { MongoClient } = require('mongodb');
-const uri =
-  'mongodb+srv://lbluefishl:txfIlHN82yiAG9bs@cluster0.sznmr3p.mongodb.net/?retryWrites=true&w=majority';
+
+const uri = process.env.MONGODB_URI; 
 const client = new MongoClient(uri);
 
 async function connectToMongoDB() {
