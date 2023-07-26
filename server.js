@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json()); // Add this line to parse JSON request bodies
-
+app.use(express.static('public')); // Serve static files from the 'public' directory
 const path = require('path');
 
 // ...
