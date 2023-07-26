@@ -7,6 +7,7 @@ const wallSprite = new Image();
 const boxSprite = new Image();
 const playerSprite = new Image();
 const spriteSize = TILE_SIZE * 0.8;
+const loadingScreen = document.getElementById("loadingScreen");
 let moveset = [];
 const levelFiles = [
   "level1.txt",
@@ -256,6 +257,8 @@ function renderLevel(levelArray) {
       }
     }
   }
+  setTimeout(() => {
+    loadingScreen.style.display = "none";},2000)
 }
 
 // Load and parse the level data
@@ -353,6 +356,17 @@ function redirectToSummary() {
 
 
 function initializeGame() {
+
+  loadingScreen.style.display = "flex";
+
+
+  Promise.all([
+    imageLoaded(wallSprite),
+    imageLoaded(boxSprite),
+    imageLoaded(playerSprite),
+  ])
+    .then(() => {
+
   // Check if there is a stored game state in localStorage
   const storedGameState = localStorage.getItem('gameState');
   if (storedGameState) {
@@ -369,9 +383,30 @@ function initializeGame() {
     loadAndRenderLevel(currentLevel);
   }
   getplayerId();
+})
+    .catch((error) => {
+      console.error("Error loading sprites:", error);
+    });
 }
 
 
+function imageLoaded(img) {
+  return new Promise((resolve, reject) => {
+    if (img.complete) {
+      // If the image is already loaded, resolve the Promise immediately
+      resolve();
+    } else {
+      // If the image is not yet loaded, add an event listener to resolve the Promise when it's loaded
+      img.addEventListener("load", () => {
+        resolve();
+      });
+      // If there's an error loading the image, reject the Promise
+      img.addEventListener("error", (error) => {
+        reject(error);
+      });
+    }
+  });
+}
 
 
 
@@ -467,3 +502,5 @@ function recordUserCompletion(playerId) {
     console.error('Error recording user completion:', error);
   });
 }
+
+
