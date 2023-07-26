@@ -446,7 +446,7 @@ function capturePlayerMove(dx, dy) {
 
 
 function recordUserCompletion(playerId) {
-  const url = 'http://localhost:3000/complete-level';
+  const url = 'https://sokoban-badc101a491f.herokuapp.com/complete-level';
   const data = { playerId: playerId };
 
   fetch(url, {
