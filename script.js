@@ -7,6 +7,7 @@ const wallSprite = new Image();
 const boxSprite = new Image();
 const playerSprite = new Image();
 const spriteSize = TILE_SIZE * 0.8;
+let moveset = [];
 const levelFiles = [
   "level1.txt",
   "level2.txt",
@@ -130,8 +131,8 @@ function handlePlayerMove(dx, dy) {
       levelArray[playerPos.y][playerPos.x] = " ";
     }
 
+    capturePlayerMove(dx, dy);
     gameStateHistory.push(previousState);
-
     renderLevel(levelArray);
     checkWinCondition();
   }
@@ -184,14 +185,17 @@ function loadAndRenderLevel(levelFile) {
 }
 
 // Event listener for the "New Level" button
-newLevelButton.addEventListener("click", function () {
+newLevelButton.addEventListener("click", generateNewLevel);
+
+function generateNewLevel() {
   let randomLevelIndex = getRandomLevelIndex();
   while (levelFiles[randomLevelIndex] === currentLevel) {
     randomLevelIndex = getRandomLevelIndex();
   }
   currentLevel = `levels/${levelFiles[randomLevelIndex]}`;
   loadAndRenderLevel(currentLevel);
-});
+  clearMoveset();
+}
 
 
 function renderLevel(levelArray) {
@@ -281,6 +285,7 @@ function resetLevel() {
       const playerStartPosition = findPlayerStartingPosition(levelArray);
       playerX = playerStartPosition.x;
       playerY = playerStartPosition.y;
+      clearMoveset();
       gameStateHistory = [];
       renderLevel(levelArray);
     })
@@ -303,7 +308,7 @@ function undoLastMove() {
   if (gameStateHistory.length > 0) {
     // Pop the last state from the history and set it as the current state
     levelArray = gameStateHistory.pop();
-
+    moveset.pop();
     // Render the game state after undoing the move
     renderLevel(levelArray);
   }
@@ -319,13 +324,33 @@ function checkWinCondition() {
       }
     }
   }
+  const playerId = localStorage.getItem('playerId');
+  recordUserCompletion(playerId);
   redirectToSummary();
 }
 
 function redirectToSummary() {
-  alert("Congrats! You win.");
-  window.location.href = "summary.html";
+  // Show the custom modal
+  const modal = document.getElementById("customModal");
+  modal.style.display = "block";
+
+  // Add event listeners to the modal buttons
+  const summaryBtn = document.getElementById("summaryBtn");
+  const newLevelBtn = document.getElementById("newLevelBtn");
+
+  // Go to the summary page when the "Summary" button is clicked
+  summaryBtn.addEventListener("click", function () {
+    window.location.href = "summary.html";
+  });
+
+  // Start a new level when the "New Level" button is clicked
+  newLevelBtn.addEventListener("click", function () {
+    modal.style.display = "none"; // Hide the modal
+    generateNewLevel(); // Call the resetLevel function to start a new level
+  });
 }
+
+
 
 function initializeGame() {
   // Check if there is a stored game state in localStorage
@@ -336,12 +361,14 @@ function initializeGame() {
     currentLevel = gameState.currentLevel;
     levelArray = gameState.levelArray;
     gameStateHistory = gameState.gameStateHistory;
+    moveset = gameState.moveset;
     // Render the level with the restored game state
     renderLevel(levelArray);
   } else {
     // No stored game state, load a random level
     loadAndRenderLevel(currentLevel);
   }
+  getplayerId();
 }
 
 
@@ -356,7 +383,8 @@ function redirectToBreak() {
     const gameState = {
       currentLevel: currentLevel,
       levelArray: levelArray,
-      gameStateHistory: gameStateHistory
+      gameStateHistory: gameStateHistory,
+      moveset: moveset
     };
     localStorage.setItem('gameState', JSON.stringify(gameState));
     window.location.href = "break.html";
@@ -368,3 +396,74 @@ redirectButton.addEventListener('click', redirectToBreak);
 
 
 
+function generateUniqueID() {
+  const timestamp = new Date().getTime(); // Get the current timestamp in milliseconds
+  const randomNum = Math.floor(Math.random() * 1000000); // Generate a random number between 0 and 999999
+
+  // Concatenate the timestamp and random number to create the unique ID
+  const uniqueID = `${timestamp}${randomNum}`;
+
+  return uniqueID;
+}
+
+
+
+
+function getplayerId() {
+  // Check if the unique ID is already stored in localStorage
+  let playerId = localStorage.getItem("playerId");
+  if (!playerId) {
+    // If the unique ID doesn't exist, generate a new one and store it in localStorage
+    playerId = generateUniqueID();
+    localStorage.setItem("playerId", playerId);
+  }
+  return playerId;
+}
+
+
+
+function clearMoveset() {
+  moveset = [];
+}
+
+
+
+function capturePlayerMove(dx, dy) {
+  // Convert the move (dx, dy) into a direction (left, right, up, or down)
+  let direction;
+  if (dx === -1) direction = "l";
+  else if (dx === 1) direction = "r";
+  else if (dy === -1) direction = "u";
+  else if (dy === 1) direction = "d";
+  else return; // Invalid move (dx and dy should be either -1, 0, or 1)
+
+  // Push the direction to the moveset array
+  moveset.push(direction);
+}
+
+
+
+
+
+function recordUserCompletion(playerId) {
+  const url = 'http://localhost:3000/complete-level';
+  const data = { playerId: playerId };
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('User completion recorded successfully!');
+    } else {
+      console.log('Error recording user completion:', response.status);
+    }
+  })
+  .catch(error => {
+    console.error('Error recording user completion:', error);
+  });
+}
