@@ -415,6 +415,7 @@ function redirectToBreak() {
 
   const confirmed = confirm("It seems like you are stuck. Please take a break and return to this task after 15 minutes.");
   if (confirmed) {
+    
     const gameState = {
       currentLevel: currentLevel,
       levelArray: levelArray,

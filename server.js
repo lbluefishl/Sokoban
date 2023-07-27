@@ -54,3 +54,29 @@ app.post('/complete-level', async (req, res) => {
 
   res.sendStatus(200);
 });
+
+
+// Add a new endpoint to handle survey data submission
+app.post('/submit-survey', async (req, res) => {
+  const { digitalMedia, mediaTask, mindWander, playerId, levelNumber } = req.body;
+
+  // Access the MongoDB collection based on the level number
+  const collectionName = `level${levelNumber}`;
+  const db = client.db('Sokoban'); // Replace 'Sokoban' with your actual database name
+  const collection = db.collection(collectionName);
+
+  // Create a new document with the survey data and playerId and insert it into the collection
+  try {
+    const result = await collection.insertOne({
+      digitalMedia,
+      mediaTask,
+      mindWander,
+      playerId
+    });
+    console.log('Survey data inserted:', result.insertedId);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error inserting survey data:', err);
+    res.sendStatus(500);
+  }
+});

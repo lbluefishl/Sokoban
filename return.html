@@ -44,7 +44,8 @@
       width: 100%;
     }
   </style>
-  
+   <script src="/return.js" defer></script>
+
 </head>
 <body>
   <div>
@@ -64,7 +65,7 @@
         <label><input type="radio" name="mediaTask" value="Prefer not to say"> Prefer not to say</label>
       
         <label><input type="radio" name="mediaTask" value="Not Listed"> Not Listed</label>
-        <input type="text" name="mediaTaskInput" id="mediaTaskInput" placeholder="Please describe" style="display: block;">
+   
 
       </div>
 
@@ -79,32 +80,6 @@
     </form>
   </div>
 
-  <script defer>
-    const form = document.getElementById("returnForm");
-    const digitalMediaInput = document.getElementsByName("digitalMedia");
-    const mediaTaskInput = document.getElementById("mediaTask");
 
-    // Event listener to show the media task input field when 'yes' is selected
-    for (let i = 0; i < digitalMediaInput.length; i++) {
-      digitalMediaInput[i].addEventListener("click", function () {
-        mediaTaskInput.style.display = digitalMediaInput[i].value === "yes" ? "block" : "none";
-      });
-    }
-
-    // Event listener for form submission
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      // Get the form values
-      const digitalMediaValue = document.querySelector('input[name="digitalMedia"]:checked').value;
-      const mediaTaskInputValue = document.getElementById("mediaTaskInput").value;
-      const mindWanderValue = document.querySelector('input[name="mindWander"]:checked').value;
-
-
-      // Do something with the form values (e.g., send data to the server)
-
-      // Redirect back to index.html after form submission
-      window.location.href = "index.html";
-    });
-  </script>
 </body>
 </html>
