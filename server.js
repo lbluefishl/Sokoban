@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 const { MongoClient } = require('mongodb');
-const uri = process.env.MONGODB_URI; 
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
 async function connectToMongoDB() {
@@ -36,23 +36,50 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const playerId = req.body.playerId;
-  console.log('User ID:', playerId);
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber } = req.body;
 
-  // Access the MongoDB collection
+  // Access the MongoDB collection based on the level number
+  const collectionName = `level${levelNumber}`;
   const db = client.db('Sokoban'); // Replace 'Sokoban' with your actual database name
-  const collection = db.collection('level1'); // Replace 'playerData' with your collection name
+  const collection = db.collection(collectionName);
 
-  // Create a new document with the playerId and insert it into the collection
-  try {
-    const result = await collection.insertOne({ playerId });
-    console.log('Document inserted:', result.insertedId);
-  } catch (err) {
-    console.error('Error inserting document:', err);
+  // Check if the player id exists in the collection
+  const existingDocument = await collection.findOne({ playerId: playerId });
+
+  if (existingDocument) {
+    // Update the existing document with the new time intervals
+    try {
+      const result = await collection.updateOne(
+        { playerId: playerId },
+        { $set: { durationAfterBreak: durationAfterBreak, durationBeforeBreak: durationBeforeBreak, durationToBeatGame: durationToBeatGame, durationBreak: durationBreak } }
+      );
+      console.log('Document updated:', result.modifiedCount);
+    } catch (err) {
+      console.error('Error updating document:', err);
+      res.sendStatus(500);
+      return;
+    }
+  } else {
+    // Create a new document with the playerId and time intervals and insert it into the collection
+    try {
+      const result = await collection.insertOne({
+        playerId: playerId,
+        durationAfterBreak: durationAfterBreak, 
+        durationBeforeBreak: durationBeforeBreak, 
+        durationToBeatGame: durationToBeatGame, 
+        durationBreak: durationBreak
+      });
+      console.log('Document inserted:', result.insertedId);
+    } catch (err) {
+      console.error('Error inserting document:', err);
+      res.sendStatus(500);
+      return;
+    }
   }
 
   res.sendStatus(200);
 });
+
 
 
 

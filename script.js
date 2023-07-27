@@ -384,10 +384,10 @@ function initializeGame() {
     moveset = gameState.moveset;
     // Render the level with the restored game state
     renderLevel(levelArray);
+    recordTimeAtInitialize();
   } else {
     // No stored game state, load a random level
     loadAndRenderLevel(currentLevel);
-    recordTimeAtInitialize();
   }
   getplayerId();
   storeLevelNumber();
@@ -490,13 +490,14 @@ function capturePlayerMove(dx, dy) {
 
 
 
-function recordUserCompletion(playerId, timeToBeat, timeBeforeBreak, timeAfterBreak) {
+function recordUserCompletion(playerId, durationToBeatGame, durationAfterBreak, durationBeforeBreak, durationBreak) {
   const url = 'https://sokoban-badc101a491f.herokuapp.com/complete-level';
   const data = {
     playerId: playerId,
-    timeToBeat: timeToBeat,
-    timeBeforeBreak: timeBeforeBreak,
-    timeAfterBreak: timeAfterBreak,
+    durationAfterBreak: durationAfterBreak,
+    durationBeforeBreak: durationBeforeBreak,
+    durationToBeatGame: durationToBeatGame,
+    durationBreak: durationBreak,
     levelNumber: localStorage.getItem('currentLevelNumber')
   };
 
@@ -542,17 +543,17 @@ function recordTimeAtWin() {
   localStorage.setItem('timeAtWin', timeAtWin);
 
   // Calculate time intervals
-  const timeToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
-  const timeBeforeBreak = timeAtBreak ? new Date(timeAtBreak) - new Date(timeAtInitialize) : null;
-  const timeAfterBreak = timeAtBreak ? new Date(timeAtWin) - new Date(timeAtBreak) : null;
-  
+  const durationToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
+  const durationBeforeBreak = timeBeforeBreak ? new Date(timeBeforeBreak) - new Date(timeAtInitialize) : null;
+  const durationAfterBreak = timeBeforeBreak ? new Date(timeAtWin) - new Date(timeAfterBreak) : null;
+  const durationBreak = timeBeforeBreak? new Date(timeAfterBreak) - new Date(timeBeforeBreak) : null; 
   // Store time intervals in localStorage
-  localStorage.setItem('timeToBeatGame', timeToBeatGame);
-  localStorage.setItem('timeBeforeBreak', timeBeforeBreak);
-  localStorage.setItem('timeAfterBreak', timeAfterBreak);
+  localStorage.setItem('durationToBeatGame', durationToBeatGame);
+  localStorage.setItem('durationBeforeBreak', durationBeforeBreak);
+  localStorage.setItem('durationAfterBreak', durationAfterBreak);
+  localStorage.setItem('durationBreak', durationBreak);
 
-  // Send data to MongoDB
-  sendGameDataToMongoDB();
+  
 }
 
 
