@@ -51,7 +51,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId: playerId },
-        { $set: { durationAfterBreak: durationAfterBreak, durationBeforeBreak: durationBeforeBreak, durationToBeatGame: durationToBeatGame, durationBreak: durationBreak } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -63,11 +63,11 @@ app.post('/complete-level', async (req, res) => {
     // Create a new document with the playerId and time intervals and insert it into the collection
     try {
       const result = await collection.insertOne({
-        playerId: playerId,
-        durationAfterBreak: durationAfterBreak, 
-        durationBeforeBreak: durationBeforeBreak, 
-        durationToBeatGame: durationToBeatGame, 
-        durationBreak: durationBreak
+        playerId,
+        durationAfterBreak,
+        durationBeforeBreak,
+        durationToBeatGame,
+        durationBreak
       });
       console.log('Document inserted:', result.insertedId);
     } catch (err) {
