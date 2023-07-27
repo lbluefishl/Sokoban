@@ -373,6 +373,7 @@ function initializeGame() {
   ])
     .then(() => {
 
+      getplayerId();
   // Check if there is a stored game state in localStorage
   const storedGameState = localStorage.getItem('gameState');
   if (storedGameState) {
@@ -384,18 +385,18 @@ function initializeGame() {
     moveset = gameState.moveset;
     // Render the level with the restored game state
     renderLevel(levelArray);
-
   } else {
     // No stored game state, load a random level
     loadAndRenderLevel(currentLevel);
     recordTimeAtInitialize();
   }
-  getplayerId();
   storeLevelNumber();
+
 })
     .catch((error) => {
       console.error("Error loading sprites:", error);
     });
+   
 }
 
 
@@ -542,7 +543,8 @@ function recordTimeBeforeBreak() {
 function recordTimeAtWin() {
   timeAtWin = getTimestamp();
   localStorage.setItem('timeAtWin', timeAtWin);
-
+  timeBeforeBreak = localStorage.getItem('timeBeforeBreak');
+  timeAfterBreak = localStorage.getItem('timeAfterBreak')
   // Calculate time intervals
   const durationToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
   const durationBeforeBreak = timeBeforeBreak ? new Date(timeBeforeBreak) - new Date(timeAtInitialize) : null;
