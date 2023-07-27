@@ -41,7 +41,7 @@ const levelFiles = [
   "level29.txt",
   "level30.txt"
 ];
-let currentLevel = `levels/level${Math.floor(Math.random() * levelFiles.length)}.txt`
+let currentLevel = `levels/level${(Math.floor(Math.random() * levelFiles.length))+1}.txt`
 let levelArray; // Define levelArray as a global variable to access it across functions
 let gameStateHistory = []; // Array to store the game state history
 let timeAtInitialize;
