@@ -44,13 +44,13 @@ app.post('/complete-level', async (req, res) => {
   const collection = db.collection(collectionName);
 
   // Check if the player id exists in the collection
-  const existingDocument = await collection.findOne({ playerId: playerId });
+  const existingDocument = await collection.findOne({ playerId });
 
   if (existingDocument) {
     // Update the existing document with the new time intervals
     try {
       const result = await collection.updateOne(
-        { playerId: playerId },
+        { playerId },
         { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak } }
       );
       console.log('Document updated:', result.modifiedCount);
