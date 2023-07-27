@@ -47,7 +47,10 @@ let gameStateHistory = []; // Array to store the game state history
 let timeAtInitialize;
 let timeBeforeBreak;
 let timeAtWin;
-
+let durationToBeatGame; 
+let durationBeforeBreak; 
+let durationAfterBreak;
+let durationBreak;
 
 
 wallSprite.src = "images/wall.jpg";
@@ -502,7 +505,7 @@ function recordUserCompletion(playerId, durationToBeatGame, durationAfterBreak, 
     durationBreak: durationBreak,
     levelNumber: localStorage.getItem('currentLevelNumber')
   };
-
+  
   fetch(url, {
     method: 'POST',
     headers: {
@@ -547,10 +550,10 @@ function recordTimeAtWin() {
   timeAfterBreak = localStorage.getItem('timeAfterBreak');
   timeAtInitialize = localStorage.getItem('timeAtInitialize');
   // Calculate time intervals
-  const durationToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
-  const durationBeforeBreak = timeBeforeBreak ? new Date(timeBeforeBreak) - new Date(timeAtInitialize) : null;
-  const durationAfterBreak = timeBeforeBreak ? new Date(timeAtWin) - new Date(timeAfterBreak) : null;
-  const durationBreak = timeBeforeBreak? new Date(timeAfterBreak) - new Date(timeBeforeBreak) : null; 
+  durationToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
+  durationBeforeBreak = timeBeforeBreak ? new Date(timeBeforeBreak) - new Date(timeAtInitialize) : null;
+  durationAfterBreak = timeBeforeBreak ? new Date(timeAtWin) - new Date(timeAfterBreak) : null;
+  durationBreak = timeBeforeBreak? new Date(timeAfterBreak) - new Date(timeBeforeBreak) : null; 
   // Store time intervals in localStorage
   localStorage.setItem('durationToBeatGame', durationToBeatGame);
   localStorage.setItem('durationBeforeBreak', durationBeforeBreak);
