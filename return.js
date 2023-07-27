@@ -38,12 +38,13 @@ form.addEventListener("submit", function (event) {
           console.log('Error submitting survey data:', response.status);
         }
         // Redirect back to index.html after form submission
+        recordTimeAfterBreak();
         window.location.href = "index.html";
       })
       .catch(error => {
         console.error('Error submitting survey data:', error);
         // Redirect back to index.html even if there's an error
-        recordTimeAfterBreak();
+
         window.location.href = "index.html";
       });
   });
