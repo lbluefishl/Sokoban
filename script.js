@@ -544,7 +544,8 @@ function recordTimeAtWin() {
   timeAtWin = getTimestamp();
   localStorage.setItem('timeAtWin', timeAtWin);
   timeBeforeBreak = localStorage.getItem('timeBeforeBreak');
-  timeAfterBreak = localStorage.getItem('timeAfterBreak')
+  timeAfterBreak = localStorage.getItem('timeAfterBreak');
+  timeAtInitialize = localStorage.getItem('timeAtInitialize');
   // Calculate time intervals
   const durationToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
   const durationBeforeBreak = timeBeforeBreak ? new Date(timeBeforeBreak) - new Date(timeAtInitialize) : null;
