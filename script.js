@@ -44,6 +44,11 @@ const levelFiles = [
 let currentLevel = `levels/level${Math.floor(Math.random() * levelFiles.length)}.txt`
 let levelArray; // Define levelArray as a global variable to access it across functions
 let gameStateHistory = []; // Array to store the game state history
+let timeAtInitialize;
+let timeBeforeBreak;
+let timeAtWin;
+
+
 
 wallSprite.src = "images/wall.jpg";
 boxSprite.src = "images/box.png";
@@ -328,6 +333,7 @@ function checkWinCondition() {
     }
   }
   const playerId = localStorage.getItem('playerId');
+  recordTimeAtWin();
   recordUserCompletion(playerId);
   redirectToSummary();
 }
@@ -381,8 +387,10 @@ function initializeGame() {
   } else {
     // No stored game state, load a random level
     loadAndRenderLevel(currentLevel);
+    recordTimeAtInitialize();
   }
   getplayerId();
+  storeLevelNumber();
 })
     .catch((error) => {
       console.error("Error loading sprites:", error);
@@ -423,6 +431,7 @@ function redirectToBreak() {
       moveset: moveset
     };
     localStorage.setItem('gameState', JSON.stringify(gameState));
+    recordTimeBeforeBreak();
     window.location.href = "break.html";
   }
 
@@ -481,9 +490,15 @@ function capturePlayerMove(dx, dy) {
 
 
 
-function recordUserCompletion(playerId) {
+function recordUserCompletion(playerId, timeToBeat, timeBeforeBreak, timeAfterBreak) {
   const url = 'https://sokoban-badc101a491f.herokuapp.com/complete-level';
-  const data = { playerId: playerId };
+  const data = {
+    playerId: playerId,
+    timeToBeat: timeToBeat,
+    timeBeforeBreak: timeBeforeBreak,
+    timeAfterBreak: timeAfterBreak,
+    levelNumber: localStorage.getItem('currentLevelNumber')
+  };
 
   fetch(url, {
     method: 'POST',
@@ -505,3 +520,42 @@ function recordUserCompletion(playerId) {
 }
 
 
+
+function getTimestamp() {
+  return new Date().toISOString();
+}
+
+
+function recordTimeAtInitialize() {
+  timeAtInitialize = getTimestamp();
+  localStorage.setItem('timeAtInitialize', timeAtInitialize);
+}
+
+function recordTimeBeforeBreak() {
+  timeBeforeBreak = getTimestamp();
+  localStorage.setItem('timeBeforeBreak', timeBeforeBreak);
+}
+
+
+function recordTimeAtWin() {
+  timeAtWin = getTimestamp();
+  localStorage.setItem('timeAtWin', timeAtWin);
+
+  // Calculate time intervals
+  const timeToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
+  const timeBeforeBreak = timeAtBreak ? new Date(timeAtBreak) - new Date(timeAtInitialize) : null;
+  const timeAfterBreak = timeAtBreak ? new Date(timeAtWin) - new Date(timeAtBreak) : null;
+  
+  // Store time intervals in localStorage
+  localStorage.setItem('timeToBeatGame', timeToBeatGame);
+  localStorage.setItem('timeBeforeBreak', timeBeforeBreak);
+  localStorage.setItem('timeAfterBreak', timeAfterBreak);
+
+  // Send data to MongoDB
+  sendGameDataToMongoDB();
+}
+
+
+function storeLevelNumber() {
+  localStorage.setItem('currentLevelNumber', parseInt(currentLevel.split("level")[2].split(".")[0]));
+}

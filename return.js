@@ -1,7 +1,7 @@
 const form = document.getElementById("returnForm");
 const digitalMediaInput = document.getElementsByName("digitalMedia");
 const mediaTaskInput = document.getElementById("mediaTask");
-
+let timeAfterBreak;
 
 
 // Event listener for form submission
@@ -9,12 +9,9 @@ form.addEventListener("submit", function (event) {
     event.preventDefault();
     // Get the form values
     const digitalMediaValue = document.querySelector('input[name="digitalMedia"]:checked').value;
-    const mediaTaskValue = document.querySelector('input[name="mediaTask"]:checked').value;
+    const mediaTaskValue = digitalMediaValue === "yes" ? document.querySelector('input[name="mediaTask"]:checked').value : "";
     const mindWanderValue = document.querySelector('input[name="mindWander"]:checked').value;
   
-    const gameState = JSON.parse(localStorage.getItem('gameState'));
-    const currentLevel = gameState.currentLevel;
-    const currentLevelNumber = parseInt(currentLevel.split("level")[2].split(".txt")[0]);
 
     // Create the data object to be sent to the server
     const data = {
@@ -22,7 +19,7 @@ form.addEventListener("submit", function (event) {
         mediaTask: mediaTaskValue,
         mindWander: mindWanderValue,
         playerId: localStorage.getItem('playerId'),
-        levelNumber: currentLevelNumber,
+        levelNumber: localStorage.getItem('currentLevelNumber'),
       };
     
   
@@ -46,6 +43,7 @@ form.addEventListener("submit", function (event) {
       .catch(error => {
         console.error('Error submitting survey data:', error);
         // Redirect back to index.html even if there's an error
+        recordTimeAfterBreak();
         window.location.href = "index.html";
       });
   });
@@ -59,5 +57,15 @@ form.addEventListener("submit", function (event) {
     digitalMediaInput[i].addEventListener("click", function () {
       mediaTaskInput.style.display = digitalMediaInput[i].value === "yes" ? "block" : "none";
     });
+  }
+
+
+  function getTimestamp() {
+    return new Date().toISOString();
+  }
+
+  function recordTimeAfterBreak() {
+    timeAfterBreak = getTimestamp();
+    localStorage.setItem('timeAfterBreak', timeAfterBreak);
   }
 
