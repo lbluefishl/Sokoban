@@ -384,10 +384,11 @@ function initializeGame() {
     moveset = gameState.moveset;
     // Render the level with the restored game state
     renderLevel(levelArray);
-    recordTimeAtInitialize();
+
   } else {
     // No stored game state, load a random level
     loadAndRenderLevel(currentLevel);
+    recordTimeAtInitialize();
   }
   getplayerId();
   storeLevelNumber();
