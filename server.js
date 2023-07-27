@@ -8,14 +8,13 @@ app.use(express.json()); // Add this line to parse JSON request bodies
 app.use(express.static(__dirname));
 const path = require('path');
 
-// ...
+
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const { MongoClient } = require('mongodb');
-
 const uri = process.env.MONGODB_URI; 
 const client = new MongoClient(uri);
 
@@ -56,7 +55,7 @@ app.post('/complete-level', async (req, res) => {
 });
 
 
-// Add a new endpoint to handle survey data submission
+
 app.post('/submit-survey', async (req, res) => {
   const { digitalMedia, mediaTask, mindWander, playerId, levelNumber } = req.body;
 
@@ -65,18 +64,30 @@ app.post('/submit-survey', async (req, res) => {
   const db = client.db('Sokoban'); // Replace 'Sokoban' with your actual database name
   const collection = db.collection(collectionName);
 
-  // Create a new document with the survey data and playerId and insert it into the collection
+  // Check if a document with the same playerId already exists in the collection
   try {
-    const result = await collection.insertOne({
-      digitalMedia,
-      mediaTask,
-      mindWander,
-      playerId
-    });
-    console.log('Survey data inserted:', result.insertedId);
+    const existingDocument = await collection.findOne({ playerId });
+
+    if (existingDocument) {
+      // If a document with the playerId exists, update it with the new survey data
+      const result = await collection.updateOne(
+        { playerId },
+        { $set: { digitalMedia, mediaTask, mindWander } }
+      );
+      console.log('Survey data updated:', result.modifiedCount);
+    } else {
+      // If no document with the playerId exists, create a new one with the survey data
+      const result = await collection.insertOne({
+        digitalMedia,
+        mediaTask,
+        mindWander,
+        playerId
+      });
+      console.log('Survey data inserted:', result.insertedId);
+    }
     res.sendStatus(200);
   } catch (err) {
-    console.error('Error inserting survey data:', err);
+    console.error('Error inserting/updating survey data:', err);
     res.sendStatus(500);
   }
 });
