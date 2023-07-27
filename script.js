@@ -337,7 +337,7 @@ function checkWinCondition() {
   }
   const playerId = localStorage.getItem('playerId');
   recordTimeAtWin();
-  recordUserCompletion(playerId);
+  recordUserCompletion(playerId, durationToBeatGame, durationAfterBreak, durationBeforeBreak, durationBreak);
   redirectToSummary();
 }
 
