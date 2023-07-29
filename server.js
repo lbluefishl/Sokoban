@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json()); // Add this line to parse JSON request bodies
 app.use(express.static(__dirname));
+app.use(bodyParser.json());
 const path = require('path');
 
 
@@ -115,6 +116,43 @@ app.post('/submit-survey', async (req, res) => {
     res.sendStatus(200);
   } catch (err) {
     console.error('Error inserting/updating survey data:', err);
+    res.sendStatus(500);
+  }
+});
+
+app.post('/save-movesets', async (req, res) => {
+  try {
+    const { playerId, levelNumber, beforeBreakMovesets, afterBreakMovesets } = req.body;
+
+
+    // Access the MongoDB collection based on the level number
+    const collectionName = `level${levelNumber}`;
+    const db = client.db('Sokoban'); 
+    const collection = db.collection(collectionName);
+
+    // Check if the player document exists in the collection
+    const existingDocument = await collection.findOne({ playerId });
+
+    if (existingDocument) {
+      // Update the existing document with the new moveset data
+      const result = await collection.updateOne(
+        { playerId },
+        { $set: { beforeBreakMovesets, afterBreakMovesets } }
+      );
+      console.log('Document updated:', result.modifiedCount);
+    } else {
+      // Create a new document with the playerId and moveset data and insert it into the collection
+      const result = await collection.insertOne({
+        playerId,
+        beforeBreakMovesets,
+        afterBreakMovesets
+      });
+      console.log('Document inserted:', result.insertedId);
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error('Error saving moveset data:', err);
     res.sendStatus(500);
   }
 });

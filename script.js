@@ -292,6 +292,7 @@ function resetLevel() {
       const playerStartPosition = findPlayerStartingPosition(levelArray);
       playerX = playerStartPosition.x;
       playerY = playerStartPosition.y;
+      saveMoveset(moveset);
       clearMoveset();
       gameStateHistory = [];
       renderLevel(levelArray);
@@ -332,8 +333,12 @@ function checkWinCondition() {
     }
   }
   const playerId = localStorage.getItem('playerId');
+  const currentLevelNumber = localStorage.getItem('currentLevelNumber');
   recordTimeAtWin();
+  saveMoveset(moveset);
   recordUserCompletion(playerId);
+  pushMovesetsToDatabase(playerId, currentLevelNumber);
+  localStorage.clear(); 
   redirectToSummary();
 }
 
@@ -555,11 +560,59 @@ function recordTimeAtWin() {
   localStorage.setItem('durationBeforeBreak', durationBeforeBreak);
   localStorage.setItem('durationAfterBreak', durationAfterBreak);
   localStorage.setItem('durationBreak', durationBreak);
-
-  
 }
 
 
 function storeLevelNumber() {
   localStorage.setItem('currentLevelNumber', parseInt(currentLevel.split("level")[2].split(".")[0]));
+}
+
+
+
+function saveMoveset(moveset) {
+  const timeBeforeBreak = localStorage.getItem('timeBeforeBreak');
+  if (timeBeforeBreak) {
+    // Player took a break, store moveset in "After Break Movesets" array
+    const afterBreakMovesets = JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]');
+    afterBreakMovesets.push(moveset);
+    localStorage.setItem('afterBreakMovesets', JSON.stringify(afterBreakMovesets));
+  } else {
+    // Player did not take a break, store moveset in "Before Break Movesets" array
+    const beforeBreakMovesets = JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]');
+    beforeBreakMovesets.push(moveset);
+    localStorage.setItem('beforeBreakMovesets', JSON.stringify(beforeBreakMovesets));
+  }
+}
+
+
+function pushMovesetsToDatabase(playerId, levelNumber) {
+  const beforeBreakMovesets = JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]');
+  const afterBreakMovesets = JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]');
+
+  const movesetData = {
+    playerId: playerId,
+    levelNumber: levelNumber,
+    beforeBreakMovesets: beforeBreakMovesets,
+    afterBreakMovesets: afterBreakMovesets
+  };
+
+  fetch('/save-movesets', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(movesetData)
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('Moveset data sent to the database successfully!');
+        // Clear the moveset data in local storage after sending it to the server
+        clearMovesetData();
+      } else {
+        console.log('Error sending moveset data to the database:', response.status);
+      }
+    })
+    .catch(error => {
+      console.error('Error sending moveset data to the database:', error);
+    });
 }
