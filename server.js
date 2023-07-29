@@ -6,7 +6,6 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json()); // Add this line to parse JSON request bodies
 app.use(express.static(__dirname));
-app.use(bodyParser.json());
 const path = require('path');
 
 
