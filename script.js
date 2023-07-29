@@ -610,7 +610,7 @@ function pushMovesetsToDatabase(playerId, levelNumber) {
       if (response.ok) {
         console.log('Moveset data sent to the database successfully!');
         // Clear the moveset data in local storage after sending it to the server
-        clearMovesetData();
+
       } else {
         console.log('Error sending moveset data to the database:', response.status);
       }
