@@ -198,8 +198,11 @@ function generateNewLevel() {
     randomLevelIndex = getRandomLevelIndex();
   }
   currentLevel = `levels/${levelFiles[randomLevelIndex]}`;
+  clearLocalStorageExceptPlayerId();
   loadAndRenderLevel(currentLevel);
   clearMoveset();
+  storeLevelNumber();
+  recordTimeAtInitialize();
 }
 
 
@@ -338,7 +341,7 @@ function checkWinCondition() {
   saveMoveset(moveset);
   recordUserCompletion(playerId);
   pushMovesetsToDatabase(playerId, currentLevelNumber);
-  localStorage.clear(); 
+  clearLocalStorageExceptPlayerId();
   redirectToSummary();
 }
 
@@ -615,4 +618,11 @@ function pushMovesetsToDatabase(playerId, levelNumber) {
     .catch(error => {
       console.error('Error sending moveset data to the database:', error);
     });
+}
+
+
+function clearLocalStorageExceptPlayerId() {
+  const playerId = localStorage.getItem('playerId'); // Get the playerId before clearing
+  localStorage.clear(); // Clear all items in localStorage
+  localStorage.setItem('playerId', playerId); // Restore the playerId after clearing
 }
