@@ -42,9 +42,10 @@
   }
   div {
     text-align: center;
+    margin: 20px;
   }
   .button-container {
-    margin: 20px 0;
+    margin: 20px;
   }
   .button {
     background-color: #4CAF50;

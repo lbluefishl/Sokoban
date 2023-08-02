@@ -322,9 +322,11 @@ function checkWinCondition() {
 
 function generateNewLevel() {
     loadAndRenderLevel(currentLevel);
+    showLevel();
     clearMoveset();
     storeLevelNumber();
     recordTimeAtInitialize();
+    
   }
 
 function initializeGame() {
