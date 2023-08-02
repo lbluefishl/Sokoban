@@ -155,3 +155,50 @@ app.post('/save-movesets', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+
+
+app.post('/complete-level-pilot', async (req, res) => {
+  const { playerId, durationToBeatGame, levelNumber, checkStuck, checkSkip } = req.body;
+
+  // Access the MongoDB collection based on the level number
+  const collectionName = `level${levelNumber}`;
+  const db = client.db('Sokoban-pilot'); 
+  const collection = db.collection(collectionName);
+
+  // Check if the player id exists in the collection
+  const existingDocument = await collection.findOne({ playerId });
+
+  if (existingDocument) {
+    // Update the existing document with the new time intervals
+    try {
+      const result = await collection.updateOne(
+        { playerId },
+        { $set: { durationToBeatGame, checkStuck, checkSkip } },
+        
+      );
+      console.log('Document updated:', result.modifiedCount);
+    } catch (err) {
+      console.error('Error updating document:', err);
+      res.sendStatus(500);
+      return;
+    }
+  } else {
+    // Create a new document with the playerId and time intervals and insert it into the collection
+    try {
+      const result = await collection.insertOne({
+        playerId,
+        durationToBeatGame,
+        checkStuck,
+        checkSkip
+      });
+      console.log('Document inserted:', result.insertedId);
+    } catch (err) {
+      console.error('Error inserting document:', err);
+      res.sendStatus(500);
+      return;
+    }
+  }
+
+  res.sendStatus(200);
+});
