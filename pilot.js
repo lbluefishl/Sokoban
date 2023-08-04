@@ -270,13 +270,12 @@ function resetLevel() {
 
             levelArray = parseLevelData(levelData);
             const playerStartPosition = findPlayerStartingPosition(levelArray);
-            const stuck = localStorage.getItem('stuckOnLevel')
             playerX = playerStartPosition.x;
             playerY = playerStartPosition.y;
             saveMoveset(moveset);
             clearMoveset();
             gameStateHistory = [];
-            if(!stuck && timePassed()) {checkStuck()};
+            checkStuck();
             showSkip();
             renderLevel(levelArray);
         })
@@ -505,7 +504,10 @@ function showLevel() {
 
 
   function checkStuck() {
+    const stuck = localStorage.getItem('stuckOnLevel');
+    if(stuck == null && timePassed()) {
     document.getElementById('popupContainer').style.display = 'block';
+    }
   }
 
   // Function to hide the popup

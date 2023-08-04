@@ -8,6 +8,7 @@ const boxSprite = new Image();
 const playerSprite = new Image();
 const spriteSize = TILE_SIZE * 0.8;
 const loadingScreen = document.getElementById("loadingScreen");
+const pilotButton = document.getElementById('pilot');
 let moveset = [];
 const levelFiles = [
   "level1.txt",
@@ -56,6 +57,15 @@ playerSprite.src = "images/player.png"
 
 const xOffset = (TILE_SIZE - spriteSize) / 2;
 const yOffset = (TILE_SIZE - spriteSize) / 2;
+
+
+pilotButton.addEventListener('click', function() {
+  clearLocalStorageExceptPlayerId();
+  window.location.href = "pilot.html";
+})
+
+
+
 
 // Function to load the level data from a file
 function loadLevelData(filename) {
