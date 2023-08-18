@@ -325,7 +325,7 @@ function generateNewLevel() {
     storeLevelNumber();
     showLevel();
     recordTimeAtInitialize();
-    if (currentLevel = 'levels/level13.txt') {alert('You beat all levels. Nice!')}
+    if (currentLevel === 'levels/level13.txt') {alert('You beat all levels. Nice!')}
   }
 
 function initializeGame() {
