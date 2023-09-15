@@ -163,7 +163,7 @@ app.post('/complete-level-pilot', async (req, res) => {
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('Sokoban-pilot2'); 
+  const db = client.db('Sokoban-pilot3'); 
   const collection = db.collection(collectionName);
 
   // Check if the player id exists in the collection

@@ -14,32 +14,7 @@ const levelFiles = [
     "level2.txt",
     "level3.txt",
     "level4.txt",
-    "level5.txt",
-    "level6.txt",
-    "level7.txt",
-    "level8.txt",
-    "level9.txt",
-    "level10.txt",
-    "level11.txt",
-    "level12.txt",
-    "level13.txt",
-    "level14.txt",
-    "level15.txt",
-    "level16.txt",
-    "level17.txt",
-    "level18.txt",
-    "level19.txt",
-    "level20.txt",
-    "level21.txt",
-    "level22.txt",
-    "level23.txt",
-    "level24.txt",
-    "level25.txt",
-    "level26.txt",
-    "level27.txt",
-    "level28.txt",
-    "level29.txt",
-    "level30.txt"
+    "level5.txt"
 ];
 let currentLevel = 'levels/level1.txt';
 let levelArray; // Define levelArray as a global variable to access it across functions
@@ -325,7 +300,7 @@ function generateNewLevel() {
     storeLevelNumber();
     showLevel();
     recordTimeAtInitialize();
-    if (currentLevel === 'levels/level13.txt') {alert('You beat all levels. Nice!')}
+    if (currentLevel === 'levels/level6.txt') {alert('You beat all levels. Nice!')}
   }
 
 function initializeGame() {
