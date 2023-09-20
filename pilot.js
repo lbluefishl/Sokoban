@@ -439,7 +439,7 @@ function recordTimeAtWin() {
     localStorage.setItem('timeAtWin', timeAtWin);
     timeAtInitialize = localStorage.getItem('timeAtInitialize');
     // Calculate time intervals
-    const durationToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
+    const durationToBeatGame = ((new Date(timeAtWin) - new Date(timeAtInitialize))/1000).toFixed(2);
  
     // Store time intervals in localStorage
     localStorage.setItem('durationToBeatGame', durationToBeatGame);
