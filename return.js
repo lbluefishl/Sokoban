@@ -39,13 +39,11 @@ form.addEventListener("submit", function (event) {
         }
         // Redirect back to index.html after form submission
         recordTimeAfterBreak();
-        window.location.href = "index.html";
+        checkPlayerIdAndRedirect();
       })
       .catch(error => {
         console.error('Error submitting survey data:', error);
-        // Redirect back to index.html even if there's an error
 
-        window.location.href = "index.html";
       });
   });
   
@@ -70,3 +68,30 @@ form.addEventListener("submit", function (event) {
     localStorage.setItem('timeAfterBreak', timeAfterBreak);
   }
 
+
+  function checkPlayerIdAndRedirect() {
+    // Check if the player ID is stored in localStorage
+    const playerId = localStorage.getItem("playerId");
+
+    if (playerId) {
+        // Convert the player ID to a number
+        const playerIdNumber = parseInt(playerId);
+
+        if (!isNaN(playerIdNumber)) {
+            // Check if the player ID is even or odd
+            if (playerIdNumber % 2 === 0) {
+                // Redirect to the even page
+                window.location.href = "main-experiment-break.html";
+            } else {
+                // Redirect to the odd page
+                window.location.href = "main-experiment.html";
+            }
+        } else {
+            // Handle the case where the player ID is not a valid number
+            console.error("Invalid player ID in localStorage.");
+        }
+    } else {
+        // Handle the case where the player ID is not stored in localStorage
+        console.error("Player ID not found in localStorage.");
+    }
+}

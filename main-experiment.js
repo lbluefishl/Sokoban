@@ -1,15 +1,17 @@
-const redirectButton = document.getElementById('redirect');
-const newLevelButton = document.getElementById('newLevel');
 const TILE_SIZE = 50; // Define the size of each tile on the canvas
 const BROWN_COLOR = "#D2B48C"; // Light brown color for background
-const GREEN_COLOR = "#008000"; // Green color for target tiles
+const GREEN_COLOR = "#0000FF"; // blue color for target tiles
 const wallSprite = new Image();
 const boxSprite = new Image();
 const playerSprite = new Image();
 const spriteSize = TILE_SIZE * 0.8;
 const loadingScreen = document.getElementById("loadingScreen");
+const levelDisplay = document.getElementById("currentLevel");
+const skipButton = document.getElementById('skip');
 const pilotButton = document.getElementById('pilot');
-let moveset = [];
+const xOffset = (TILE_SIZE - spriteSize) / 2;
+const yOffset = (TILE_SIZE - spriteSize) / 2;
+
 const levelFiles = [
   "level1.txt",
   "level2.txt",
@@ -29,21 +31,14 @@ let gameStateHistory = [];
 let timeAtInitialize;
 let timeBeforeBreak;
 let timeAtWin;
-
+let moveset = [];
 
 wallSprite.src = "images/wall.jpg";
 boxSprite.src = "images/box.png";
 playerSprite.src = "images/player.png"
 
 
-const xOffset = (TILE_SIZE - spriteSize) / 2;
-const yOffset = (TILE_SIZE - spriteSize) / 2;
 
-
-pilotButton.addEventListener('click', function() {
-  clearLocalStorageExceptPlayerId();
-  window.location.href = "pilot.html";
-})
 
 
 
@@ -161,9 +156,7 @@ document.addEventListener("keydown", function (event) {
 });
 
 
-function getRandomLevelIndex() {
-  return Math.floor(Math.random() * levelFiles.length);
-}
+
 
 function loadAndRenderLevel(levelFile) {
   loadLevelData(levelFile)
@@ -180,21 +173,7 @@ function loadAndRenderLevel(levelFile) {
     });
 }
 
-// Event listener for the "New Level" button
-newLevelButton.addEventListener("click", generateNewLevel);
 
-function generateNewLevel() {
-  let randomLevelIndex = getRandomLevelIndex();
-  while (levelFiles[randomLevelIndex] === currentLevel) {
-    randomLevelIndex = getRandomLevelIndex();
-  }
-  currentLevel = `levels/${levelFiles[randomLevelIndex]}`;
-  clearLocalStorageExceptPlayerId();
-  loadAndRenderLevel(currentLevel);
-  clearMoveset();
-  storeLevelNumber();
-  recordTimeAtInitialize();
-}
 
 
 function renderLevel(levelArray) {
@@ -202,8 +181,8 @@ function renderLevel(levelArray) {
   const ctx = canvas.getContext("2d");
 
   // Set the canvas size based on the level data dimensions
-  canvas.width = levelArray[0].length * TILE_SIZE;
-  canvas.height = levelArray.length * TILE_SIZE;
+  canvas.width = 18 * TILE_SIZE;
+  canvas.height = 12 * TILE_SIZE;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -289,6 +268,7 @@ function resetLevel() {
       saveMoveset(moveset);
       clearMoveset();
       gameStateHistory = [];
+      timeCheck();
       renderLevel(levelArray);
     })
     .catch(error => {
@@ -332,29 +312,21 @@ function checkWinCondition() {
   saveMoveset(moveset);
   recordUserCompletion(playerId);
   pushMovesetsToDatabase(playerId, currentLevelNumber);
+  currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber'))+1}.txt`
   clearLocalStorageExceptPlayerId();
-  redirectToSummary();
+  generateNewLevel();
 }
 
-function redirectToSummary() {
-  // Show the custom modal
-  const modal = document.getElementById("customModal");
-  modal.style.display = "block";
 
-  // Add event listeners to the modal buttons
-  const summaryBtn = document.getElementById("summaryBtn");
-  const newLevelBtn = document.getElementById("newLevelBtn");
-
-  // Go to the summary page when the "Summary" button is clicked
-  summaryBtn.addEventListener("click", function () {
-    window.location.href = "summary.html";
-  });
-
-  // Start a new level when the "New Level" button is clicked
-  newLevelBtn.addEventListener("click", function () {
-    modal.style.display = "none"; // Hide the modal
-    generateNewLevel(); // Call the resetLevel function to start a new level
-  });
+function generateNewLevel() {
+  loadAndRenderLevel(currentLevel);
+  clearMoveset();
+  storeLevelNumber();
+  showLevel();
+  recordTimeAtInitialize();
+  if (currentLevel === 'levels/level11.txt') {
+    redirectToSummary();
+  }
 }
 
 
@@ -378,18 +350,14 @@ function initializeGame() {
     // Parse and set the game state variables
     const gameState = JSON.parse(storedGameState);
     currentLevel = gameState.currentLevel;
-    levelArray = gameState.levelArray;
-    gameStateHistory = gameState.gameStateHistory;
-    moveset = gameState.moveset;
-    // Render the level with the restored game state
-    renderLevel(levelArray);
+    loadAndRenderLevel(currentLevel);
   } else {
     // No stored game state, load a random level
-    loadAndRenderLevel(currentLevel);
+    loadAndRenderLevel('levels/level1.txt');
     recordTimeAtInitialize();
   }
   storeLevelNumber();
-
+  showLevel();
 })
     .catch((error) => {
       console.error("Error loading sprites:", error);
@@ -417,27 +385,21 @@ function imageLoaded(img) {
 }
 
 
+function redirectToSummary() {
+  // Show the custom modal
+  const modal = document.getElementById("customModal");
+  modal.style.display = "block";
+  const summaryBtn = document.getElementById("summaryBtn");
 
-function redirectToBreak() {
+  summaryBtn.addEventListener("click", function () {
+    window.location.href = "summary.html";
+  });
 
-
-  const confirmed = confirm("It seems like you are stuck. Please take a break and return to this task after 15 minutes.");
-  if (confirmed) {
-    
-    const gameState = {
-      currentLevel: currentLevel,
-      levelArray: levelArray,
-      gameStateHistory: gameStateHistory,
-      moveset: moveset
-    };
-    localStorage.setItem('gameState', JSON.stringify(gameState));
-    recordTimeBeforeBreak();
-    window.location.href = "break.html";
-  }
 
 }
 
-redirectButton.addEventListener('click', redirectToBreak);
+
+
 
 
 
@@ -545,10 +507,10 @@ function recordTimeAtWin() {
   timeAfterBreak = localStorage.getItem('timeAfterBreak');
   timeAtInitialize = localStorage.getItem('timeAtInitialize');
   // Calculate time intervals
-  const durationToBeatGame = new Date(timeAtWin) - new Date(timeAtInitialize);
-  const durationBeforeBreak = timeBeforeBreak ? new Date(timeBeforeBreak) - new Date(timeAtInitialize) : null;
-  const durationAfterBreak = timeBeforeBreak ? new Date(timeAtWin) - new Date(timeAfterBreak) : null;
-  const durationBreak = timeBeforeBreak? new Date(timeAfterBreak) - new Date(timeBeforeBreak) : null; 
+  const durationToBeatGame = ((new Date(timeAtWin) - new Date(timeAtInitialize))/1000).toFixed(2);
+  const durationBeforeBreak = timeBeforeBreak ? ((new Date(timeBeforeBreak) - new Date(timeAtInitialize))/1000).toFixed(2) : null;
+  const durationAfterBreak = timeBeforeBreak ? ((new Date(timeAtWin) - new Date(timeAfterBreak))/1000).toFixed(2) : null;
+  const durationBreak = timeBeforeBreak ? ((new Date(timeAfterBreak) - new Date(timeBeforeBreak))/1000).toFixed(2) : null; 
   // Store time intervals in localStorage
   localStorage.setItem('durationToBeatGame', durationToBeatGame);
   localStorage.setItem('durationBeforeBreak', durationBeforeBreak);
@@ -617,3 +579,78 @@ function clearLocalStorageExceptPlayerId() {
   localStorage.clear(); // Clear all items in localStorage
   localStorage.setItem('playerId', playerId); // Restore the playerId after clearing
 }
+
+function showLevel() {
+  levelDisplay.innerHTML = localStorage.getItem('currentLevelNumber')
+}
+
+
+
+function initialTimePassed() {
+  const timeAfterBreak = localStorage.getItem('timeAfterBreak'); // If break already taken, do not prompt another break. Else check if time has passed for break. 
+  if (timeAfterBreak) {
+    return false; 
+  }
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 30000;
+}
+
+function totalTimePassed() {
+  const timeAfterBreak = localStorage.getItem('timeAfterBreak');
+  if (timeAfterBreak === null || timeAfterBreak === undefined) {
+    return false; 
+  }
+
+  return new Date() - new Date(timeAfterBreak) > 30000;
+}
+
+function nextLevel() {
+  const playerId = localStorage.getItem('playerId');
+  currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber'))+1}.txt`
+  saveMoveset(moveset);
+  recordUserCompletion(playerId);
+  localStorage.setItem('skippedLevel', "True");
+  clearLocalStorageExceptPlayerId();
+  generateNewLevel();
+}
+
+function timeCheck() {
+  if (totalTimePassed()) {
+    showPopup("Nice try for this puzzle. We would now like to see your progress on the next level. Press confirm to start.","nextlevel");
+  }
+  if (initialTimePassed()) {
+    showPopup("You will now start your short break. You will return to this puzzle later. Press confirm to start your break.","break");
+  }
+}
+
+function showPopup(message, type) {
+  const overlay = document.getElementById('overlay');
+  const popup = document.getElementById('popup');
+  const popupMessage = document.getElementById('popup-message');
+  const confirmButton = document.getElementById('confirm-button');
+  overlay.style.display = 'block';
+  popup.style.display = 'block';
+  popupMessage.innerHTML = message;
+
+
+if (type === 'break') {
+  confirmButton.addEventListener('click', () => {
+    const gameState = {
+      currentLevel: currentLevel,
+    };
+    localStorage.setItem('gameState', JSON.stringify(gameState));
+    recordTimeBeforeBreak();
+    window.location.href = "break.html";
+  });
+}
+
+if (type === 'nextlevel') {
+  confirmButton.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    popup.style.display = 'none';
+    nextLevel();
+  });
+}
+ 
+}
+
+

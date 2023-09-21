@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pilot</title>
   <link rel="stylesheet" type="text/css" href="/styles.css">
-  <script src="/pilot.js" defer></script>
+  <script src="/main-experiment.js" defer></script>
   <link rel="icon" href="images/shortcut.png">
 </head>
 
@@ -19,32 +19,43 @@
   <div id="loadingScreen">
     <span id="loadingText">Loading...</span>
   </div>
-  <div style="text-align: center;">
+  <div style="text-align: left;">
 
     <h1>Instructions</h1>
     <p>Move all of the boxes into the shaded blue squares to win. </p>
     <p>Use the arrow keys on your keyboard to move.</p>
-    <p>Press the (u) key to undo a move and the (r) key to restart the level.</p>
-    <p>
-      If a level takes longer than 10 minutes, a skip button will show. </p>
+    <p>Press the <b>(u)</b> key to undo a move and the <b>(r)</b> key to restart the level.</p>
+
     <p>Current Level: <span id="currentLevel"></span></p>
 
-    <button id="skip" style="margin-left: 20px">Skip Level</button>
+
 
 
   </div>
 
 
-  <div id="popupContainer" class="modal">
-    <div id="popup" class="modal-content">
-      <p>Are you feeling stuck on this level?</p>
-      <div id="popupButtons">
-        <button id="yesButton">Yes</button>
-        <button id="noButton">No</button>
-      </div>
+
+
+  <div id="overlay"></div>
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <span id="popup-message">
+     
+      
+    </span>
+    <button id="confirm-button">Confirm</button>
+  </div>
+</div>
+
+
+
+  <div id="customModal" class="modal">
+    <div class="modal-content">
+      <p>The study has concluded. You will now be asked to complete a short survey.</p>
+      <button id="summaryBtn">Summary</button>
+
     </div>
   </div>
-
 
 </body>
 

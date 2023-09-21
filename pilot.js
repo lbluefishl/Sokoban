@@ -1,6 +1,6 @@
 const TILE_SIZE = 50; // Define the size of each tile on the canvas
 const BROWN_COLOR = "#D2B48C"; // Light brown color for background
-const GREEN_COLOR = "#008000"; // Green color for target tiles
+const GREEN_COLOR = "#0000FF"; 
 const wallSprite = new Image();
 const boxSprite = new Image();
 const playerSprite = new Image();
@@ -10,15 +10,15 @@ const levelDisplay = document.getElementById("currentLevel");
 const skipButton = document.getElementById('skip');
 let moveset = [];
 const levelFiles = [
-    "level1.txt",
-    "level2.txt",
-    "level3.txt",
-    "level4.txt",
-    "level5.txt"
+    "level6.txt",
+    "level7.txt",
+    "level8.txt",
+    "level9.txt",
+    "level10.txt"
 ];
-let currentLevel = 'levels/level1.txt';
-let levelArray; // Define levelArray as a global variable to access it across functions
-let gameStateHistory = []; // Array to store the game state history
+let currentLevel = 'levels/level6.txt';
+let levelArray; 
+let gameStateHistory = []; 
 let timeAtInitialize;
 let timeAtWin;
 wallSprite.src = "images/wall.jpg";
@@ -37,17 +37,7 @@ function parseLevelData(levelData) {
     const lines = levelData.split("\n");
     const levelArray = lines.map(line => line.split(""));
     return levelArray;
-
-    function findPlayerStartingPosition(levelArray) {
-        for (let y = 0; y < levelArray.length; y++) {
-            for (let x = 0; x < levelArray[y].length; x++) {
-                if (levelArray[y][x] === "+" || levelArray[y][x] === "@") {
-                    return { x, y };
-                }
-            }
-        }
-        return null; // If player's starting position is not found
-    }
+    
 }
 
 function findPlayerStartingPosition(levelArray) {
@@ -300,7 +290,7 @@ function generateNewLevel() {
     storeLevelNumber();
     showLevel();
     recordTimeAtInitialize();
-    if (currentLevel === 'levels/level6.txt') {alert('You beat all levels. Nice!')}
+    if (currentLevel === 'levels/level11.txt') {alert('You beat all levels. Nice!')}
   }
 
 function initializeGame() {
@@ -326,7 +316,7 @@ function initializeGame() {
                 renderLevel(levelArray);
             } else {
                 // No stored game state, load a random level
-                loadAndRenderLevel('levels/level1.txt');
+                loadAndRenderLevel('levels/level6.txt');
                 recordTimeAtInitialize();
                 
             }

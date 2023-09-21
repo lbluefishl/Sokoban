@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiment Instructions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="instructions">
+        <p id="instructionText">Welcome to the experiment. Please read the following instructions:</p>
+        <div class="content">
+  
+            <form id="attentionCheckForm" style="display: none;">
+    
+                You are allowed to leave your computer during breaks.
+                <label>
+                     <input type="radio" name="question1" value="true"> True
+                </label>
+                <label>
+                    <input type="radio" name="question1" value="false"> False
+                </label>
+                <br>
+                You are free to do anything during the breaks.
+                <label>
+                    <input type="radio" name="question2" value="true"> True
+                </label>
+                <label>
+                    <input type="radio" name="question2" value="false"> False
+                </label>
+                <br>
+                Participants are paid per puzzle completed.
+                <label>
+                    <input type="radio" name="question3" value="true"> True
+                </label>
+                <label>
+                    <input type="radio" name="question3" value="false"> False
+                </label>
+                <br>
+            
+                <button type="submit">Submit</button>
+            </form>
+            
+        </div>
+        <button id="continueButton">Continue</button>
+    </div>
+    <script src="instructions.js"></script>
+</body>
+</html>
