@@ -24,7 +24,7 @@
       text-decoration: none;
       display: inline-block;
       font-size: 16px;
-      margin: 4px 2px;
+      margin: 10px 10px;
       cursor: pointer;
       border-radius: 8px;
     }
@@ -34,15 +34,16 @@
   </style>
 </head>
 <body>
-  <div>
-    <h1>Break Time!</h1>
+  <div >
+    <h1>Break </h1>
     <p>Take a break and and return to your task in 5 minutes.</p>
-    <p>Remember, you are free to leave your computer and use your break however you like.</p>
-    <div class="timer" id="timer"></div>
-    <button class="button" onclick="redirectToIndex()">Return to Task</button>
+    <p>You are free to leave your computer and use your break however you like.</p>
+    <div class="timer" id="timer" ></div>
+    <button id='break' class="button" onclick="redirectToIndex()" style="display: none;">Return to Task</button>
   </div>
 
   <script>
+    const breakButton = document.getElementById('break')
     // Countdown Timer Function
     function startTimer(duration, display) {
   let timer = duration, minutes, seconds;
@@ -58,13 +59,13 @@
     if (--timer < 0) {
       clearInterval(intervalId); // Stop the timer when it reaches zero
       display.textContent = "00:00"; // Set the timer display to "00:00"
-      // You can add your redirect code here
-      // Example: redirectToIndex();
+      breakButton.style.display = "inline-block"
+    
     }
   }, 1000);
 }
     window.onload = function () {
-      const fiveMinutes = 60 * 5;
+      const fiveMinutes = 5;
       const timerDisplay = document.getElementById("timer");
       startTimer(fiveMinutes, timerDisplay);
     };

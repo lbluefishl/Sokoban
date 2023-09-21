@@ -25,7 +25,7 @@ const levelFiles = [
   "level10.txt",
   
 ];
-let currentLevel = 'levels/level1.txt';
+let currentLevel;
 let levelArray; 
 let gameStateHistory = []; 
 let timeAtInitialize;
@@ -238,23 +238,10 @@ function renderLevel(levelArray) {
     loadingScreen.style.display = "none";},2000)
 }
 
-// Load and parse the level data
-loadLevelData(currentLevel)
-  .then(levelData => {
-    levelArray = parseLevelData(levelData);
 
-    // Get the player's starting position
-    const playerStartPosition = findPlayerStartingPosition(levelArray);
-    playerX = playerStartPosition.x;
-    playerY = playerStartPosition.y;
 
-    // Render the level on the canvas
-    initializeGame();
-  })
-  .catch(error => {
-    console.error("Error loading or parsing the level data:", error);
-  });
 
+initializeGame();
 
 // Function to reset the level to its initial state
 function resetLevel() {
@@ -268,8 +255,8 @@ function resetLevel() {
       saveMoveset(moveset);
       clearMoveset();
       gameStateHistory = [];
-      timeCheck();
       renderLevel(levelArray);
+      timeCheck();
     })
     .catch(error => {
       console.error("Error loading or parsing the level data:", error);
@@ -353,7 +340,8 @@ function initializeGame() {
     loadAndRenderLevel(currentLevel);
   } else {
     // No stored game state, load a random level
-    loadAndRenderLevel('levels/level1.txt');
+    currentLevel = 'levels/level1.txt'
+    loadAndRenderLevel(currentLevel);
     recordTimeAtInitialize();
   }
   storeLevelNumber();
@@ -589,9 +577,11 @@ function showLevel() {
 function initialTimePassed() {
   const timeAfterBreak = localStorage.getItem('timeAfterBreak'); // If break already taken, do not prompt another break. Else check if time has passed for break. 
   if (timeAfterBreak) {
+
     return false; 
   }
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 30000;
+ 
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 10000;
 }
 
 function totalTimePassed() {
@@ -600,15 +590,18 @@ function totalTimePassed() {
     return false; 
   }
 
-  return new Date() - new Date(timeAfterBreak) > 30000;
+
+  return new Date() - new Date(timeAfterBreak) > 10000;
 }
 
 function nextLevel() {
   const playerId = localStorage.getItem('playerId');
+  const currentLevelNumber = localStorage.getItem('currentLevelNumber');
   currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber'))+1}.txt`
   saveMoveset(moveset);
-  recordUserCompletion(playerId);
   localStorage.setItem('skippedLevel', "True");
+  recordUserCompletion(playerId);
+  pushMovesetsToDatabase(playerId, currentLevelNumber);
   clearLocalStorageExceptPlayerId();
   generateNewLevel();
 }
@@ -616,9 +609,10 @@ function nextLevel() {
 function timeCheck() {
   if (totalTimePassed()) {
     showPopup("Nice try for this puzzle. We would now like to see your progress on the next level. Press confirm to start.","nextlevel");
-  }
-  if (initialTimePassed()) {
+    
+  } else if (initialTimePassed()) {
     showPopup("You will now start your short break. You will return to this puzzle later. Press confirm to start your break.","break");
+    
   }
 }
 
@@ -632,25 +626,34 @@ function showPopup(message, type) {
   popupMessage.innerHTML = message;
 
 
-if (type === 'break') {
-  confirmButton.addEventListener('click', () => {
+  if (type === 'break') {
+    confirmButton.addEventListener('click', handleBreakClick);
+  }
+
+  if (type === 'nextlevel') {
+    confirmButton.addEventListener('click', handleNextLevelClick);
+  }
+
+  function handleBreakClick() {
+    overlay.style.display = 'none';
+    popup.style.display = 'none';
+    confirmButton.removeEventListener('click', handleBreakClick);
+    confirmButton.removeEventListener('click', handleNextLevelClick);
     const gameState = {
       currentLevel: currentLevel,
     };
     localStorage.setItem('gameState', JSON.stringify(gameState));
     recordTimeBeforeBreak();
     window.location.href = "break.html";
-  });
-}
+  }
 
-if (type === 'nextlevel') {
-  confirmButton.addEventListener('click', () => {
+  function handleNextLevelClick() {
+    confirmButton.removeEventListener('click', handleBreakClick);
+    confirmButton.removeEventListener('click', handleNextLevelClick);
     overlay.style.display = 'none';
     popup.style.display = 'none';
     nextLevel();
-  });
-}
- 
+  }
 }
 
 
