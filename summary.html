@@ -8,7 +8,197 @@
 </head>
 <body>
 
+  <!DOCTYPE html>
+  <html>
+  <head>
+      <title>Survey</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          padding: 0;
+          background-color: #f0f0f0;
+        }
+    
+        form {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 30px;
+          background-color: #fff;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        label {
+          font-weight: bold;
+        }
+    
+        select,
+        
+        textarea,
+        button {
+          display: block;
+          margin-bottom: 15px;
+        }
+        
+    
+        select,
+        
+        textarea {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          margin: 5px;
+        }
+    
+        button {
+          background-color: #007bff;
+          color: #fff;
+          padding: 10px 20px;
+          border: none;
+          margin: auto;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+    
+        button:hover {
+          background-color: #0056b3;
+        }
 
+        .radio-group {
+     
+        flex-direction: column;
+        padding: 10px;
+    }
+
+      </style>
+  </head>
+  <body>
+    <h1 style="text-align: center;">End Survey </h1>
+    <form id="surveyForm">
+        <label for="age">What is your age?</label>
+        <select id="age" name="age" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="18to24">18-24</option>
+            <option value="25to34">25-34</option>
+            <option value="35to44">35-44</option>
+            <option value="45to54">45-54</option>
+            <option value="55to64">55-64</option>
+            <option value="65plus">65 or older</option>
+        </select>
+    
+        <label>What is your gender?</label>
+        <div class="radio-group">
+             <input type="radio" name="gender" value="Male" required> Male
+            <input type="radio" name="gender" value="Female"> Female
+            <input type="radio" name="gender" value="Other"> Other
+        </div>
+    
+        <label>Are you left-handed or right-handed?</label>
+        <div class="radio-group">
+            <input type="radio" name="handedness" value="Left" required> Left
+            <input type="radio" name="handedness" value="Right"> Right
+            <input type="radio" name="handedness" value="Other"> Other
+        </div>
+        <label>On a typical day, how many hours do you spend on digital devices such as computers or smartphones?</label>
+        <select name="digitalDeviceHours" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="lessThan1">Less than 1 hour</option>
+            <option value="1to2">1-2 hours</option>
+            <option value="3to4">3-4 hours</option>
+            <option value="5plus">5+ hours</option>
+        </select>
+    
+        <label>On a typical day, how many hours do you spend playing video games?</label>
+        <select name="videoGameHours" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="lessThan1">Less than 1 hour</option>
+            <option value="1to2">1-2 hours</option>
+            <option value="3to4">3-4 hours</option>
+            <option value="5plus">5+ hours</option>
+        </select>
+    
+        <label>On a typical day, how many hours do you spend on your smartphone for entertainment or leisure purposes?</label>
+        <select name="smartphoneHours" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="lessThan1">Less than 1 hour</option>
+            <option value="1to2">1-2 hours</option>
+            <option value="3to4">3-4 hours</option>
+            <option value="5plus">5+ hours</option>
+        </select>
+    
+        <label>How familiar are you with Sokoban or Sokoban-like games?</label>
+        <select name="sokobanFamiliarity" required>
+            <option value="" disabled selected>Select an option</option>
+            <option value="notFamiliar">Not familiar</option>
+            <option value="somewhatFamiliar">Somewhat familiar</option>
+            <option value="veryFamiliar">Very familiar</option>
+        </select>
+    
+        <label for="comments">Do you have any comments or feedback for the study? Please describe any technical issues, annoyances, or unique experiences, if any.</label>
+        <textarea id="comments" name="comments"></textarea>
+    
+        <button type="submit">Submit</button>
+    </form>
+    
+  
+      <script>
+          const form = document.getElementById('surveyForm');
+  
+          form.addEventListener("submit", function (event) {
+              event.preventDefault();
+  
+              // Get the form values
+              const age = document.querySelector('select[name="age"]').value;
+              const gender = document.querySelector('input[name="gender"]:checked').value;
+              const handedness = document.querySelector('input[name="handedness"]:checked').value;
+              const videoGameHours = document.querySelector('select[name="videoGameHours"]').value;
+              const smartphoneHours = document.querySelector('select[name="smartphoneHours"]').value;
+              const sokobanFamiliarity = document.querySelector('select[name="sokobanFamiliarity"]').value;
+              const digitalDeviceHours = document.querySelector('select[name="digitalDeviceHours"]').value;
+              const comments = document.querySelector('textarea[name="comments"]').value;
+  
+              // Create the data object to be sent to the server
+              const data = {
+                  age: age,
+                  gender: gender,
+                  handedness: handedness,
+                  videoGameHours: videoGameHours,
+                  smartphoneHours: smartphoneHours,
+                  sokobanFamiliarity: sokobanFamiliarity,
+                  digitalDeviceHours: digitalDeviceHours,
+                  comments: comments,
+                  playerId: localStorage.getItem('playerId'),
+                 levelNumber: localStorage.getItem('currentLevelNumber'),
+              };
+  
+              // Send the data to the server using fetch
+              fetch('https://sokoban-badc101a491f.herokuapp.com/submit-summary', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(data),
+              })
+                  .then(response => {
+                      if (response.ok) {
+                          console.log('Survey data submitted successfully!');
+                      } else {
+                          console.log('Error submitting survey data:', response.status);
+                      }
+                      alert('You have completed the study. Please provide your unique Prolific ID to verify completion of the study and receive payment.')
+                      window.location.href = "main-experiment-break.html";
+
+                  })
+                  .catch(error => {
+                      console.error('Error submitting survey data:', error);
+                  });
+          });
+      </script>
+  </body>
+  </html>
+  
 
 
 
