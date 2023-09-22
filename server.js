@@ -120,12 +120,11 @@ app.post('/submit-survey', async (req, res) => {
 });
 
 app.post('/submit-summary', async (req, res) => {
-  const { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, levelNumber } = req.body;
+  const { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId } = req.body;
 
   // Access the MongoDB collection based on the level number
-  const collectionName = `level${levelNumber}`;
   const db = client.db('Sokoban1'); // Replace 'Sokoban' with your actual database name
-  const collection = db.collection(collectionName);
+  const collection = db.collection('surveys');
 
   // Check if a document with the same playerId already exists in the collection
   try {
