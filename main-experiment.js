@@ -608,10 +608,10 @@ function nextLevel() {
 
 function timeCheck() {
   if (totalTimePassed()) {
-    showPopup("Nice try for this puzzle. We would now like to see your progress on the next level. Press confirm to start.","nextlevel");
+    showPopup("Thank you for your effort on this puzzle. Please proceed to the next puzzle. Press confirm to start.","nextlevel");
     
   } else if (initialTimePassed()) {
-    showPopup("You will now start your short break. You will return to this puzzle later. Press confirm to start your break.","break");
+    showPopup("You will now begin a short break. You will return to this puzzle later. Press confirm to start your break.","break");
     
   }
 }

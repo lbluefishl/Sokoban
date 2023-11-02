@@ -3,7 +3,7 @@ const instructions = [
 
     "<div style='text-align: center'><img src='images/unimelb.png' width='250px' alt='university of melbourne logo'></div> <h1>Department of Computing and Information Systems</h1><br><h1>Consent for persons participating in a research project</h1> <br><br> <p>Name of Investigator(s): </p><p>Mr. Mike Zhuang (zhuang.m@unimelb.edu.au)</p><p>Dr. Ofir Turel (oturel@unimelb.edu.au)</p><p>Dr. Shaanan Cohney (cohneys@unimelb.edu.au)</p> <ol><li>I consent to participate in this project. The purpose of this research is to investigate problem solving behavior. I have been provided with a plain language statement.</li><li>I understand that this project is for research purposes only.</li><li>I understand that my keystrokes (movement keys, restart and undo key) are recorded during the experiment. </li><li>I understand that there are risks involved in participating in this research project. Specifically, that I may become frustrated while working on some difficult problems.  </li><li>I understand that my participation is voluntary and that I am free to withdraw from the project at any time without explanation or prejudice and to withdraw any unprocessed data I have provided.</li><li> I understand that the data from this research will be stored at the University of Melbourne and will be stored 5 years following the project completion. The collected data will be destroyed 5 years after the project completion.</li><li>I have been informed that the confidentiality of the information I provide will be safeguarded subject to any legal requirements; my data will be password protected and accessible only by the named researchers.</li><li>I am 18 years old or above.</li></ol><br><br><h1>By clicking continue you acknowledge that you agree to the above.",
 
-    "You will now be asked to complete a series of Sokoban puzzles. These are classic problems where you push boxes around a warehouse, trying to get them to storage locations.<br><br> It is natural to have trouble completing some puzzlse. Please continue to work on the puzzles even if you find yourself stuck on them.</br> <br>During the study, you may be given short breaks. You are free to do anything during the break, but please make sure to return to the task after a few minutes. You do not need to stay at the computer. You will be asked a few questions after returning from a break.</h1>",
+    "You will now be asked to complete a series of Sokoban puzzles. These are classic problems where you push boxes around a warehouse towards storage locations.<br><br> It is natural to have trouble completing some puzzles. Please continue to work on the puzzles even if you find yourself stuck on them.</br> <br>During the study, you may be given short breaks. You are free to do anything during the break, but please make sure to return to the task after a few minutes. You do not need to stay at the computer. You will be asked a few questions after returning from a break.</h1>",
 
     "We are only interested in individual problem solving behavior. As such, please do not seek external help in order to complete the puzzles. You will still be paid the full amount as long as you are working on the puzzles.",
 
@@ -18,7 +18,8 @@ const continueButton = document.getElementById("continueButton");
 const questions = [
     { name: "question1", correctAnswer: "true" },
     { name: "question2", correctAnswer: "true" },
-    { name: "question3", correctAnswer: "false" }
+    { name: "question3", correctAnswer: "false" },
+    { name: "question4", correctAnswer: "false"}
 ];
 
 
@@ -61,10 +62,11 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             // Incorrect answers, redirect to the beginning
             alert("Incorrect answers. Please carefully review the instructions.");
+            attentionCheckForm.reset();
             currentInstructionIndex = 0;
             updateInstructionText();
             attentionCheckForm.style.display = "none";
-            continueButton.style.display = "block";
+            continueButton.style.display = "inline-block";
 
             // Add code to redirect to the beginning of your instructions or experiment here
         }
@@ -137,3 +139,4 @@ function generateUniqueID() {
 
 // Call the function to check and redirect
 
+getplayerId();

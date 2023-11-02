@@ -25,9 +25,13 @@
       padding: 10px 20px;
       text-decoration: none;
       font-size: 16px;
-      margin: 4px 2px;
+      margin: 20px auto;
       cursor: pointer;
       border-radius: 8px;
+      
+    }
+    .button-container {
+      text-align: center; /* Center-align its contents */
     }
     label {
       display: block;
@@ -53,7 +57,7 @@
     <h1>Return Form</h1>
     <form id="returnForm">
       <label for="digitalMedia">1. Did you use digital media during your break?</label>
-      <label><input type="radio" name="digitalMedia" value="yes"> Yes</label>
+      <label><input type="radio" name="digitalMedia" value="yes" re uired> Yes</label>
       <label><input type="radio" name="digitalMedia" value="no"> No</label>
 
       <div id="mediaTask" style="display: none; text-align: left;">
@@ -71,13 +75,15 @@
       </div>
 
       <label for="mindWander">2. How often did your mind wander during the break?</label>
-      <label><input type="radio" name="mindWander" value="0"> Not at all</label>
+      <label><input type="radio" name="mindWander" value="0" required> Not at all</label>
       <label><input type="radio" name="mindWander" value="1"> A little</label>
       <label><input type="radio" name="mindWander" value="2"> About half the time</label>
       <label><input type="radio" name="mindWander" value="3"> Most of the time</label>
       <label><input type="radio" name="mindWander" value="4"> All of the time</label>
 
-      <button class="button" type="submit">Submit</button>
+      <div class="button-container">
+        <button class="button" type="submit">Submit</button>
+      </div>
     </form>
   </div>
 
