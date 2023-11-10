@@ -11,8 +11,6 @@ form.addEventListener("submit", function (event) {
     const digitalMediaValue = document.querySelector('input[name="digitalMedia"]:checked').value;
     const mediaTaskValue = digitalMediaValue === "yes" ? document.querySelector('input[name="mediaTask"]:checked').value : "";
     const mindWanderValue = document.querySelector('input[name="mindWander"]:checked').value;
-  
-
     // Create the data object to be sent to the server
     const data = {
         digitalMedia: digitalMediaValue,
@@ -37,17 +35,14 @@ form.addEventListener("submit", function (event) {
         } else {
           console.log('Error submitting survey data:', response.status);
         }
-        // Redirect back to index.html after form submission
         recordTimeAfterBreak();
-        checkPlayerIdAndRedirect();
+        window.location.href = "main-experiment.html";
       })
       .catch(error => {
         console.error('Error submitting survey data:', error);
-
       });
   });
   
-
 
 
 
@@ -68,30 +63,4 @@ form.addEventListener("submit", function (event) {
     localStorage.setItem('timeAfterBreak', timeAfterBreak);
   }
 
-
-  function checkPlayerIdAndRedirect() {
-    // Check if the player ID is stored in localStorage
-    const playerId = localStorage.getItem("playerId");
-
-    if (playerId) {
-        // Convert the player ID to a number
-        const playerIdNumber = parseInt(playerId);
-
-        if (!isNaN(playerIdNumber)) {
-            // Check if the player ID is even or odd
-            if (playerIdNumber % 2 === 0) {
-                // Redirect to the even page
-                window.location.href = "main-experiment-break.html";
-            } else {
-                // Redirect to the odd page
-                window.location.href = "main-experiment.html";
-            }
-        } else {
-            // Handle the case where the player ID is not a valid number
-            console.error("Invalid player ID in localStorage.");
-        }
-    } else {
-        // Handle the case where the player ID is not stored in localStorage
-        console.error("Player ID not found in localStorage.");
-    }
-}
+// removes a condition after participant finishes a trial (3 conditions total)

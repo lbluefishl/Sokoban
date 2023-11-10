@@ -253,7 +253,6 @@ function resetLevel() {
       playerX = playerStartPosition.x;
       playerY = playerStartPosition.y;
       saveMoveset(moveset);
-      clearMoveset();
       gameStateHistory = [];
       renderLevel(levelArray);
       timeCheck();
@@ -293,28 +292,23 @@ function checkWinCondition() {
       }
     }
   }
+
+  // Assuming you meet win conditions, store participant data and move to new level
   const playerId = localStorage.getItem('playerId');
   const currentLevelNumber = localStorage.getItem('currentLevelNumber');
+  localStorage.setItem('completedLevel', "1");
   recordTimeAtWin();
-  saveMoveset(moveset);
   recordUserCompletion(playerId);
+  saveMoveset(moveset);
   pushMovesetsToDatabase(playerId, currentLevelNumber);
-  currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber'))+1}.txt`
+  removeCondition();
+  determineNextLevel();
   clearLocalStorageExceptPlayerId();
   generateNewLevel();
 }
 
 
-function generateNewLevel() {
-  loadAndRenderLevel(currentLevel);
-  clearMoveset();
-  storeLevelNumber();
-  showLevel();
-  recordTimeAtInitialize();
-  if (currentLevel === 'levels/level11.txt') {
-    redirectToSummary();
-  }
-}
+
 
 
 
@@ -417,9 +411,7 @@ function getplayerId() {
 
 
 
-function clearMoveset() {
-  moveset = [];
-}
+
 
 
 
@@ -442,13 +434,16 @@ function capturePlayerMove(dx, dy) {
 
 function recordUserCompletion(playerId) {
   const url = 'https://sokoban-badc101a491f.herokuapp.com/complete-level';
+  
   const data = {
     playerId: playerId,
     durationAfterBreak: localStorage.getItem('durationAfterBreak'),
     durationBeforeBreak: localStorage.getItem('durationBeforeBreak'),
     durationToBeatGame: localStorage.getItem('durationToBeatGame'),
     durationBreak: localStorage.getItem('durationBreak'),
-    levelNumber: localStorage.getItem('currentLevelNumber')
+    levelNumber: localStorage.getItem('currentLevelNumber'),
+    completedLevel: localStorage.getItem('completedLevel'),
+    condition: JSON.parse(localStorage.getItem('condition'))[0]
   };
   
   fetch(url, {
@@ -526,10 +521,12 @@ function saveMoveset(moveset) {
     beforeBreakMovesets.push(moveset);
     localStorage.setItem('beforeBreakMovesets', JSON.stringify(beforeBreakMovesets));
   }
+  moveset = [];
 }
 
 
 function pushMovesetsToDatabase(playerId, levelNumber) {
+  const url = 'https://sokoban-badc101a491f.herokuapp.com/save-movesets';
   const beforeBreakMovesets = JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]');
   const afterBreakMovesets = JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]');
 
@@ -540,7 +537,7 @@ function pushMovesetsToDatabase(playerId, levelNumber) {
     afterBreakMovesets: afterBreakMovesets
   };
 
-  fetch('/save-movesets', {
+  fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -563,10 +560,16 @@ function pushMovesetsToDatabase(playerId, levelNumber) {
 
 
 function clearLocalStorageExceptPlayerId() {
-  const playerId = localStorage.getItem('playerId'); // Get the playerId before clearing
-  localStorage.clear(); // Clear all items in localStorage
-  localStorage.setItem('playerId', playerId); // Restore the playerId after clearing
-}
+  // clears local storage except for playerID, condition, and trial so that it is kept for further trials; condition array is reduced until it is empty so that all participants participate in all conditions
+   const playerId = localStorage.getItem('playerId'); 
+   const playerCondition = JSON.parse(localStorage.getItem('condition'));
+   const playerTrial = JSON.parse(localStorage.getItem('trial'));
+   localStorage.clear(); 
+   localStorage.setItem('playerId', playerId); 
+   localStorage.setItem('condition', JSON.stringify(playerCondition));
+   localStorage.setItem('trial', JSON.stringify(playerTrial));
+ }
+ 
 
 function showLevel() {
   levelDisplay.innerHTML = localStorage.getItem('currentLevelNumber')
@@ -594,19 +597,42 @@ function totalTimePassed() {
   return new Date() - new Date(timeAfterBreak) > 10000;
 }
 
-function nextLevel() {
+function generateNewLevel() {
+  loadAndRenderLevel(currentLevel);
+  storeLevelNumber();
+  showLevel();
+  recordTimeAtInitialize();
+}
+
+function determineNextLevel() {
+  const currentLevelNumber = localStorage.getItem('currentLevelNumber');
+  if (parseInt(currentLevelNumber)>3) {
+    const trials = JSON.parse(localStorage.getItem('trial'));
+    currentLevel = `levels/level${trials[0]}.txt`;
+    trials.shift();
+    localStorage.setItem('trial', JSON.stringify(trials));
+  } else {
+    currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber'))+1}.txt`
+  }
+
+}
+
+function skipLevel() {
   const playerId = localStorage.getItem('playerId');
   const currentLevelNumber = localStorage.getItem('currentLevelNumber');
-  currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber'))+1}.txt`
-  saveMoveset(moveset);
-  localStorage.setItem('skippedLevel', "True");
+  determineNextLevel();
+  localStorage.setItem('completedLevel', "0");
   recordUserCompletion(playerId);
   pushMovesetsToDatabase(playerId, currentLevelNumber);
   clearLocalStorageExceptPlayerId();
+  removeCondition();
   generateNewLevel();
 }
 
 function timeCheck() {
+  // check if in a practice round. If not, assign participant to break task or move to next level
+  const currentLevelNumber = parseInt(localStorage.getItem('currentLevelNumber'));
+  if (currentLevelNumber < 5) return
   if (totalTimePassed()) {
     showPopup("Thank you for your effort on this puzzle. Please proceed to the next puzzle. Press confirm to start.","nextlevel");
     
@@ -644,7 +670,7 @@ function showPopup(message, type) {
     };
     localStorage.setItem('gameState', JSON.stringify(gameState));
     recordTimeBeforeBreak();
-    window.location.href = "break.html";
+    redirectToBreak();
   }
 
   function handleNextLevelClick() {
@@ -652,8 +678,26 @@ function showPopup(message, type) {
     confirmButton.removeEventListener('click', handleNextLevelClick);
     overlay.style.display = 'none';
     popup.style.display = 'none';
-    nextLevel();
+    skipLevel();
   }
 }
 
+
+// redirects participants to the corresponding type of break condition
+function redirectToBreak() {
+  participantCondition = JSON.parse(localStorage.getItem('condition'))[0];
+  window.location.href =  `break-${participantCondition}.html`;
+}
+ 
+// participant is in each condition until no more conditions remain. At that point they finish with a survey. 
+function removeCondition() {
+  const participantCondition = JSON.parse(localStorage.getItem('condition'));
+  participantCondition.shift();
+  if (participantCondition === '[]') redirectToSummary();
+  localStorage.setItem('condition',JSON.stringify(participantCondition));
+}
+
+
+
+ 
 

@@ -1,3 +1,24 @@
+// counterbalanced conditions. the 4 '0' are the initial practice trials that everyone does
+
+const conditions = [
+    [0, 0, 0, 0, 1, 2, 3],
+    [0, 0, 0, 0, 1, 3, 2],
+    [0, 0, 0, 0, 2, 3, 1],
+    [0, 0, 0, 0, 2, 1, 3],
+    [0, 0, 0, 0, 3, 1, 2],
+    [0, 0, 0, 0, 3, 2, 1],
+];
+
+const trials = [
+    [5,6,7],
+    [5,7,6],
+    [6,5,7],
+    [6,7,5],
+    [7,5,6],
+    [7,6,5]
+]
+
+
 const instructions = [
     "<h1>Introduction</h1> Thank you for your interest in participating in this research project. The following few pages will provide you with further information about the project, so that you can decide if you would like to take part in this research. Please take the time to read this information carefully. <br><br><h1>What is the research about?</h1> The aim of the study is to investigate problem solving behavior for insight problems. We are interested in how cognition plays a role in problem solving. We are also interested in contextual factors that affect online problem solving, such as the effect of breaks. <br><br> <h1>What will I be asked to do?</h1> You will be asked to solve several puzzles of varying difficulty. Your behavior, including keystrokes and duration taken for each puzzle, will be recorded. Some demographic items and survey items will be recorded, such as your familiarity with technology and puzzle games. The entire study may take up to a maximum of 40 minutes, although on average it should take around 20 minutes to complete. <br><br> <h1>What are the possible risks?</h1> It is unlikely that you will be exposed to any physical or psychological distress by participating in this project. You may experience moments of frustration or arousal while working on the problems. However, we emphasize that we are interested in problem solving behavior, not necessarily the completion of the problems. You will still earn the maximum participation fee regardless of how many problems you solve. <br><br> <h1>What are the possible benefits?</h1> The research aims to increase understanding of factors that promote problem solving. This will have implications for how to improve human problem solving. We cannot guarantee any specific individual benefit from the project. <br><br> <h1>What if I want to withdraw from the research?</h1> Your participation is voluntary. You are free to stop participation at any point. Your data will not be used if you withdraw early from the study.<br><br> <h1>Privacy, Confidentiality, and Disclosure of Information</h1>Data collected as part of this project will not be associated with any identifying information. A randomly generated ID will automatically be assigned and used to group your data. We have no way of tracing the ID to your personal identity. In any publication, information will be provided in a way so that no participants can be identified. Only group data will be shown.<br><br>All information gathered from participants will be kept securely. Electronic data will be password protected and stored on a database server. Only the primary researcher will have access to this data. The data will not include any personal identifying information. After completing the project, the data will be securely stored for five years at the University of Melbourne, after which the data will be destroyed. <br><br><h1>Results of the Project</h1>The results of the project will likely be presented as part of a PhD thesis. It is also possible that the finding will be disseminated in a peer-reviewed journal and/or conference presentations.<br><br><h1>For further information</h1> <p>University of Melbourne, Department of Computing and Information Systems</p><p>Name of Investigator(s):</p><p>Mr. Mike Zhuang (mike.zhuang@unimelb.edu.au)</p><p>Dr. Ofir Turel (oturel@unimelb.edu.au)</p><p>Dr. Shaanan Cohney (cohneys@unimelb.edu.au)</p><br><br> Thank you for considering participating in this research. Please click 'Continue' to proceed.",
 
@@ -19,18 +40,18 @@ const questions = [
     { name: "question1", correctAnswer: "true" },
     { name: "question2", correctAnswer: "true" },
     { name: "question3", correctAnswer: "false" },
-    { name: "question4", correctAnswer: "false"}
+    { name: "question4", correctAnswer: "false" }
 ];
 
 
 
 document.addEventListener("DOMContentLoaded", function () {
- 
+
     function handleContinueClick() {
         currentInstructionIndex++;
         updateInstructionText();
     }
-    
+
     continueButton.addEventListener("click", handleContinueClick);
 
     // Initialize with the first instruction
@@ -42,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     attentionCheckForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        
+
         let correctAnswers = 0;
 
         for (const question of questions) {
@@ -55,9 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (correctAnswers === questions.length) {
             // All questions answered correctly, proceed
             alert("You will now start working on the puzzles.");
-
-            checkPlayerIdAndRedirect()
-            
+            window.location.href = "main-experiment.html";
             // Add code to redirect to your experiment here
         } else {
             // Incorrect answers, redirect to the beginning
@@ -86,57 +105,38 @@ function updateInstructionText() {
 
 
 function generateUniqueID() {
-    const timestamp = new Date().getTime(); // Get the current timestamp in milliseconds
-    const randomNum = Math.floor(Math.random() * 1000000); // Generate a random number between 0 and 999999
-  
-    // Concatenate the timestamp and random number to create the unique ID
-    const uniqueID = `${timestamp}${randomNum}`;
-  
-    return uniqueID;
-  }
-  
-  
-  
-  
-  function getplayerId() {
+
+
+    // Assign participant to one of the counterbalanced conditions and store it in localStorage
+    const participantCondition = conditions[Math.floor(Math.random() * conditions.length)];
+    localStorage.setItem('condition', JSON.stringify(participantCondition));
+
+    // Randomize puzzle order
+    const trialOrder = trials[Math.floor(Math.random() * conditions.length)];
+    localStorage.setItem('trial', JSON.stringify(trialOrder));
+
+    // generate a random number for the participant ID
+    const timestamp = new Date().getTime();
+    const randomNum = Math.floor(Math.random() * 1000000);
+    return `${timestamp}${randomNum}`;
+}
+
+
+
+
+function getplayerId() {
     // Check if the unique ID is already stored in localStorage
     let playerId = localStorage.getItem("playerId");
     if (!playerId) {
-      // If the unique ID doesn't exist, generate a new one and store it in localStorage
-      playerId = generateUniqueID();
-      localStorage.setItem("playerId", playerId);
+        // If the unique ID doesn't exist, generate a new one and store it in localStorage
+        playerId = generateUniqueID();
+        localStorage.setItem("playerId", playerId);
     }
     return playerId;
-  }
-
-
-  function checkPlayerIdAndRedirect() {
-    // Check if the player ID is stored in localStorage
-    const playerId = localStorage.getItem("playerId");
-
-    if (playerId) {
-        // Convert the player ID to a number
-        const playerIdNumber = parseInt(playerId);
-
-        if (!isNaN(playerIdNumber)) {
-            // Check if the player ID is even or odd
-            if (playerIdNumber % 2 === 0) {
-                // Redirect to the even page
-                window.location.href = "main-experiment-break.html";
-            } else {
-                // Redirect to the odd page
-                window.location.href = "main-experiment.html";
-            }
-        } else {
-            // Handle the case where the player ID is not a valid number
-            console.error("Invalid player ID in localStorage.");
-        }
-    } else {
-        // Handle the case where the player ID is not stored in localStorage
-        console.error("Player ID not found in localStorage.");
-    }
 }
 
-// Call the function to check and redirect
+
+
+
 
 getplayerId();

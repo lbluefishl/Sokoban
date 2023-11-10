@@ -36,7 +36,7 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -51,7 +51,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -67,7 +67,9 @@ app.post('/complete-level', async (req, res) => {
         durationAfterBreak,
         durationBeforeBreak,
         durationToBeatGame,
-        durationBreak
+        durationBreak,
+        condition,
+        completedLevel
       });
       console.log('Document inserted:', result.insertedId);
     } catch (err) {
@@ -168,6 +170,7 @@ app.post('/save-movesets', async (req, res) => {
     const collectionName = `level${levelNumber}`;
     const db = client.db('Sokoban1'); 
     const collection = db.collection(collectionName);
+
 
     // Check if the player document exists in the collection
     const existingDocument = await collection.findOne({ playerId });
