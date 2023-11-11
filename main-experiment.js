@@ -298,9 +298,8 @@ function checkWinCondition() {
   const currentLevelNumber = localStorage.getItem('currentLevelNumber');
   localStorage.setItem('completedLevel', "1");
   recordTimeAtWin();
-  recordUserCompletion(playerId);
   saveMoveset(moveset);
-  pushMovesetsToDatabase(playerId, currentLevelNumber);
+  recordUserCompletion();
   removeCondition();
   determineNextLevel();
   clearLocalStorageExceptPlayerId();
@@ -429,24 +428,22 @@ function capturePlayerMove(dx, dy) {
 }
 
 
+function recordUserCompletion() {
 
-
-
-function recordUserCompletion(playerId) {
-  const url = 'https://sokoban-badc101a491f.herokuapp.com/complete-level';
-  
   const data = {
-    playerId: playerId,
+    playerId: localStorage.getItem('playerId'),
     durationAfterBreak: localStorage.getItem('durationAfterBreak'),
     durationBeforeBreak: localStorage.getItem('durationBeforeBreak'),
     durationToBeatGame: localStorage.getItem('durationToBeatGame'),
     durationBreak: localStorage.getItem('durationBreak'),
     levelNumber: localStorage.getItem('currentLevelNumber'),
     completedLevel: localStorage.getItem('completedLevel'),
-    condition: JSON.parse(localStorage.getItem('condition'))[0]
+    condition: JSON.parse(localStorage.getItem('condition'))[0],
+    beforeBreakMovesets: JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]'),
+    afterBreakMovesets: JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]')
   };
   
-  fetch(url, {
+  fetch('https://sokoban-badc101a491f.herokuapp.com/complete-level', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -456,6 +453,7 @@ function recordUserCompletion(playerId) {
   .then(response => {
     if (response.ok) {
       console.log('User completion recorded successfully!');
+      console.log(data)
     } else {
       console.log('Error recording user completion:', response.status);
     }
@@ -525,38 +523,7 @@ function saveMoveset(moveset) {
 }
 
 
-function pushMovesetsToDatabase(playerId, levelNumber) {
-  const url = 'https://sokoban-badc101a491f.herokuapp.com/save-movesets';
-  const beforeBreakMovesets = JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]');
-  const afterBreakMovesets = JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]');
 
-  const movesetData = {
-    playerId: playerId,
-    levelNumber: levelNumber,
-    beforeBreakMovesets: beforeBreakMovesets,
-    afterBreakMovesets: afterBreakMovesets
-  };
-
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(movesetData)
-  })
-    .then(response => {
-      if (response.ok) {
-        console.log('Moveset data sent to the database successfully!');
-        // Clear the moveset data in local storage after sending it to the server
-
-      } else {
-        console.log('Error sending moveset data to the database:', response.status);
-      }
-    })
-    .catch(error => {
-      console.error('Error sending moveset data to the database:', error);
-    });
-}
 
 
 function clearLocalStorageExceptPlayerId() {
@@ -618,12 +585,9 @@ function determineNextLevel() {
 }
 
 function skipLevel() {
-  const playerId = localStorage.getItem('playerId');
-  const currentLevelNumber = localStorage.getItem('currentLevelNumber');
   determineNextLevel();
   localStorage.setItem('completedLevel', "0");
-  recordUserCompletion(playerId);
-  pushMovesetsToDatabase(playerId, currentLevelNumber);
+  recordUserCompletion();
   clearLocalStorageExceptPlayerId();
   removeCondition();
   generateNewLevel();
@@ -693,7 +657,7 @@ function redirectToBreak() {
 function removeCondition() {
   const participantCondition = JSON.parse(localStorage.getItem('condition'));
   participantCondition.shift();
-  if (participantCondition === '[]') redirectToSummary();
+  if (participantCondition.length === 0) redirectToSummary();
   localStorage.setItem('condition',JSON.stringify(participantCondition));
 }
 

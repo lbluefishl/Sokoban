@@ -36,7 +36,7 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -51,7 +51,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -69,7 +69,9 @@ app.post('/complete-level', async (req, res) => {
         durationToBeatGame,
         durationBreak,
         condition,
-        completedLevel
+        completedLevel,
+        beforeBreakMovesets,
+        afterBreakMovesets
       });
       console.log('Document inserted:', result.insertedId);
     } catch (err) {
@@ -136,7 +138,7 @@ app.post('/submit-summary', async (req, res) => {
       // If a document with the playerId exists, update it with the new survey data
       const result = await collection.updateOne(
         { playerId },
-        { $set: { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments } }
+        { $set: { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId } }
       );
       console.log('Survey data updated:', result.modifiedCount);
     } else {
@@ -149,7 +151,8 @@ app.post('/submit-summary', async (req, res) => {
         smartphoneHours,
         sokobanFamiliarity,
         digitalDeviceHours,
-        comments
+        comments,
+        playerId
       });
       console.log('Survey data inserted:', result.insertedId);
     }
@@ -161,43 +164,7 @@ app.post('/submit-summary', async (req, res) => {
 });
 
 
-app.post('/save-movesets', async (req, res) => {
-  try {
-    const { playerId, levelNumber, beforeBreakMovesets, afterBreakMovesets } = req.body;
 
-
-    // Access the MongoDB collection based on the level number
-    const collectionName = `level${levelNumber}`;
-    const db = client.db('Sokoban1'); 
-    const collection = db.collection(collectionName);
-
-
-    // Check if the player document exists in the collection
-    const existingDocument = await collection.findOne({ playerId });
-
-    if (existingDocument) {
-      // Update the existing document with the new moveset data
-      const result = await collection.updateOne(
-        { playerId },
-        { $set: { beforeBreakMovesets, afterBreakMovesets } }
-      );
-      console.log('Document updated:', result.modifiedCount);
-    } else {
-      // Create a new document with the playerId and moveset data and insert it into the collection
-      const result = await collection.insertOne({
-        playerId,
-        beforeBreakMovesets,
-        afterBreakMovesets
-      });
-      console.log('Document inserted:', result.insertedId);
-    }
-
-    res.sendStatus(200);
-  } catch (err) {
-    console.error('Error saving moveset data:', err);
-    res.sendStatus(500);
-  }
-});
 
 
 
