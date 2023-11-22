@@ -252,7 +252,7 @@ function resetLevel() {
       const playerStartPosition = findPlayerStartingPosition(levelArray);
       playerX = playerStartPosition.x;
       playerY = playerStartPosition.y;
-      saveMoveset(moveset);
+      saveMoveset();
       gameStateHistory = [];
       renderLevel(levelArray);
       timeCheck();
@@ -298,7 +298,7 @@ function checkWinCondition() {
   const currentLevelNumber = localStorage.getItem('currentLevelNumber');
   localStorage.setItem('completedLevel', "1");
   recordTimeAtWin();
-  saveMoveset(moveset);
+  saveMoveset();
   recordUserCompletion();
   removeCondition();
   determineNextLevel();
@@ -510,7 +510,7 @@ function storeLevelNumber() {
 
 
 
-function saveMoveset(moveset) {
+function saveMoveset() {
   const timeBeforeBreak = localStorage.getItem('timeBeforeBreak');
   if (timeBeforeBreak) {
     // Player took a break, store moveset in "After Break Movesets" array
@@ -636,7 +636,10 @@ function showPopup(message, type) {
     confirmButton.addEventListener('click', handleNextLevelClick);
   }
 
-  function handleContinueClick() {
+  function handleContinueClick(event) {
+    event.preventDefault();
+    localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
+    localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
     removePopup();
     recordTimeBeforeBreak();
     recordTimeAfterBreak();
@@ -656,7 +659,8 @@ function showPopup(message, type) {
     redirectToBreak();
   }
 
-  function handleNextLevelClick() {
+  function handleNextLevelClick(event) {
+    event.preventDefault();
     removePopup();
     skipLevel();
   }
@@ -665,6 +669,7 @@ function showPopup(message, type) {
     confirmButton.removeEventListener('click', handleBreakClick);
     confirmButton.removeEventListener('click', handleNextLevelClick);
     confirmButton.removeEventListener('click', handleContinueClick);
+    form.style.display = 'none';
     overlay.style.display = 'none';
     popup.style.display = 'none';
   }
