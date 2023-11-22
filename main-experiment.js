@@ -297,6 +297,7 @@ function checkWinCondition() {
   const playerId = localStorage.getItem('playerId');
   const currentLevelNumber = localStorage.getItem('currentLevelNumber');
   localStorage.setItem('completedLevel', "1");
+  console.log('win')
   recordTimeAtWin();
   saveMoveset();
   recordUserCompletion();
@@ -456,6 +457,7 @@ function recordUserCompletion() {
   .then(response => {
     if (response.ok) {
       console.log('User completion recorded successfully!');
+      console.log(data);
     } else {
       console.log('Error recording user completion:', response.status);
     }

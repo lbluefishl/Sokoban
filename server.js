@@ -40,12 +40,13 @@ app.post('/complete-level', async (req, res) => {
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('Sokoban1'); // Replace 'Sokoban' with your actual database name
+  const db = client.db('Sokoban1'); 
   const collection = db.collection(collectionName);
 
   // Check if the player id exists in the collection
   const existingDocument = await collection.findOne({ playerId });
-
+  console.log(stuck);
+  console.log(difficulty);
   if (existingDocument) {
     // Update the existing document with the new time intervals
     try {
@@ -62,6 +63,8 @@ app.post('/complete-level', async (req, res) => {
   } else {
     // Create a new document with the playerId and time intervals and insert it into the collection
     try {
+      console.log(stuck);
+      console.log(difficulty);
       const result = await collection.insertOne({
         playerId,
         durationAfterBreak,
