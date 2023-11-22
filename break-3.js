@@ -54,7 +54,7 @@ videos.forEach(video => {
     setTimeout(() => {
     localStorage.setItem('scroll', scrollCount)
       window.location.href = 'return.html'; // Replace with your desired URL
-    }, 120000);
+    }, 60000);
 
 
     function shuffleArray(array) {

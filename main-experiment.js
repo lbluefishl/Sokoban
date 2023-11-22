@@ -555,7 +555,7 @@ function initialTimePassed() {
     return false; 
   }
  
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 10000;
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 30000;
 }
 
 function totalTimePassed() {
@@ -563,7 +563,7 @@ function totalTimePassed() {
   if (timeAfterBreak === null || timeAfterBreak === undefined) {
     return false; 
   }
-  return new Date() - new Date(timeAfterBreak) > 10000;
+  return new Date() - new Date(timeAfterBreak) > 60000;
 }
 
 function generateNewLevel() {
@@ -604,10 +604,10 @@ function timeCheck() {
     
   } else if (initialTimePassed()) {
     if (JSON.parse(localStorage.getItem('condition'))[0] == 1) {
-      showPopup("Please continue working on the puzzle for a few more minutes.","control");
+      showPopup("Please respond to the following statements. You will then continue working on the puzzle.","control");
       return
     }
-    showPopup("You will now begin a short break. You will return to this puzzle later. Press answer the following questions about the puzzle.","break");
+    showPopup("Please respond to the following statements. Afterwards, you will take a short break prior to resuming work on the puzzle. ","break");
     
   }
 }
@@ -623,6 +623,7 @@ function showPopup(message, type) {
   popupMessage.innerHTML = message;
 
   if (type === 'control') {
+    form.style.display = 'block';
     confirmButton.addEventListener('click', handleContinueClick)
   }
 
