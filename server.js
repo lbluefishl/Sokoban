@@ -36,7 +36,7 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficulty, stuck, scrollCount } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -45,14 +45,12 @@ app.post('/complete-level', async (req, res) => {
 
   // Check if the player id exists in the collection
   const existingDocument = await collection.findOne({ playerId });
-  console.log(stuck);
-  console.log(difficulty);
   if (existingDocument) {
     // Update the existing document with the new time intervals
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficulty, stuck, scrollCount } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -63,8 +61,7 @@ app.post('/complete-level', async (req, res) => {
   } else {
     // Create a new document with the playerId and time intervals and insert it into the collection
     try {
-      console.log(stuck);
-      console.log(difficulty);
+
       const result = await collection.insertOne({
         playerId,
         durationAfterBreak,
@@ -75,8 +72,8 @@ app.post('/complete-level', async (req, res) => {
         completedLevel,
         beforeBreakMovesets,
         afterBreakMovesets,
-         difficulty,
-         stuck,
+         difficultyValue,
+         stuckValue,
          scrollCount
       });
       console.log('Document inserted:', result.insertedId);

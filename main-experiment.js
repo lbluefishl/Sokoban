@@ -11,6 +11,7 @@ const skipButton = document.getElementById('skip');
 const pilotButton = document.getElementById('pilot');
 const xOffset = (TILE_SIZE - spriteSize) / 2;
 const yOffset = (TILE_SIZE - spriteSize) / 2;
+const canvas = document.getElementById("gameCanvas");
 
 const levelFiles = [
   "level1.txt",
@@ -130,31 +131,37 @@ function handlePlayerMove(dx, dy) {
 }
 
 // Event listener for keyboard arrow key press
-document.addEventListener("keydown", function (event) {
-  // Arrow keys: Left (37), Up (38), Right (39), Down (40)
-  const key = event.keyCode;
+
+
+
+function handleKeyDown(event) {
+  const key = event.key;
+
   switch (key) {
-    case 37: // Left arrow key
+    case "ArrowLeft":
       handlePlayerMove(-1, 0);
       break;
-    case 38: // Up arrow key
+    case "ArrowUp":
       handlePlayerMove(0, -1);
       break;
-    case 39: // Right arrow key
+    case "ArrowRight":
       handlePlayerMove(1, 0);
       break;
-    case 40: // Down arrow key
+    case "ArrowDown":
       handlePlayerMove(0, 1);
       break;
-    case 85:
+    case "u":
       undoLastMove();
+      break;
+    case "r":
+      resetLevel();
       break;
     default:
       break;
-
   }
-});
+}
 
+document.addEventListener("keydown", handleKeyDown);
 
 
 
@@ -262,12 +269,7 @@ function resetLevel() {
     });
 }
 
-// Event listener to detect "R" key press for restarting the level
-document.addEventListener("keydown", event => {
-  if (event.key === "r" || event.key === "R") {
-    resetLevel();
-  }
-});
+
 
 
 
@@ -623,6 +625,8 @@ function showPopup(message, type) {
   overlay.style.display = 'block';
   popup.style.display = 'block';
   popupMessage.innerHTML = message;
+  document.removeEventListener("keydown", handleKeyDown);
+
 
   if (type === 'control') {
     form.style.display = 'block';
@@ -674,6 +678,7 @@ function showPopup(message, type) {
     form.style.display = 'none';
     overlay.style.display = 'none';
     popup.style.display = 'none';
+    document.addEventListener("keydown", handleKeyDown);
   }
 }
 
