@@ -438,6 +438,9 @@ function recordUserCompletion() {
     durationBreak: localStorage.getItem('durationBreak'),
     levelNumber: localStorage.getItem('currentLevelNumber'),
     completedLevel: localStorage.getItem('completedLevel'),
+    difficultyValue: localStorage.getItem('difficulty'),
+    scrollCount: localStorage.getItem('scroll'),
+    stuckValue: localStorage.getItem('stuck'),
     condition: JSON.parse(localStorage.getItem('condition'))[0],
     beforeBreakMovesets: JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]'),
     afterBreakMovesets: JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]')
@@ -453,7 +456,6 @@ function recordUserCompletion() {
   .then(response => {
     if (response.ok) {
       console.log('User completion recorded successfully!');
-      console.log(data)
     } else {
       console.log('Error recording user completion:', response.status);
     }
@@ -471,13 +473,15 @@ function getTimestamp() {
 
 
 function recordTimeAtInitialize() {
-  timeAtInitialize = getTimestamp();
-  localStorage.setItem('timeAtInitialize', timeAtInitialize);
+  localStorage.setItem('timeAtInitialize', getTimestamp());
 }
 
 function recordTimeBeforeBreak() {
-  timeBeforeBreak = getTimestamp();
-  localStorage.setItem('timeBeforeBreak', timeBeforeBreak);
+  localStorage.setItem('timeBeforeBreak', getTimestamp());
+}
+
+function recordTimeAfterBreak() {
+  localStorage.setItem('timeAfterBreak', getTimestamp());
 }
 
 
@@ -559,8 +563,6 @@ function totalTimePassed() {
   if (timeAfterBreak === null || timeAfterBreak === undefined) {
     return false; 
   }
-
-
   return new Date() - new Date(timeAfterBreak) > 10000;
 }
 
@@ -601,7 +603,11 @@ function timeCheck() {
     showPopup("Thank you for your effort on this puzzle. Please proceed to the next puzzle. Press confirm to start.","nextlevel");
     
   } else if (initialTimePassed()) {
-    showPopup("You will now begin a short break. You will return to this puzzle later. Press confirm to start your break.","break");
+    if (JSON.parse(localStorage.getItem('condition'))[0] == 1) {
+      showPopup("Please continue working on the puzzle for a few more minutes.","control");
+      return
+    }
+    showPopup("You will now begin a short break. You will return to this puzzle later. Press answer the following questions about the puzzle.","break");
     
   }
 }
@@ -611,12 +617,17 @@ function showPopup(message, type) {
   const popup = document.getElementById('popup');
   const popupMessage = document.getElementById('popup-message');
   const confirmButton = document.getElementById('confirm-button');
+  const form = document.getElementById('difficulty-form');
   overlay.style.display = 'block';
   popup.style.display = 'block';
   popupMessage.innerHTML = message;
 
+  if (type === 'control') {
+    confirmButton.addEventListener('click', handleContinueClick)
+  }
 
   if (type === 'break') {
+    form.style.display = 'block';
     confirmButton.addEventListener('click', handleBreakClick);
   }
 
@@ -624,11 +635,18 @@ function showPopup(message, type) {
     confirmButton.addEventListener('click', handleNextLevelClick);
   }
 
-  function handleBreakClick() {
-    overlay.style.display = 'none';
-    popup.style.display = 'none';
-    confirmButton.removeEventListener('click', handleBreakClick);
-    confirmButton.removeEventListener('click', handleNextLevelClick);
+  function handleContinueClick() {
+    removePopup();
+    recordTimeBeforeBreak();
+    recordTimeAfterBreak();
+  }
+
+  function handleBreakClick(event) {
+    event.preventDefault();
+    localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
+    localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
+    removePopup();
+
     const gameState = {
       currentLevel: currentLevel,
     };
@@ -638,11 +656,16 @@ function showPopup(message, type) {
   }
 
   function handleNextLevelClick() {
+    removePopup();
+    skipLevel();
+  }
+
+  function removePopup() {
     confirmButton.removeEventListener('click', handleBreakClick);
     confirmButton.removeEventListener('click', handleNextLevelClick);
+    confirmButton.removeEventListener('click', handleContinueClick);
     overlay.style.display = 'none';
     popup.style.display = 'none';
-    skipLevel();
   }
 }
 
@@ -660,6 +683,7 @@ function removeCondition() {
   if (participantCondition.length === 0) redirectToSummary();
   localStorage.setItem('condition',JSON.stringify(participantCondition));
 }
+
 
 
 

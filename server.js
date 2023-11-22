@@ -36,7 +36,7 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficulty, stuck, scrollCount } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -51,7 +51,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficulty, stuck, scrollCount } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -71,7 +71,10 @@ app.post('/complete-level', async (req, res) => {
         condition,
         completedLevel,
         beforeBreakMovesets,
-        afterBreakMovesets
+        afterBreakMovesets,
+         difficulty,
+         stuck,
+         scrollCount
       });
       console.log('Document inserted:', result.insertedId);
     } catch (err) {
@@ -88,7 +91,7 @@ app.post('/complete-level', async (req, res) => {
 
 
 app.post('/submit-survey', async (req, res) => {
-  const { digitalMedia, mediaTask, mindWander, playerId, levelNumber } = req.body;
+  const { enjoyment, relaxation, absorption, puzzleWork, mindWander, playerId, levelNumber } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -103,14 +106,16 @@ app.post('/submit-survey', async (req, res) => {
       // If a document with the playerId exists, update it with the new survey data
       const result = await collection.updateOne(
         { playerId },
-        { $set: { digitalMedia, mediaTask, mindWander } }
+        { $set: { enjoyment, relaxation, absorption, puzzleWork, mindWander } }
       );
       console.log('Survey data updated:', result.modifiedCount);
     } else {
       // If no document with the playerId exists, create a new one with the survey data
       const result = await collection.insertOne({
-        digitalMedia,
-        mediaTask,
+        enjoyment, 
+        relaxation, 
+        absorption, 
+        puzzleWork,
         mindWander,
         playerId
       });

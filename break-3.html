@@ -5,75 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Break Page</title>
   <link rel="icon" href="images/shortcut.png">
-
-  <style>
-    /* Add your CSS styles here */
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-    div {
-      text-align: center; /* Center the content inside the div */
-    }
-    .button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 10px 10px;
-      cursor: pointer;
-      border-radius: 8px;
-    }
-    .timer {
-      font-size: 24px;
-    }
-  </style>
+<script src="break-3.js" defer></script>
+<link rel="stylesheet" href="break-3.css">
 </head>
+
 <body>
-  <div >
-    <h1>Break </h1>
-    <p>Take a break and and return to your task in 5 minutes.</p>
-    <p>You are free to leave your computer and use your break however you like.</p>
-    <div class="timer" id="timer" ></div>
-    <button id='break' class="button" onclick="redirectToIndex()" style="display: none;">Return to Task</button>
-  </div>
-
-  <script>
-    const breakButton = document.getElementById('break')
-    // Countdown Timer Function
-    function startTimer(duration, display) {
-  let timer = duration, minutes, seconds;
-  const intervalId = setInterval(function () {
-    minutes = parseInt(timer / 60, 10);
-    seconds = parseInt(timer % 60, 10);
-
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-    display.textContent = minutes + ":" + seconds;
-
-    if (--timer < 0) {
-      clearInterval(intervalId); // Stop the timer when it reaches zero
-      display.textContent = "00:00"; // Set the timer display to "00:00"
-      breakButton.style.display = "inline-block"
+  <div id="loading-screen">
     
-    }
-  }, 1000);
-}
-    window.onload = function () {
-      const fiveMinutes = 5;
-      const timerDisplay = document.getElementById("timer");
-      startTimer(fiveMinutes, timerDisplay);
-    };
+  <p id="loading">Loading...</p>
+    <button id="start" style="display: none;">Start Break</button>
+  </div>
+  
 
-    // Redirect Function
-    function redirectToIndex() {
-      window.location.href = "return.html";
-    }
-  </script>
+  <div class="container">
+
+    <div style="height: 100vh; display: flex; text-align: center; align-items: center; scroll-snap-align: center;">
+      <p style="width: 100%;background-color: rgb(209, 206, 205); font-size: 2em; padding: 10px;">
+
+        During this break you can browse the short videos below. Scroll down to start. You will return to the puzzle in a few minutes. 
+  
+      </p>
+    </div>
+ 
+
+
+
+    <div class="video-container" data-video="v1">
+      <video id="v1" src="videos/1.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v2">
+      <video id="v2" src="videos/2.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v3">
+      <video id="v3" src="videos/3.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v4">
+      <video id="v4" src="videos/4.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v5">
+      <video id="v5" src="videos/5.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v6">
+      <video id="v6" src="videos/6.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v7">
+      <video id="v7" src="videos/7.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v8">
+      <video id="v8" src="videos/8.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v9">
+      <video id="v9" src="videos/9.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v10">
+      <video id="v10" src="videos/10.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v11">
+      <video id="v11" src="videos/11.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v12">
+      <video id="v12" src="videos/12.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v13">
+      <video id="v13" src="videos/13.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v14">
+      <video id="v14" src="videos/14.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v15">
+      <video id="v15" src="videos/15.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v16">
+      <video id="v16" src="videos/16.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v17">
+      <video id="v17" src="videos/17.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v18">
+      <video id="v18" src="videos/18.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v19">
+      <video id="v19" src="videos/19.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v20">
+      <video id="v20" src="videos/20.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v21">
+      <video id="v21" src="videos/21.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v22">
+      <video id="v22" src="videos/22.mp4" preload="auto" loop></video>
+    </div>
+    <div class="video-container" data-video="v23">
+      <video id="v23" src="videos/23.mp4" preload="auto" loop></video>
+    </div>
+  </div>
 </body>
+
+
+
 </html>

@@ -1,5 +1,5 @@
 // counterbalanced conditions. the 4 '0' are the initial practice trials that everyone does
-
+const fullscreenButton = document.getElementById('fullscreenButton')
 const conditions = [
     [0, 0, 0, 0, 1, 2, 3],
     [0, 0, 0, 0, 1, 3, 2],
@@ -74,12 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (correctAnswers === questions.length) {
-            // All questions answered correctly, proceed
+
             alert("You will now start working on the puzzles.");
-            window.location.href = "main-experiment.html";
-            // Add code to redirect to your experiment here
+            window.location.href='main-experiment.html';
+   
         } else {
-            // Incorrect answers, redirect to the beginning
+
             alert("Incorrect answers. Please carefully review the instructions.");
             attentionCheckForm.reset();
             currentInstructionIndex = 0;

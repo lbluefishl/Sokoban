@@ -8,13 +8,17 @@ let timeAfterBreak;
 form.addEventListener("submit", function (event) {
     event.preventDefault();
     // Get the form values
-    const digitalMediaValue = document.querySelector('input[name="digitalMedia"]:checked').value;
-    const mediaTaskValue = digitalMediaValue === "yes" ? document.querySelector('input[name="mediaTask"]:checked').value : "";
+    const enjoymentValue = document.querySelector('input[name="enjoyment"]:checked').value;   
+    const relaxationValue = document.querySelector('input[name="relaxation"]:checked').value;
+    const absorptionValue = document.querySelector('input[name="absorption"]:checked').value;
+    const puzzleWorkValue = document.querySelector('input[name="puzzleWork"]:checked').value;
     const mindWanderValue = document.querySelector('input[name="mindWander"]:checked').value;
     // Create the data object to be sent to the server
     const data = {
-        digitalMedia: digitalMediaValue,
-        mediaTask: mediaTaskValue,
+      enjoyment: enjoymentValue,
+      relaxation: relaxationValue,
+      absorption: absorptionValue,
+      puzzleWork: puzzleWorkValue,
         mindWander: mindWanderValue,
         playerId: localStorage.getItem('playerId'),
         levelNumber: localStorage.getItem('currentLevelNumber'),
@@ -45,22 +49,7 @@ form.addEventListener("submit", function (event) {
   
 
 
-
-  // Event listener to show the media task input field when 'yes' is selected
-  for (let i = 0; i < digitalMediaInput.length; i++) {
-    digitalMediaInput[i].addEventListener("click", function () {
-      mediaTaskInput.style.display = digitalMediaInput[i].value === "yes" ? "block" : "none";
-    });
-  }
-
-
-  function getTimestamp() {
-    return new Date().toISOString();
-  }
-
   function recordTimeAfterBreak() {
-    timeAfterBreak = getTimestamp();
-    localStorage.setItem('timeAfterBreak', timeAfterBreak);
+    localStorage.setItem('timeAfterBreak', new Date().toISOString());
   }
 
-// removes a condition after participant finishes a trial (3 conditions total)

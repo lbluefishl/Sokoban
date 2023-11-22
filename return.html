@@ -54,32 +54,44 @@
 </head>
 <body>
   <div>
-    <h1>Return Form</h1>
+    <h1>Select an option for the following statements.</h1>
     <form id="returnForm">
-      <label for="digitalMedia">1. Did you use digital media during your break?</label>
-      <label><input type="radio" name="digitalMedia" value="yes" re uired> Yes</label>
-      <label><input type="radio" name="digitalMedia" value="no"> No</label>
+ 
+      <label for="relaxation">The break was relaxing.</label>
+      <label><input type="radio" name="relaxation" value="1" required> Strongly Disagree</label>
+      <label><input type="radio" name="relaxation" value="2"> Disagree</label>
+      <label><input type="radio" name="relaxation" value="3"> Neutral</label>
+      <label><input type="radio" name="relaxation" value="4"> Agree</label>
+      <label><input type="radio" name="relaxation" value="5"> Strongly Agree</label>
 
-      <div id="mediaTask" style="display: none; text-align: left;">
-        <label for="mediaTask">What application/task did you spend the most of your break on?</label>
-        <label><input type="radio" name="mediaTask" value="web"> Browsing the web</label>
-        <label><input type="radio" name="mediaTask" value="text"> Texting</label>
-        <label><input type="radio" name="mediaTask" value="email"> Checking emails</label>
-        <label><input type="radio" name="mediaTask" value="facebook"> Facebook</label>
-        <label><input type="radio" name="mediaTask" value="instagram"> Instagram</label>
-        <label><input type="radio" name="mediaTask" value="rediit"> Reddit</label>
-        <label><input type="radio" name="mediaTask" value="tiktok"> TikTok</label>
-        <label><input type="radio" name="mediaTask" value="youtube"> Youtube</label>
-        <label><input type="radio" name="mediaTask" value="na"> Prefer not to say</label>
-        <label><input type="radio" name="mediaTask" value="nl"> Not listed</label>
-      </div>
+      <label for="absorption">The break was enjoyable.</label>
+      <label><input type="radio" name="enjoyment" value="1" required> Strongly Disagree</label>
+      <label><input type="radio" name="enjoyment" value="2"> Disagree</label>
+      <label><input type="radio" name="enjoyment" value="3"> Neutral</label>
+      <label><input type="radio" name="enjoyment" value="4"> Agree</label>
+      <label><input type="radio" name="enjoyment" value="5"> Strongly Agree</label>
+     
 
-      <label for="mindWander">2. How often did your mind wander during the break?</label>
-      <label><input type="radio" name="mindWander" value="0" required> Not at all</label>
-      <label><input type="radio" name="mindWander" value="1"> A little</label>
-      <label><input type="radio" name="mindWander" value="2"> About half the time</label>
-      <label><input type="radio" name="mindWander" value="3"> Most of the time</label>
-      <label><input type="radio" name="mindWander" value="4"> All of the time</label>
+      <label for="mindWander">My mind wandered during the break.</label>
+      <label><input type="radio" name="mindWander" value="1" required> Strongly Disagree</label>
+      <label><input type="radio" name="mindWander" value="2"> Disagree</label>
+      <label><input type="radio" name="mindWander" value="3"> Neutral</label>
+      <label><input type="radio" name="mindWander" value="4"> Agree</label>
+      <label><input type="radio" name="mindWander" value="5"> Strongly Agree</label>
+
+      <label for="puzzleWork">I thought about the puzzle during the break.</label>
+      <label><input type="radio" name="puzzleWork" value="1" required> Strongly Disagree</label>
+      <label><input type="radio" name="puzzleWork" value="2"> Disagree</label>
+      <label><input type="radio" name="puzzleWork" value="3"> Neutral</label>
+      <label><input type="radio" name="puzzleWork" value="4"> Agree</label>
+      <label><input type="radio" name="puzzleWork" value="5"> Strongly Agree</label>
+
+      <label for="absorption">I was absorbed in what I was doing during the break.</label>
+      <label><input type="radio" name="absorption" value="1" required> Strongly Disagree</label>
+      <label><input type="radio" name="absorption" value="2"> Disagree</label>
+      <label><input type="radio" name="absorption" value="3"> Neutral</label>
+      <label><input type="radio" name="absorption" value="4"> Agree</label>
+      <label><input type="radio" name="absorption" value="5"> Strongly Agree</label>
 
       <div class="button-container">
         <button class="button" type="submit">Submit</button>

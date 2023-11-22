@@ -40,18 +40,56 @@
 <div id="popup" class="popup">
   <div class="popup-content">
     <div id="popup-message">
-     
-      
+ 
     </div>
-    <button id="confirm-button">Confirm</button>
+    <form id="difficulty-form" style="display: none;">
+        
+      <div class="form-group">
+        <label>How difficult is the current puzzle?</label>
+        <div>
+          <input type="radio" name="difficulty-puzzle" value="1" id="not-difficult" required>
+          <label for="not-difficult">Not difficult</label>
+          
+          <input type="radio" name="difficulty-puzzle" value="2" id="somewhat-difficult" required>
+          <label for="somewhat-difficult">Somewhat difficult</label>
+          
+          <input type="radio" name="difficulty-puzzle" value="3" id="difficult" required>
+          <label for="difficult">Difficult</label>
+          
+          <input type="radio" name="difficulty-puzzle" value="4" id="very-difficult" required>
+          <label for="very-difficult">Very difficult</label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>To what extent do you feel stuck on this puzzle?</label>
+        <div>
+          <input type="radio" name="stuck-feeling" value="1" id="not-stuck" required>
+          <label for="not-stuck">Not stuck</label>
+          
+          <input type="radio" name="stuck-feeling" value="2" id="a-little-stuck" required>
+          <label for="a-little-stuck">A little stuck</label>
+          
+          <input type="radio" name="stuck-feeling" value="3" id="stuck" required>
+          <label for="stuck">Stuck</label>
+          
+          <input type="radio" name="stuck-feeling" value="4" id="very-stuck" required>
+          <label for="very-stuck">Very stuck</label>
+        </div>
+      </div>
+
+
+    </form>
+    <button type="submit" id="confirm-button">Confirm</button>
   </div>
 </div>
 
 
 
+
   <div id="customModal" class="modal">
     <div class="modal-content">
-      <p>The study has concluded. You will now be asked to complete a short survey.</p>
+      <p>Good work. You will now complete a short survey.</p>
       <button id="summaryBtn">Summary</button>
 
     </div>
