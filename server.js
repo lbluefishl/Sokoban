@@ -36,11 +36,11 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('Sokoban1'); 
+  const db = client.db('Sokoban1');
   const collection = db.collection(collectionName);
 
   // Check if the player id exists in the collection
@@ -50,7 +50,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -72,9 +72,11 @@ app.post('/complete-level', async (req, res) => {
         completedLevel,
         beforeBreakMovesets,
         afterBreakMovesets,
-         difficultyValue,
-         stuckValue,
-         scrollCount
+        difficultyValue,
+        stuckValue,
+        scrollCount,
+        correctValue,
+        incorrectValue,
       });
       console.log('Document inserted:', result.insertedId);
     } catch (err) {
@@ -112,9 +114,9 @@ app.post('/submit-survey', async (req, res) => {
     } else {
       // If no document with the playerId exists, create a new one with the survey data
       const result = await collection.insertOne({
-        enjoyment, 
-        relaxation, 
-        absorption, 
+        enjoyment,
+        relaxation,
+        absorption,
         puzzleWork,
         mindWander,
         playerId
@@ -178,7 +180,7 @@ app.post('/complete-level-pilot', async (req, res) => {
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('Sokoban-pilot3'); 
+  const db = client.db('Sokoban-pilot3');
   const collection = db.collection(collectionName);
 
   // Check if the player id exists in the collection
@@ -190,7 +192,7 @@ app.post('/complete-level-pilot', async (req, res) => {
       const result = await collection.updateOne(
         { playerId },
         { $set: { durationToBeatGame, checkStuck, checkSkip } },
-        
+
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {

@@ -125,6 +125,7 @@ function generateUniqueID() {
 
 
 function getplayerId() {
+    localStorage.clear();
     // Check if the unique ID is already stored in localStorage
     let playerId = localStorage.getItem("playerId");
     if (!playerId) {
@@ -135,7 +136,13 @@ function getplayerId() {
     return playerId;
 }
 
-
+window.onload = function() {
+    // Check if the user is on a mobile device
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      // Display the popup
+      document.getElementById('popup').style.display = 'block';
+    }
+  };
 
 
 

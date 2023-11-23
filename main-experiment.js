@@ -443,6 +443,8 @@ function recordUserCompletion() {
     difficultyValue: localStorage.getItem('difficulty'),
     scrollCount: localStorage.getItem('scroll'),
     stuckValue: localStorage.getItem('stuck'),
+    correctValue: localStorage.getItem('correct'),
+    incorrectValue: localStorage.getItem('incorrect'),
     condition: JSON.parse(localStorage.getItem('condition'))[0],
     beforeBreakMovesets: JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]'),
     afterBreakMovesets: JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]')
