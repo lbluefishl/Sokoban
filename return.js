@@ -2,6 +2,7 @@ const form = document.getElementById("returnForm");
 const digitalMediaInput = document.getElementsByName("digitalMedia");
 const mediaTaskInput = document.getElementById("mediaTask");
 let timeAfterBreak;
+var isRedirecting = false;
 
 
 // Event listener for form submission
@@ -50,6 +51,8 @@ form.addEventListener("submit", function (event) {
           console.log('Error submitting survey data:', response.status);
         }
         recordTimeAfterBreak();
+        isRedirecting = true;
+
         window.location.href = "main-experiment.html";
       })
       .catch(error => {
@@ -63,3 +66,17 @@ form.addEventListener("submit", function (event) {
     localStorage.setItem('timeAfterBreak', new Date().toISOString());
   }
 
+
+  window.addEventListener("beforeunload", function (e) {
+    if (!isRedirecting) {
+      // Display a confirmation message
+      e.preventDefault();
+      var confirmationMessage = "This experiment must be done in one sitting continuously. If you refresh the page or go back, the study will end and you will not be compensated for your time.";
+  
+      // Set the confirmation message for modern browsers
+      e.returnValue = confirmationMessage;
+  
+      // For older browsers
+      return confirmationMessage;
+    }
+  });

@@ -3,11 +3,12 @@ const loadingScreen = document.getElementById('loading-screen');
 const loadingText = document.getElementById('loading');
 const startButton = document.getElementById('start');
 let loadedVideosCount = 0;
+var isRedirecting = false;
 
 // Function to check if all videos are loaded
 function checkAllVideosLoaded() {
   loadedVideosCount++;
-  if (loadedVideosCount >= 3) {
+  if (loadedVideosCount >= 8) {
     // All videos are loaded, introduce a 2-second delay and then show the content
     setTimeout(() => {
       loadingText.style.display = 'none';
@@ -53,6 +54,7 @@ videos.forEach(video => {
 
     setTimeout(() => {
     localStorage.setItem('scroll', scrollCount)
+    isRedirecting = true;
       window.location.href = 'return.html'; // Replace with your desired URL
     }, 300000);
 
@@ -90,3 +92,18 @@ videos.forEach(video => {
           timeoutId = setTimeout(func, delay);
         };
       }
+
+
+      window.addEventListener("beforeunload", function (e) {
+        if (!isRedirecting) {
+          // Display a confirmation message
+          e.preventDefault();
+          var confirmationMessage = "This experiment must be done in one sitting continuously. If you refresh the page or go back, the study will end and you will not be compensated for your time.";
+      
+          // Set the confirmation message for modern browsers
+          e.returnValue = confirmationMessage;
+      
+          // For older browsers
+          return confirmationMessage;
+        }
+      });

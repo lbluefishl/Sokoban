@@ -2,12 +2,20 @@
 const numberContainer = document.getElementById('number-container');
 const oddButton = document.getElementById('odd-button');
 const evenButton = document.getElementById('even-button');
-const continueButton = document.getElementById('continueButton')
+const continueButton = document.getElementById('continueButton');
+const overlay = document.getElementById('overlay');
 var correct = 0;
 var incorrect = 0;
+var isRedirecting = false;
 
+continueButton.addEventListener('click', () => {
+  showNumber();
+  overlay.style.display ='none';
+  oddButton.style.display ='inline';
+  evenButton.style.display ='inline';
+}
 
-continueButton.addEventListener('click', showNumber());
+);
 
 // Function to generate a random number
 function getRandomNumber(min, max) {
@@ -54,5 +62,21 @@ function handleChoice(userChoosesOdd) {
 setTimeout(() => {
 localStorage.setItem('correct',correct);
 localStorage.setItem('incorrect',incorrect);
+isRedirecting = true;
   window.location.href = 'return.html';
 }, 300000); // 60000 milliseconds = 1 minute
+
+
+window.addEventListener("beforeunload", function (e) {
+  if (!isRedirecting) {
+    // Display a confirmation message
+    e.preventDefault();
+    var confirmationMessage = "This experiment must be done in one sitting continuously. If you refresh the page or go back, the study will end and you will not be compensated for your time.";
+
+    // Set the confirmation message for modern browsers
+    e.returnValue = confirmationMessage;
+
+    // For older browsers
+    return confirmationMessage;
+  }
+});
