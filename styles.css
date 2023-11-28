@@ -51,7 +51,6 @@
 
   div {
     text-align: center;
-    margin: 20px;
   }
   .button-container {
     margin: 20px;
@@ -131,9 +130,7 @@ h1 {
 .popup {
   display: none;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
   background-color: #fff;
   padding: 20px;
   border: 1px solid #ccc;

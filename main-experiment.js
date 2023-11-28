@@ -12,6 +12,7 @@ const pilotButton = document.getElementById('pilot');
 const xOffset = (TILE_SIZE - spriteSize) / 2;
 const yOffset = (TILE_SIZE - spriteSize) / 2;
 const canvas = document.getElementById("gameCanvas");
+let isRedirecting = false;
 
 const levelFiles = [
   "level1.txt",
@@ -375,6 +376,7 @@ function redirectToSummary() {
   const summaryBtn = document.getElementById("summaryBtn");
 
   summaryBtn.addEventListener("click", function () {
+    isRedirecting = true;
     window.location.href = "summary.html";
   });
 
@@ -604,7 +606,7 @@ function timeCheck() {
   const currentLevelNumber = parseInt(localStorage.getItem('currentLevelNumber'));
   if (currentLevelNumber < 5) return
   if (totalTimePassed()) {
-    showPopup("Thank you for your effort on this puzzle. Please proceed to the next puzzle. Press confirm to start.","nextlevel");
+    showPopup("Thank you for your effort on this puzzle. You will now move on.","nextlevel");
     
   } else if (initialTimePassed()) {
     if (JSON.parse(localStorage.getItem('condition'))[0] == 1) {
@@ -686,6 +688,7 @@ function showPopup(message, type) {
 // redirects participants to the corresponding type of break condition
 function redirectToBreak() {
   participantCondition = JSON.parse(localStorage.getItem('condition'))[0];
+  isRedirecting = true;
   window.location.href =  `break-${participantCondition}.html`;
 }
  
@@ -701,13 +704,15 @@ function removeCondition() {
 
 
 window.addEventListener("beforeunload", function (e) {
-  // Display a confirmation message
-  e.preventDefault();
-  var confirmationMessage = "This experiment must be done in one sitting continuously. If you refresh the page or go back, the study will end and you will not be compensated for your time.";
+  if (!isRedirecting) {
+    // Display a confirmation message
+    e.preventDefault();
+    var confirmationMessage = "This experiment must be done in one sitting continuously. If you refresh the page or go back, the study will end and you will not be compensated for your time.";
 
-  // Set the confirmation message for modern browsers
-  e.returnValue = confirmationMessage;
+    // Set the confirmation message for modern browsers
+    e.returnValue = confirmationMessage;
 
-  // For older browsers
-  return confirmationMessage;
+    // For older browsers
+    return confirmationMessage;
+  }
 });

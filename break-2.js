@@ -2,10 +2,12 @@
 const numberContainer = document.getElementById('number-container');
 const oddButton = document.getElementById('odd-button');
 const evenButton = document.getElementById('even-button');
+const continueButton = document.getElementById('continueButton')
 var correct = 0;
 var incorrect = 0;
 
-showNumber();
+
+continueButton.addEventListener('click', showNumber());
 
 // Function to generate a random number
 function getRandomNumber(min, max) {
@@ -48,9 +50,9 @@ function handleChoice(userChoosesOdd) {
   }, getRandomNumber(2000, 5000));
 }
 
-// Redirect the page after one minute
+// Redirect the page after five minutes
 setTimeout(() => {
 localStorage.setItem('correct',correct);
 localStorage.setItem('incorrect',incorrect);
   window.location.href = 'return.html';
-}, 60000); // 60000 milliseconds = 1 minute
+}, 300000); // 60000 milliseconds = 1 minute

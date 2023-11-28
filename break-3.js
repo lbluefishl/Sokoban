@@ -7,7 +7,7 @@ let loadedVideosCount = 0;
 // Function to check if all videos are loaded
 function checkAllVideosLoaded() {
   loadedVideosCount++;
-  if (loadedVideosCount === videos.length) {
+  if (loadedVideosCount >= 3) {
     // All videos are loaded, introduce a 2-second delay and then show the content
     setTimeout(() => {
       loadingText.style.display = 'none';
@@ -54,7 +54,7 @@ videos.forEach(video => {
     setTimeout(() => {
     localStorage.setItem('scroll', scrollCount)
       window.location.href = 'return.html'; // Replace with your desired URL
-    }, 60000);
+    }, 300000);
 
 
     function shuffleArray(array) {
