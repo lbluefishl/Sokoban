@@ -625,8 +625,8 @@ function showPopup(message, type) {
   overlay.style.display = 'block';
   popup.style.display = 'block';
   popupMessage.innerHTML = message;
+  form.reset();
   document.removeEventListener("keydown", handleKeyDown);
-
 
   if (type === 'control') {
     form.style.display = 'block';
@@ -700,5 +700,14 @@ function removeCondition() {
 
 
 
- 
+window.addEventListener("beforeunload", function (e) {
+  // Display a confirmation message
+  e.preventDefault();
+  var confirmationMessage = "This experiment must be done in one sitting continuously. If you refresh the page or go back, the study will end and you will not be compensated for your time.";
 
+  // Set the confirmation message for modern browsers
+  e.returnValue = confirmationMessage;
+
+  // For older browsers
+  return confirmationMessage;
+});

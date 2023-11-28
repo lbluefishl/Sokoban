@@ -36,9 +36,10 @@ let currentInstructionIndex = 0;
 const attentionCheckForm = document.getElementById("attentionCheckForm");
 const instructionText = document.getElementById("instructionText");
 const continueButton = document.getElementById("continueButton");
+const backButton = document.getElementById('backButton');
 const questions = [
-    { name: "question1", correctAnswer: "true" },
-    { name: "question2", correctAnswer: "true" },
+    { name: "question1", correctAnswer: "false" },
+    { name: "question2", correctAnswer: "false" },
     { name: "question3", correctAnswer: "false" },
     { name: "question4", correctAnswer: "false" }
 ];
@@ -50,10 +51,23 @@ document.addEventListener("DOMContentLoaded", function () {
     function handleContinueClick() {
         currentInstructionIndex++;
         updateInstructionText();
+        if (currentInstructionIndex === 1) backButton.style.display = 'inline';
+        if (currentInstructionIndex === 0) backButton.style.display = 'none';
+
+    }
+
+    function handleBackClick() {
+        // Check if there's a previous instruction to go back to
+    
+            currentInstructionIndex--;
+            updateInstructionText();
+            if (currentInstructionIndex === 1) backButton.style.display = 'inline';
+            if (currentInstructionIndex === 0) backButton.style.display = 'none';
+        
     }
 
     continueButton.addEventListener("click", handleContinueClick);
-
+    backButton.addEventListener("click", handleBackClick);
     // Initialize with the first instruction
     updateInstructionText();
 });
@@ -97,8 +111,10 @@ function updateInstructionText() {
         instructionText.innerHTML = instructions[currentInstructionIndex];
     } else {
         // Show the attention check form
-        continueButton.style.display = "none"
+        continueButton.style.display = "none";
+        backButton.style.display = 'none';
         attentionCheckForm.style.display = "block";
+        
     }
 }
 
@@ -137,13 +153,36 @@ function getplayerId() {
 }
 
 window.onload = function() {
-    // Check if the user is on a mobile device
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
-      // Display the popup
-      document.getElementById('popup').style.display = 'block';
+    var hasTouchScreen = false;
+
+    if ("maxTouchPoints" in navigator) {
+        hasTouchScreen = navigator.maxTouchPoints > 0;
+    } else if ("msMaxTouchPoints" in navigator) {
+        hasTouchScreen = navigator.msMaxTouchPoints > 0;
+    } else {
+        var mQ = window.matchMedia && matchMedia("(pointer:coarse)");
+        if (mQ && mQ.media === "(pointer:coarse)") {
+            hasTouchScreen = !!mQ.matches;
+        } else if ('orientation' in window) {
+            hasTouchScreen = true; // deprecated, but good fallback
+        } else {
+            // Only as a last resort, fall back to user agent sniffing
+            var UA = navigator.userAgent;
+            hasTouchScreen = (
+                /\b(BlackBerry|webOS|iPhone|IEMobile)\b/i.test(UA) ||
+                /\b(Android|Windows Phone|iPad|iPod)\b/i.test(UA)
+            );
+        }
     }
-  };
+
+    if (hasTouchScreen) {
+        document.getElementById('web-popup').style.display = 'block';
+        continueButton.style.display = 'none';
+    }
+};
+
 
 
 
 getplayerId();
+

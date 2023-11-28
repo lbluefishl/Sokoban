@@ -78,15 +78,9 @@
     <h1 style="text-align: center;">End Survey </h1>
     <form id="surveyForm">
         <label for="age">What is your age?</label>
-        <select id="age" name="age" required>
-            <option value="" disabled selected>Select an option</option>
-            <option value="18to24">18-24</option>
-            <option value="25to34">25-34</option>
-            <option value="35to44">35-44</option>
-            <option value="45to54">45-54</option>
-            <option value="55to64">55-64</option>
-            <option value="65plus">65 or older</option>
-        </select>
+        <div class="radio-group"><input type="number" id="age" name="age" required placeholder="Enter your age"></div>
+
+
     
         <label>What is your gender?</label>
         <div class="radio-group">
@@ -135,6 +129,7 @@
             <option value="somewhatFamiliar">Somewhat familiar</option>
             <option value="veryFamiliar">Very familiar</option>
         </select>
+        
     
         <label for="comments">Do you have any comments or feedback for the study? Please describe any technical issues, annoyances, or unique experiences, if any.</label>
         <textarea id="comments" name="comments"></textarea>

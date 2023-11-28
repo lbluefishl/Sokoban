@@ -93,7 +93,18 @@ app.post('/complete-level', async (req, res) => {
 
 
 app.post('/submit-survey', async (req, res) => {
-  const { enjoyment, relaxation, absorption, puzzleWork, mindWander, playerId, levelNumber } = req.body;
+  const { mw1, 
+    mw2, 
+    f1,
+    f2,
+    e1,
+    e2,
+    pw,
+    r1,
+    r2,
+    r3, 
+    playerId, 
+    levelNumber } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -108,18 +119,35 @@ app.post('/submit-survey', async (req, res) => {
       // If a document with the playerId exists, update it with the new survey data
       const result = await collection.updateOne(
         { playerId },
-        { $set: { enjoyment, relaxation, absorption, puzzleWork, mindWander } }
+        {
+          $set: {
+            mw1,
+            mw2,
+            f1,
+            f2,
+            e1,
+            e2,
+            pw,
+            r1,
+            r2,
+            r3
+          }
+        }
       );
       console.log('Survey data updated:', result.modifiedCount);
     } else {
       // If no document with the playerId exists, create a new one with the survey data
       const result = await collection.insertOne({
-        enjoyment,
-        relaxation,
-        absorption,
-        puzzleWork,
-        mindWander,
-        playerId
+        mw1,
+        mw2,
+        f1,
+        f2,
+        e1,
+        e2,
+        pw,
+        r1,
+        r2,
+        r3
       });
       console.log('Survey data inserted:', result.insertedId);
     }

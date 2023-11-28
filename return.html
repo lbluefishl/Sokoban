@@ -8,15 +8,27 @@
 
   <style>
     body {
-      margin: 0;
+      margin: 20px;
     }
     div {
       text-align: center; /* Center the content inside the div */
     }
     form {
-      display: inline-block;
       text-align: left;
-      width: 500px; /* Set a fixed width to prevent elements from moving */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #3d3d3d;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #726f6f;
+      color: white;
     }
     .button {
       background-color: #4CAF50;
@@ -28,77 +40,154 @@
       margin: 20px auto;
       cursor: pointer;
       border-radius: 8px;
-      
     }
     .button-container {
       text-align: center; /* Center-align its contents */
     }
-    label {
-      display: block;
-      margin-top: 15px;
-    }
-    input[type="radio"] {
-      margin-right: 10px;
-    }
-    /* Left-indent the radio options */
-    label input[type="radio"] {
-      margin-left: 20px;
-    }
-    #mediaTaskInput {
-      margin-top: 5px;
-      width: 100%;
-    }
   </style>
-   <script src="/return.js" defer></script>
-
+  <script src="/return.js" defer></script>
 </head>
 <body>
   <div>
-    <h1>Select an option for the following statements.</h1>
+   
     <form id="returnForm">
+
+
+<p style="text-align: center;">Please select the option that best represents your experiences during the break period. </h1>
+<table>
+  <tr>
+    <th></th>
+    <th>Strongly Disagree</th>
+    <th>Disagree</th>
+    <th>Somewhat Disagree</th>
+    <th>Neutral</th>
+    <th>Somewhat Agree</th>
+    <th>Agree</th>
+    <th>Strongly Agree</th>
+  </tr>
+
+        <tr>
+          <td>I found myself distracted by other things in mind.</td>
+          <td><input type="radio" name="mw1" value="1" required></td>
+          <td><input type="radio" name="mw1" value="2"></td>
+          <td><input type="radio" name="mw1" value="3"></td>
+          <td><input type="radio" name="mw1" value="4"></td>
+          <td><input type="radio" name="mw1" value="5"></td>
+          <td><input type="radio" name="mw1" value="6"></td>
+          <td><input type="radio" name="mw1" value="7"></td>
+        </tr>  
+   
+        <tr>
+          <td>My mind wandered.</td>
+          <td><input type="radio" name="mw2" value="1" required></td>
+          <td><input type="radio" name="mw2" value="2"></td>
+          <td><input type="radio" name="mw2" value="3"></td>
+          <td><input type="radio" name="mw2" value="4"></td>
+          <td><input type="radio" name="mw2" value="5"></td>
+          <td><input type="radio" name="mw2" value="6"></td>
+          <td><input type="radio" name="mw2" value="7"></td>
+        </tr>     
+
+        <tr>
+          <td>I was absorbed in what I was doing.</td>
+          <td><input type="radio" name="f1" value="1" required></td>
+          <td><input type="radio" name="f1" value="2"></td>
+          <td><input type="radio" name="f1" value="3"></td>
+          <td><input type="radio" name="f1" value="4"></td>
+          <td><input type="radio" name="f1" value="5"></td>
+          <td><input type="radio" name="f1" value="6"></td>
+          <td><input type="radio" name="f1" value="7"></td>
+        </tr>    
  
-      <label for="relaxation">The break was relaxing.</label>
-      <label><input type="radio" name="relaxation" value="1" required> Strongly Disagree</label>
-      <label><input type="radio" name="relaxation" value="2"> Disagree</label>
-      <label><input type="radio" name="relaxation" value="3"> Neutral</label>
-      <label><input type="radio" name="relaxation" value="4"> Agree</label>
-      <label><input type="radio" name="relaxation" value="5"> Strongly Agree</label>
+        <tr>
+          <td>I got distracted very easily.</td>
+          <td><input type="radio" name="f2" value="7" required></td>
+          <td><input type="radio" name="f2" value="6"></td>
+          <td><input type="radio" name="f2" value="5"></td>
+          <td><input type="radio" name="f2" value="4"></td>
+          <td><input type="radio" name="f2" value="3"></td>
+          <td><input type="radio" name="f2" value="2"></td>
+          <td><input type="radio" name="f2" value="1"></td>
+        </tr> 
 
-      <label for="absorption">The break was enjoyable.</label>
-      <label><input type="radio" name="enjoyment" value="1" required> Strongly Disagree</label>
-      <label><input type="radio" name="enjoyment" value="2"> Disagree</label>
-      <label><input type="radio" name="enjoyment" value="3"> Neutral</label>
-      <label><input type="radio" name="enjoyment" value="4"> Agree</label>
-      <label><input type="radio" name="enjoyment" value="5"> Strongly Agree</label>
-     
+ 
+      <tr>        
+        <td>I enjoyed the break activity.</td>
+        <td><input type="radio" name="e1" value="1" required></td>
+        <td><input type="radio" name="e1" value="2"></td>
+        <td><input type="radio" name="e1" value="3"></td>
+        <td><input type="radio" name="e1" value="4"></td>
+        <td><input type="radio" name="e1" value="5"></td>
+        <td><input type="radio" name="e1" value="6"></td>
+        <td><input type="radio" name="e1" value="7"></td>
+      </tr>
 
-      <label for="mindWander">My mind wandered during the break.</label>
-      <label><input type="radio" name="mindWander" value="1" required> Strongly Disagree</label>
-      <label><input type="radio" name="mindWander" value="2"> Disagree</label>
-      <label><input type="radio" name="mindWander" value="3"> Neutral</label>
-      <label><input type="radio" name="mindWander" value="4"> Agree</label>
-      <label><input type="radio" name="mindWander" value="5"> Strongly Agree</label>
+    <tr>        
+      <td>I was bored.</td>
+      <td><input type="radio" name="e2" value="7" required></td>
+      <td><input type="radio" name="e2" value="6"></td>
+      <td><input type="radio" name="e2" value="5"></td>
+      <td><input type="radio" name="e2" value="4"></td>
+      <td><input type="radio" name="e2" value="3"></td>
+      <td><input type="radio" name="e2" value="2"></td>
+      <td><input type="radio" name="e2" value="1"></td>
+    </tr>
 
-      <label for="puzzleWork">I thought about the puzzle during the break.</label>
-      <label><input type="radio" name="puzzleWork" value="1" required> Strongly Disagree</label>
-      <label><input type="radio" name="puzzleWork" value="2"> Disagree</label>
-      <label><input type="radio" name="puzzleWork" value="3"> Neutral</label>
-      <label><input type="radio" name="puzzleWork" value="4"> Agree</label>
-      <label><input type="radio" name="puzzleWork" value="5"> Strongly Agree</label>
 
-      <label for="absorption">I was absorbed in what I was doing during the break.</label>
-      <label><input type="radio" name="absorption" value="1" required> Strongly Disagree</label>
-      <label><input type="radio" name="absorption" value="2"> Disagree</label>
-      <label><input type="radio" name="absorption" value="3"> Neutral</label>
-      <label><input type="radio" name="absorption" value="4"> Agree</label>
-      <label><input type="radio" name="absorption" value="5"> Strongly Agree</label>
+
+<tr>        
+  <td>I thought about the Sokoban puzzle.</td>
+  <td><input type="radio" name="pw" value="1" required></td>
+  <td><input type="radio" name="pw" value="2"></td>
+  <td><input type="radio" name="pw" value="3"></td>
+  <td><input type="radio" name="pw" value="4"></td>
+  <td><input type="radio" name="pw" value="5"></td>
+  <td><input type="radio" name="pw" value="6"></td>
+  <td><input type="radio" name="pw" value="7"></td>
+</tr>
+      </table>
+      <p style="text-align: center;">Please select the option that most resembles how you currently feel.</h1>
+      <table>
+        <tr>
+          <th></th>
+          <th>Very Low</th>
+          <th>Low</th>
+          <th>Average</th>
+          <th>High</th>
+          <th>Very High</th>
+        </tr>
+
+        <tr>
+          <td>What is your current level of energy?</td>
+          <td><input type="radio" name="r1" value="1" required></td>
+          <td><input type="radio" name="r1" value="2"></td>
+          <td><input type="radio" name="r1" value="3"></td>
+          <td><input type="radio" name="r1" value="4"></td>
+          <td><input type="radio" name="r1" value="5"></td>
+        </tr>
+        <tr>
+          <td>What is your current level of motivation?</td>
+          <td><input type="radio" name="r2" value="1" required></td>
+          <td><input type="radio" name="r2" value="2"></td>
+          <td><input type="radio" name="r2" value="3"></td>
+          <td><input type="radio" name="r2" value="4"></td>
+          <td><input type="radio" name="r2" value="5"></td>
+        </tr>
+        <tr>
+          <td>What is your current level of concentration?</td>
+          <td><input type="radio" name="r3" value="1" required></td>
+          <td><input type="radio" name="r3" value="2"></td>
+          <td><input type="radio" name="r3" value="3"></td>
+          <td><input type="radio" name="r3" value="4"></td>
+          <td><input type="radio" name="r3" value="5"></td>
+        </tr>
+</table>
+
 
       <div class="button-container">
         <button class="button" type="submit">Submit</button>
       </div>
     </form>
   </div>
-
-
 </body>
 </html>
