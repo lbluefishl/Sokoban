@@ -560,8 +560,8 @@ function initialTimePassed() {
 
     return false; 
   }
- 
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 30000;
+ // 2 minutes 
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 120000;
 }
 
 function totalTimePassed() {
@@ -569,7 +569,8 @@ function totalTimePassed() {
   if (timeAfterBreak === null || timeAfterBreak === undefined) {
     return false; 
   }
-  return new Date() - new Date(timeAfterBreak) > 60000;
+  // 2 minutes
+  return new Date() - new Date(timeAfterBreak) > 120000;
 }
 
 function generateNewLevel() {
@@ -716,3 +717,15 @@ window.addEventListener("beforeunload", function (e) {
     return confirmationMessage;
   }
 });
+
+// enforce 3 minute timer if user working
+setTimeout(timeCheck, 180000);
+
+// enforce 10 minute timer if user unable to complete pratice trials
+setTimeout(exitStudy,600000);
+
+function exitStudy() {
+  alert('Thank you for your participation in this study. Please complete the summary form.')
+  isRedirecting = true;
+  window.location.href = "summary.html";
+}
