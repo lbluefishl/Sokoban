@@ -36,7 +36,7 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -50,7 +50,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -77,6 +77,9 @@ app.post('/complete-level', async (req, res) => {
         scrollCount,
         correctValue,
         incorrectValue,
+        prolificPID,
+        studyID,
+        sessionID
       });
       console.log('Document inserted:', result.insertedId);
     } catch (err) {
@@ -160,7 +163,7 @@ app.post('/submit-survey', async (req, res) => {
 });
 
 app.post('/submit-summary', async (req, res) => {
-  const { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person } = req.body;
+  const { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours } = req.body;
 
   // Access the MongoDB collection based on the level number
   const db = client.db('Sokoban1'); // Replace 'Sokoban' with your actual database name
@@ -174,7 +177,7 @@ app.post('/submit-summary', async (req, res) => {
       // If a document with the playerId exists, update it with the new survey data
       const result = await collection.updateOne(
         { playerId },
-        { $set: { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person } }
+        { $set: { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours } }
       );
       console.log('Survey data updated:', result.modifiedCount);
     } else {
@@ -189,7 +192,8 @@ app.post('/submit-summary', async (req, res) => {
         digitalDeviceHours,
         comments,
         playerId,
-        person
+        person,
+        shortFormVideoHours
       });
       console.log('Survey data inserted:', result.insertedId);
     }

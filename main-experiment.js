@@ -12,6 +12,9 @@ const pilotButton = document.getElementById('pilot');
 const xOffset = (TILE_SIZE - spriteSize) / 2;
 const yOffset = (TILE_SIZE - spriteSize) / 2;
 const canvas = document.getElementById("gameCanvas");
+const prolificPID = localStorage.getItem('prolificPID');
+const studyID = localStorage.getItem('studyID');
+const sessionID = localStorage.getItem('sessionID');
 let isRedirecting = false;
 
 const levelFiles = [
@@ -447,6 +450,9 @@ function recordUserCompletion() {
     stuckValue: localStorage.getItem('stuck'),
     correctValue: localStorage.getItem('correct'),
     incorrectValue: localStorage.getItem('incorrect'),
+     prolificPID: localStorage.getItem('prolificPID'),
+     studyID: localStorage.getItem('studyID'),
+     sessionID: localStorage.getItem('sessionID'),
     condition: JSON.parse(localStorage.getItem('condition'))[0],
     beforeBreakMovesets: JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]'),
     afterBreakMovesets: JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]')
