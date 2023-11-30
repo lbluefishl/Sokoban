@@ -17,40 +17,42 @@
         <p id="instructionText">Welcome to the experiment. Please read the following instructions:</p>
         <div class="content">
   
-            <form id="attentionCheckForm" style="display: none;">
+            <form id="attentionCheckForm" style="display: none; text-align: center;">
     
-                Participants must stay on the computer during breaks.
-                <label>
-                     <input type="radio" name="question1" value="true" required> True
-                </label>
-                <label>
-                    <input type="radio" name="question1" value="false"> False
-                </label>
-                <br><br>
-                You can restart a puzzle and undo moves as many times as you want. 
-                <label>
-                    <input type="radio" name="question2" value="true" required> True
-                </label>
-                <label>
-                    <input type="radio" name="question2" value="false"> False
-                </label>
-                <br><br>
-                Participants are paid per puzzle completed.
-                <label>
-                    <input type="radio" name="question3" value="true" required> True
-                </label>
-                <label>
-                    <input type="radio" name="question3" value="false"> False
-                </label>
-                <br><br>
-                You are free to take your own breaks when you feel stuck on a problem. 
-                <label>
-                     <input type="radio" name="question4" value="true" required> True
-                </label>
-                <label>
-                    <input type="radio" name="question4" value="false"> False
-                </label>
-                <br><br>
+
+    
+
+                <table style="margin: auto;">
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>True</th>
+                            <th>False</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Participants must stay on the computer during breaks.</td>
+                            <td><input type="radio" name="question1" value="true" required> </td>
+                            <td><input type="radio" name="question1" value="false"> </td>
+                        </tr>
+                        <tr>
+                            <td>You can restart a puzzle and undo moves as many times as you want.</td>
+                            <td><input type="radio" name="question2" value="true" required> </td>
+                            <td><input type="radio" name="question2" value="false"> </td>
+                        </tr>
+                        <tr>
+                            <td>Participants are paid per puzzle completed.</td>
+                            <td><input type="radio" name="question3" value="true" required> </td>
+                            <td><input type="radio" name="question3" value="false"> </td>
+                        </tr>
+                        <tr>
+                            <td>You are free to take your own breaks when you feel stuck on a problem.</td>
+                            <td><input type="radio" name="question4" value="true" required> </td>
+                            <td><input type="radio" name="question4" value="false"> </td>
+                        </tr>
+                    </tbody>
+                </table>
             
                 <button type="submit">Submit</button>
             </form>

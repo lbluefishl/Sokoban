@@ -147,3 +147,17 @@ h1 {
 }
 
 
+table {
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  border: 1px solid #3d3d3d;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  background-color: #726f6f;
+  color: white;
+}
+

@@ -448,6 +448,9 @@ function recordUserCompletion() {
     difficultyValue: localStorage.getItem('difficulty'),
     scrollCount: localStorage.getItem('scroll'),
     stuckValue: localStorage.getItem('stuck'),
+    r1b: localStorage.getItem('r1b'),
+    r2b: localStorage.getItem('r2b'),
+    r3b: localStorage.getItem('r3b'),
     correctValue: localStorage.getItem('correct'),
     incorrectValue: localStorage.getItem('incorrect'),
      prolificPID: localStorage.getItem('prolificPID'),
@@ -567,7 +570,7 @@ function initialTimePassed() {
     return false; 
   }
  // 2 minutes 
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 120000;
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 1200;
 }
 
 function totalTimePassed() {
@@ -617,7 +620,7 @@ function timeCheck() {
     
   } else if (initialTimePassed()) {
     if (JSON.parse(localStorage.getItem('condition'))[0] == 1) {
-      showPopup("Please respond to the following statements. You will then continue working on the puzzle.","control");
+      showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then continue working on the puzzle.","control");
       return
     }
     showPopup("Please respond to the following statements. Afterwards, you will take a short break prior to resuming work on the puzzle. ","break");
@@ -637,13 +640,16 @@ function showPopup(message, type) {
   form.reset();
   document.removeEventListener("keydown", handleKeyDown);
 
+
   if (type === 'control') {
     form.style.display = 'block';
+    recordTimeBeforeBreak();
     confirmButton.addEventListener('click', handleContinueClick)
   }
 
   if (type === 'break') {
     form.style.display = 'block';
+    recordTimeBeforeBreak();
     confirmButton.addEventListener('click', handleBreakClick);
   }
 
@@ -655,8 +661,10 @@ function showPopup(message, type) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
+    localStorage.setItem('r1b', r1 = document.querySelector('input[name="r1"]:checked').value);
+    localStorage.setItem('r2b', r1 = document.querySelector('input[name="r2"]:checked').value);
+    localStorage.setItem('r3b', r1 = document.querySelector('input[name="r3"]:checked').value);
     removePopup();
-    recordTimeBeforeBreak();
     recordTimeAfterBreak();
   }
 
@@ -664,13 +672,14 @@ function showPopup(message, type) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
+    localStorage.setItem('r1b', r1 = document.querySelector('input[name="r1"]:checked').value);
+    localStorage.setItem('r2b', r1 = document.querySelector('input[name="r2"]:checked').value);
+    localStorage.setItem('r3b', r1 = document.querySelector('input[name="r3"]:checked').value);
     removePopup();
-
     const gameState = {
       currentLevel: currentLevel,
     };
     localStorage.setItem('gameState', JSON.stringify(gameState));
-    recordTimeBeforeBreak();
     redirectToBreak();
   }
 
@@ -731,7 +740,9 @@ setTimeout(timeCheck, 180000);
 setTimeout(exitStudy,600000);
 
 function exitStudy() {
-  alert('Thank you for your participation in this study. Please complete the summary form.')
-  isRedirecting = true;
-  window.location.href = "summary.html";
+  if (JSON.parse(localStorage.getItem('condition')).length > 3) {
+    alert('Thank you for your participation in this study. Please complete the summary form.')
+    isRedirecting = true;
+    window.location.href = "summary.html";
+  }
 }

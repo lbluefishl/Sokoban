@@ -205,6 +205,9 @@
         const prolificPID = localStorage.getItem('prolificPID');
         const studyID = localStorage.getItem('studyID');
         const sessionID = localStorage.getItem('sessionID');
+        const trialOrder = JSON.parse(localStorage.getItem('trialOrder'));
+        const conditionOrder = JSON.parse(localStorage.getItem('conditionOrder'));
+
         var isRedirecting = false;
 
         // Create the data object to be sent to the server
@@ -223,6 +226,8 @@
           prolificPID: prolificPID,
           studyID: studyID,
           sessionID: sessionID,
+          conditionOrder: conditionOrder,
+          trialOrder: trialOrder
 
         };
 
