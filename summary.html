@@ -187,6 +187,7 @@
     <script>
       const form = document.getElementById('surveyForm');
 
+
       form.addEventListener("submit", function (event) {
         event.preventDefault();
 
@@ -201,6 +202,9 @@
         const digitalDeviceHours = document.querySelector('select[name="digitalDeviceHours"]').value;
         const comments = document.querySelector('textarea[name="comments"]').value;
         const person = document.querySelector('textarea[name="person"]').value;
+        const prolificPID = localStorage.getItem('prolificPID');
+        const studyID = localStorage.getItem('studyID');
+        const sessionID = localStorage.getItem('sessionID');
         var isRedirecting = false;
 
         // Create the data object to be sent to the server
@@ -215,7 +219,10 @@
           digitalDeviceHours: digitalDeviceHours,
           comments: comments,
           playerId: localStorage.getItem('playerId'),
-          person: person
+          person: person,
+          prolificPID: prolificPID,
+          studyID: studyID,
+          sessionID: sessionID,
 
         };
 

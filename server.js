@@ -163,7 +163,7 @@ app.post('/submit-survey', async (req, res) => {
 });
 
 app.post('/submit-summary', async (req, res) => {
-  const { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours } = req.body;
+  const { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours, prolificPID, sessionID, studyID } = req.body;
 
   // Access the MongoDB collection based on the level number
   const db = client.db('Sokoban1'); // Replace 'Sokoban' with your actual database name
@@ -177,7 +177,7 @@ app.post('/submit-summary', async (req, res) => {
       // If a document with the playerId exists, update it with the new survey data
       const result = await collection.updateOne(
         { playerId },
-        { $set: { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours } }
+        { $set: { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours, prolificPID, sessionID, studyID } }
       );
       console.log('Survey data updated:', result.modifiedCount);
     } else {
@@ -193,7 +193,10 @@ app.post('/submit-summary', async (req, res) => {
         comments,
         playerId,
         person,
-        shortFormVideoHours
+        shortFormVideoHours,
+        prolificPID,
+        sessionID,
+        studyID
       });
       console.log('Survey data inserted:', result.insertedId);
     }
