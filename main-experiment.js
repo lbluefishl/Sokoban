@@ -579,7 +579,7 @@ function totalTimePassed() {
     return false; 
   }
   // 2 minutes
-  return new Date() - new Date(timeAfterBreak) > 120000;
+  return new Date() - new Date(timeAfterBreak) > 1200;
 }
 
 function generateNewLevel() {
@@ -634,6 +634,7 @@ function showPopup(message, type) {
   const popupMessage = document.getElementById('popup-message');
   const confirmButton = document.getElementById('confirm-button');
   const form = document.getElementById('difficulty-form');
+  const continueButton = document.getElementById('continue-button');
   overlay.style.display = 'block';
   popup.style.display = 'block';
   popupMessage.innerHTML = message;
@@ -654,16 +655,19 @@ function showPopup(message, type) {
   }
 
   if (type === 'nextlevel') {
-    confirmButton.addEventListener('click', handleNextLevelClick);
+    continueButton.style.display = 'inline';
+    continueButton.addEventListener('click', handleNextLevelClick);
   }
 
   function handleContinueClick(event) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
-    localStorage.setItem('r1b', r1 = document.querySelector('input[name="r1"]:checked').value);
-    localStorage.setItem('r2b', r1 = document.querySelector('input[name="r2"]:checked').value);
-    localStorage.setItem('r3b', r1 = document.querySelector('input[name="r3"]:checked').value);
+    localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
+    localStorage.setItem('r2b', document.querySelector('input[name="r2b"]:checked').value);
+    localStorage.setItem('r3b', document.querySelector
+    ('input[name="r3b"]:checked').value);
+    
     removePopup();
     recordTimeAfterBreak();
   }
@@ -672,9 +676,9 @@ function showPopup(message, type) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
-    localStorage.setItem('r1b', r1 = document.querySelector('input[name="r1"]:checked').value);
-    localStorage.setItem('r2b', r1 = document.querySelector('input[name="r2"]:checked').value);
-    localStorage.setItem('r3b', r1 = document.querySelector('input[name="r3"]:checked').value);
+    localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
+    localStorage.setItem('r2b',  document.querySelector('input[name="r2b"]:checked').value);
+    localStorage.setItem('r3b',  document.querySelector('input[name="r3b"]:checked').value);
     removePopup();
     const gameState = {
       currentLevel: currentLevel,
@@ -696,6 +700,7 @@ function showPopup(message, type) {
     form.style.display = 'none';
     overlay.style.display = 'none';
     popup.style.display = 'none';
+    continueButton.style.display = 'none';
     document.addEventListener("keydown", handleKeyDown);
   }
 }

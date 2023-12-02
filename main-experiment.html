@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pilot</title>
+  <title>Main Experiment</title>
   <link rel="stylesheet" type="text/css" href="/styles.css">
   <script src="/main-experiment.js" defer></script>
   <link rel="icon" href="images/shortcut.png">
@@ -20,113 +20,94 @@
     <span id="loadingText">Loading...</span>
   </div>
   <div style="text-align: left; margin-left: 50px;">
-
     <h1>Instructions</h1>
     <p>Move all of the boxes into the shaded blue squares to win. </p>
     <p>Use the arrow keys on your keyboard to move.</p>
     <p>Press the <b>(u)</b> key to undo a move and the <b>(r)</b> key to restart the level.</p>
-
     <p>Current Level: <span id="currentLevel"></span></p>
-
-
-
-
   </div>
-
-
-
-
   <div id="overlay"></div>
-<div id="popup" class="popup">
-  <div class="popup-content">
-    <div id="popup-message">
- 
-    </div>
-    <form id="difficulty-form" style="display: none;">
-        
-      <div class="form-group">
-      </table>
-   
-      <table style="margin:auto; margin-bottom: 20px; ">
-        <tr>
-          <th></th>
-          <th>Very Low</th>
-          <th>Low</th>
-          <th>Average</th>
-          <th>High</th>
-          <th>Very High</th>
-        </tr>
-
-        <tr>
-          <td>What is your current level of energy?</td>
-          <td><input type="radio" name="r1" value="1" required></td>
-          <td><input type="radio" name="r1" value="2"></td>
-          <td><input type="radio" name="r1" value="3"></td>
-          <td><input type="radio" name="r1" value="4"></td>
-          <td><input type="radio" name="r1" value="5"></td>
-        </tr>
-        <tr>
-          <td>What is your current level of motivation?</td>
-          <td><input type="radio" name="r2" value="1" required></td>
-          <td><input type="radio" name="r2" value="2"></td>
-          <td><input type="radio" name="r2" value="3"></td>
-          <td><input type="radio" name="r2" value="4"></td>
-          <td><input type="radio" name="r2" value="5"></td>
-        </tr>
-        <tr>
-          <td>What is your current level of concentration?</td>
-          <td><input type="radio" name="r3" value="1" required></td>
-          <td><input type="radio" name="r3" value="2"></td>
-          <td><input type="radio" name="r3" value="3"></td>
-          <td><input type="radio" name="r3" value="4"></td>
-          <td><input type="radio" name="r3" value="5"></td>
-        </tr>
-</table>
-<table>
-  <tr>
-    <th></th>
-    <th>Strongly Disagree</th>
-    <th>Disagree</th>
-    <th>Somewhat Disagree</th>
-    <th>Neutral</th>
-    <th>Somewhat Agree</th>
-    <th>Agree</th>
-    <th>Strongly Agree</th>
-  </tr>
-
-        <tr>
-          <td>The current puzzle is difficult.</td>
-          <td><input type="radio" name="difficulty-puzzle" value="1" required></td>
-          <td><input type="radio" name="difficulty-puzzle" value="2"></td>
-          <td><input type="radio" name="difficulty-puzzle" value="3"></td>
-          <td><input type="radio" name="difficulty-puzzle" value="4"></td>
-          <td><input type="radio" name="difficulty-puzzle" value="5"></td>
-          <td><input type="radio" name="difficulty-puzzle" value="6"></td>
-          <td><input type="radio" name="difficulty-puzzle" value="7"></td>
-        </tr>  
-        <tr>
-          <td>I feel stuck on this puzzle.</td>
-          <td><input type="radio" name="stuck-feeling" value="1" required></td>
-          <td><input type="radio" name="stuck-feeling" value="2"></td>
-          <td><input type="radio" name="stuck-feeling" value="3"></td>
-          <td><input type="radio" name="stuck-feeling" value="4"></td>
-          <td><input type="radio" name="stuck-feeling" value="5"></td>
-          <td><input type="radio" name="stuck-feeling" value="6"></td>
-          <td><input type="radio" name="stuck-feeling" value="7"></td>
-        </tr>  
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <div id="popup-message">
+      </div>
+      <form id="difficulty-form" style="display: none;">
+          <table style="margin:auto; margin-bottom: 20px; ">
+            <tr>
+              <th></th>
+              <th>Very Low</th>
+              <th>Low</th>
+              <th>Average</th>
+              <th>High</th>
+              <th>Very High</th>
+            </tr>
+            <tr>
+              <td>What is your current level of energy?</td>
+              <td><input type="radio" name="r1b" value="1" required></td>
+              <td><input type="radio" name="r1b" value="2"></td>
+              <td><input type="radio" name="r1b" value="3"></td>
+              <td><input type="radio" name="r1b" value="4"></td>
+              <td><input type="radio" name="r1b" value="5"></td>
+            </tr>
+            <tr>
+              <td>What is your current level of motivation?</td>
+              <td><input type="radio" name="r2b" value="1" required></td>
+              <td><input type="radio" name="r2b" value="2"></td>
+              <td><input type="radio" name="r2b" value="3"></td>
+              <td><input type="radio" name="r2b" value="4"></td>
+              <td><input type="radio" name="r2b" value="5"></td>
+            </tr>
+            <tr>
+              <td>What is your current level of concentration?</td>
+              <td><input type="radio" name="r3b" value="1" required></td>
+              <td><input type="radio" name="r3b" value="2"></td>
+              <td><input type="radio" name="r3b" value="3"></td>
+              <td><input type="radio" name="r3b" value="4"></td>
+              <td><input type="radio" name="r3b" value="5"></td>
+            </tr>
           </table>
+          <table>
+            <tr>
+              <th></th>
+              <th>Strongly Disagree</th>
+              <th>Disagree</th>
+              <th>Somewhat Disagree</th>
+              <th>Neutral</th>
+              <th>Somewhat Agree</th>
+              <th>Agree</th>
+              <th>Strongly Agree</th>
+            </tr>
 
-      
-
-
-
-    </form>
-    <button type="submit" id="confirm-button">Confirm</button>
+            <tr>
+              <td>The current puzzle is difficult.</td>
+              <td><input type="radio" name="difficulty-puzzle" value="1" required></td>
+              <td><input type="radio" name="difficulty-puzzle" value="2"></td>
+              <td><input type="radio" name="difficulty-puzzle" value="3"></td>
+              <td><input type="radio" name="difficulty-puzzle" value="4"></td>
+              <td><input type="radio" name="difficulty-puzzle" value="5"></td>
+              <td><input type="radio" name="difficulty-puzzle" value="6"></td>
+              <td><input type="radio" name="difficulty-puzzle" value="7"></td>
+            </tr>
+            <tr>
+              <td>I feel stuck on this puzzle.</td>
+              <td><input type="radio" name="stuck-feeling" value="1" required></td>
+              <td><input type="radio" name="stuck-feeling" value="2"></td>
+              <td><input type="radio" name="stuck-feeling" value="3"></td>
+              <td><input type="radio" name="stuck-feeling" value="4"></td>
+              <td><input type="radio" name="stuck-feeling" value="5"></td>
+              <td><input type="radio" name="stuck-feeling" value="6"></td>
+              <td><input type="radio" name="stuck-feeling" value="7"></td>
+            </tr>
+          </table>
+          <div class="button-container">
+            <button class='button' type="submit" id="confirm-button">Submit</button>
+          </div>
+      </form>
+    </div>
+    <div class="button-container" style="text-align: center;">
+      <button class="button" id="continue-button" style="display: none;">Continue</button>
+    </div>
   </div>
-</div>
-
-
-
 
   <div id="customModal" class="modal">
     <div class="modal-content">
