@@ -613,10 +613,7 @@ function pushMovesetsToDatabase(playerId, levelNumber) {
 
 
 function clearLocalStorageExceptPlayerId() {
- // clears local storage except for playerID and condition so that it is kept for further trials; condition array is reduced until it is empty so that all participants participate in all conditions
-  const playerId = localStorage.getItem('playerId'); 
-  const playerCondition = JSON.parse(localStorage.getItem('condition'));
+
   localStorage.clear(); 
-  localStorage.setItem('playerId', playerId); 
-  localStorage.setItem('condition', playerCondition);
+
 }

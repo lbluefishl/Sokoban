@@ -143,7 +143,7 @@ function loadAndRenderLevel(levelFile) {
             playerX = playerStartPosition.x;
             playerY = playerStartPosition.y;
             gameStateHistory = [];
-        skipButton.style.display = 'none'
+   
             renderLevel(levelArray);
         })
         .catch(error => {
@@ -156,8 +156,8 @@ function renderLevel(levelArray) {
     const ctx = canvas.getContext("2d");
 
     // Set the canvas size based on the level data dimensions
-    canvas.width = levelArray[0].length * TILE_SIZE;
-    canvas.height = levelArray.length * TILE_SIZE;
+  canvas.width = 18 * TILE_SIZE;
+  canvas.height = 12 * TILE_SIZE;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -501,13 +501,16 @@ function showLevel() {
 
 
   function timePassed() {
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 300000;
+
+    return false
+  // return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 300000;
 }
 
 function showSkip() {
-    if(new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 600000) {
-        skipButton.style.display = 'block'
-    }
+
+    
+   // if(new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 300000) skipButton.style.display = 'block'
+    
 
 }
 

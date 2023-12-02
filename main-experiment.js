@@ -665,9 +665,7 @@ function showPopup(message, type) {
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
     localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
     localStorage.setItem('r2b', document.querySelector('input[name="r2b"]:checked').value);
-    localStorage.setItem('r3b', document.querySelector
-    ('input[name="r3b"]:checked').value);
-    
+    localStorage.setItem('r3b', document.querySelector('input[name="r3b"]:checked').value);
     removePopup();
     recordTimeAfterBreak();
   }
