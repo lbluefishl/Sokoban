@@ -550,10 +550,16 @@ function clearLocalStorageExceptPlayerId() {
    const playerId = localStorage.getItem('playerId'); 
    const playerCondition = JSON.parse(localStorage.getItem('condition'));
    const playerTrial = JSON.parse(localStorage.getItem('trial'));
+   const prolificPID = localStorage.getItem('prolificPID');
+   const sessionID = localStorage.getItem('sessionID');
+   const studyID = localStorage.getItem('studyID');
    localStorage.clear(); 
    localStorage.setItem('playerId', playerId); 
    localStorage.setItem('condition', JSON.stringify(playerCondition));
    localStorage.setItem('trial', JSON.stringify(playerTrial));
+   localStorage.setItem('prolificPID', prolificPID);
+   localStorage.setItem('sessionID', sessionID);
+   localStorage.setItem('studyID', studyID);
  }
  
 
