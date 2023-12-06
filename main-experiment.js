@@ -609,11 +609,13 @@ function determineNextLevel() {
 }
 
 function skipLevel() {
-  determineNextLevel();
   localStorage.setItem('completedLevel', "0");
+  recordTimeAtWin();
+  saveMoveset();
   recordUserCompletion();
-  clearLocalStorageExceptPlayerId();
   removeCondition();
+  determineNextLevel();
+  clearLocalStorageExceptPlayerId();
   generateNewLevel();
 }
 
