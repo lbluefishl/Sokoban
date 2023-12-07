@@ -36,7 +36,7 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, confidence_before } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -50,7 +50,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, confidence_before } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -82,7 +82,8 @@ app.post('/complete-level', async (req, res) => {
         incorrectValue,
         prolificPID,
         studyID,
-        sessionID
+        sessionID,
+        confidence_before
       });
       console.log('Document inserted:', result.insertedId);
     } catch (err) {
@@ -110,6 +111,7 @@ app.post('/submit-survey', async (req, res) => {
     r2,
     r3, 
     playerId, 
+    confidence_after,
     levelNumber } = req.body;
 
   // Access the MongoDB collection based on the level number
@@ -136,7 +138,8 @@ app.post('/submit-survey', async (req, res) => {
             pw,
             r1,
             r2,
-            r3
+            r3,
+            confidence_after
           }
         }
       );
@@ -154,7 +157,8 @@ app.post('/submit-survey', async (req, res) => {
         pw,
         r1,
         r2,
-        r3
+        r3,
+        confidence_after
       });
       console.log('Survey data inserted:', result.insertedId);
     }
@@ -166,7 +170,7 @@ app.post('/submit-survey', async (req, res) => {
 });
 
 app.post('/submit-summary', async (req, res) => {
-  const { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, conditionOrder } = req.body;
+  const { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, conditionOrder } = req.body;
 
   // Access the MongoDB collection based on the level number
   const db = client.db('Sokoban2'); // Replace 'Sokoban' with your actual database name
@@ -180,14 +184,14 @@ app.post('/submit-summary', async (req, res) => {
       // If a document with the playerId exists, update it with the new survey data
       const result = await collection.updateOne(
         { playerId },
-        { $set: { age, gender, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, conditionOrder } }
+        { $set: { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, conditionOrder } }
       );
       console.log('Survey data updated:', result.modifiedCount);
     } else {
       // If no document with the playerId exists, create a new one with the survey data
       const result = await collection.insertOne({
         age,
-        gender,
+        sex,
         handedness,
         videoGameHours,
         smartphoneHours,

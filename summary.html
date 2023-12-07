@@ -87,18 +87,14 @@
 
 
 
-      <label for="gender">What best describes your gender?</label>
-      <select id="gender" name="gender" required>
-        <option value="" selected disabled hidden></option>
-          <option value="man">Man</option>
-          <option value="transMan">Transgender Man</option>
-          <option value="transWoman">Transgender Woman</option>
-          <option value="woman">Woman</option>
-          <option value="genderNonconforming">Gender Nonconforming</option>
-          <option value="intersex">Intersex</option>
-          <option value="other">Other</option>
-          <option value="noAnswer">Prefer not to answer</option>
-      </select>
+      <label for="sex">What sex were you assigned at birth?</label>
+        <div class="radio-group">
+          <input type="radio" name="sex" value="0" required>Female</option>
+          <input type="radio" name="sex" value="1">Male</option>
+          <input type="radio" name="sex" value="2">Other</option>
+        </div>
+
+
       
 
       <label for="handedness">Which hand do you normally write with?</label>
@@ -112,7 +108,7 @@
        <h3> On a typical day, how often do you...?</h3>
       <table>
         <tr>
-            <td><label for="digitalDeviceHours">Use digital devices (smartphone, tablet, computer) for any purpose:</label></td>
+            <td><label for="digitalDeviceHours">Use digital devices (smartphone, tablet, computer) for any purpose</label></td>
             <td>
                 <select name="digitalDeviceHours" required>
                     <option value="" disabled selected>Select an option</option>
@@ -124,7 +120,7 @@
             </td>
         </tr>
         <tr>
-          <td><label for="smartphoneHours">Go on your smartphone for any purpose:</label></td>
+          <td><label for="smartphoneHours">Go on your smartphone for any purpose</label></td>
           <td>
               <select name="smartphoneHours" required>
                   <option value="" disabled selected>Select an option</option>
@@ -136,7 +132,7 @@
           </td>
       </tr>
         <tr>
-            <td><label for="videoGameHours">Play video games:</label></td>
+            <td><label for="videoGameHours">Play video games</label></td>
             <td>
                 <select name="videoGameHours" required>
                     <option value="" disabled selected>Select an option</option>
@@ -148,7 +144,7 @@
             </td>
         </tr>
         <tr>
-            <td><label for="shortFormVideoHours">Watch short form videos (TikTok, YouTube Shorts, Instagram Reels):</label></td>
+            <td><label for="shortFormVideoHours">Watch short form videos (TikTok, YouTube Shorts, Instagram Reels)</label></td>
             <td>
                 <select name="shortFormVideoHours" required>
                     <option value="" disabled selected>Select an option</option>
@@ -196,7 +192,7 @@
 
         // Get the form values
         const age = document.querySelector('input[name="age"]').value;
-        const gender = document.querySelector('select[name="gender"]').value;
+        const sex = document.querySelector('input[name="sex"]:checked').value;
         const handedness = document.querySelector('input[name="handedness"]:checked').value;
         const shortFormVideoHours = document.querySelector('select[name="shortFormVideoHours"]').value;
         const videoGameHours = document.querySelector('select[name="videoGameHours"]').value;
@@ -216,7 +212,7 @@
         // Create the data object to be sent to the server
         const data = {
           age: age,
-          gender: gender,
+          sex: sex,
           handedness: handedness,
           videoGameHours: videoGameHours,
           smartphoneHours: smartphoneHours,
