@@ -64,7 +64,7 @@ localStorage.setItem('correct',correct);
 localStorage.setItem('incorrect',incorrect);
 isRedirecting = true;
   window.location.href = 'return.html';
-}, 3000); // 60000 milliseconds = 1 minute
+}, 300000); // 60000 milliseconds = 1 minute
 
 
 window.addEventListener("beforeunload", function (e) {
