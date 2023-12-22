@@ -577,7 +577,7 @@ function initialTimePassed() {
     return false; 
   }
  // 2 minutes 
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 1200;
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 120000;
 }
 
 function totalTimePassed() {
@@ -586,7 +586,7 @@ function totalTimePassed() {
     return false; 
   }
   // 2 minutes
-  return new Date() - new Date(timeAfterBreak) > 1200;
+  return new Date() - new Date(timeAfterBreak) > 120000;
 }
 
 function generateNewLevel() {
