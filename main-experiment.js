@@ -16,6 +16,7 @@ const prolificPID = localStorage.getItem('prolificPID');
 const studyID = localStorage.getItem('studyID');
 const sessionID = localStorage.getItem('sessionID');
 let isRedirecting = false;
+let timer;
 
 const levelFiles = [
   "level1.txt",
@@ -577,7 +578,7 @@ function initialTimePassed() {
     return false; 
   }
  // 2 minutes 
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 120000;
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 1200;
 }
 
 function totalTimePassed() {
@@ -586,7 +587,7 @@ function totalTimePassed() {
     return false; 
   }
   // 2 minutes
-  return new Date() - new Date(timeAfterBreak) > 120000;
+  return new Date() - new Date(timeAfterBreak) > 1200;
 }
 
 function generateNewLevel() {
@@ -594,6 +595,7 @@ function generateNewLevel() {
   storeLevelNumber();
   showLevel();
   recordTimeAtInitialize();
+  resetTimer();
 }
 
 function determineNextLevel() {
@@ -621,12 +623,13 @@ function skipLevel() {
 }
 
 function timeCheck() {
+
   // check if in a practice round. If not, assign participant to break task or move to next level
   const currentLevelNumber = parseInt(localStorage.getItem('currentLevelNumber'));
-  if (currentLevelNumber < 5) return
+  if (currentLevelNumber < 5) return;
   if (totalTimePassed()) {
     showPopup("Thank you for your effort on this puzzle. You will now move on.","nextlevel");
-    
+    return
   } else if (initialTimePassed()) {
     if (JSON.parse(localStorage.getItem('condition'))[0] == 1) {
       showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then continue working on the puzzle.","control");
@@ -650,10 +653,23 @@ function showPopup(message, type) {
   form.reset();
   document.removeEventListener("keydown", handleKeyDown);
 
+  
+function removePopup() {
+  console.log('removed event listeners');
+  confirmButton.removeEventListener('click', handleBreakClick);
+  continueButton.removeEventListener('click', handleNextLevelClick);
+  confirmButton.removeEventListener('click', handleContinueClick);
+  form.style.display = 'none';
+  overlay.style.display = 'none';
+  popup.style.display = 'none';
+  continueButton.style.display = 'none';
+  document.addEventListener("keydown", handleKeyDown);
+}
 
   if (type === 'control') {
     form.style.display = 'block';
     recordTimeBeforeBreak();
+    console.log('added event listener for continue')
     confirmButton.addEventListener('click', handleContinueClick)
   }
 
@@ -678,6 +694,7 @@ function showPopup(message, type) {
     localStorage.setItem('r3b', document.querySelector('input[name="r3b"]:checked').value);
     removePopup();
     recordTimeAfterBreak();
+    resetTimer();
   }
 
   function handleBreakClick(event) {
@@ -702,17 +719,9 @@ function showPopup(message, type) {
     skipLevel();
   }
 
-  function removePopup() {
-    confirmButton.removeEventListener('click', handleBreakClick);
-    confirmButton.removeEventListener('click', handleNextLevelClick);
-    confirmButton.removeEventListener('click', handleContinueClick);
-    form.style.display = 'none';
-    overlay.style.display = 'none';
-    popup.style.display = 'none';
-    continueButton.style.display = 'none';
-    document.addEventListener("keydown", handleKeyDown);
-  }
+
 }
+
 
 
 // redirects participants to the corresponding type of break condition
@@ -724,6 +733,7 @@ function redirectToBreak() {
  
 // participant is in each condition until no more conditions remain. At that point they finish with a survey. 
 function removeCondition() {
+  console.log('condition removed');
   const participantCondition = JSON.parse(localStorage.getItem('condition'));
   participantCondition.shift();
   if (participantCondition.length === 0) redirectToSummary();
@@ -747,8 +757,7 @@ window.addEventListener("beforeunload", function (e) {
   }
 });
 
-// enforce 3 minute timer if user working
-setTimeout(timeCheck, 180000);
+
 
 // enforce 10 minute timer if user unable to complete pratice trials
 setTimeout(exitStudy,600000);
@@ -760,3 +769,16 @@ function exitStudy() {
     window.location.href = "summary.html";
   }
 }
+
+
+function startTimer() {
+  timer = setTimeout(timeCheck, 180000);
+}
+
+function resetTimer() {
+  clearTimeout(timer); // Clear the existing timer
+  startTimer(); // Start a new timer
+}
+
+// enforce 3 minute timer if user working
+startTimer();
