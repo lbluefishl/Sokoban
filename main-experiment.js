@@ -776,6 +776,7 @@ function startTimer() {
 }
 
 function resetTimer() {
+  if (JSON.parse(localStorage.getItem('condition'))[0] == undefined) return;
   clearTimeout(timer); // Clear the existing timer
   startTimer(); // Start a new timer
 }
