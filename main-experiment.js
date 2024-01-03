@@ -459,8 +459,8 @@ function recordUserCompletion() {
      studyID: localStorage.getItem('studyID'),
      sessionID: localStorage.getItem('sessionID'),
     condition: JSON.parse(localStorage.getItem('condition'))[0],
-    beforeBreakMovesets: JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]'),
-    afterBreakMovesets: JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]')
+    beforeBreakMovesets: JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]').map(arr => [arr.join('')]),
+    afterBreakMovesets: JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]').map(arr => [arr.join('')])
   };
   
   fetch('https://sokoban-badc101a491f.herokuapp.com/complete-level', {
