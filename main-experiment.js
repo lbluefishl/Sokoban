@@ -578,7 +578,7 @@ function initialTimePassed() {
     return false; 
   }
  // 2 minutes 
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 120000;
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 12000000000;
 }
 
 function totalTimePassed() {
@@ -587,7 +587,7 @@ function totalTimePassed() {
     return false; 
   }
   // 2 minutes
-  return new Date() - new Date(timeAfterBreak) > 120000;
+  return new Date() - new Date(timeAfterBreak) > 12000000000;
 }
 
 function generateNewLevel() {
@@ -764,15 +764,15 @@ setTimeout(exitStudy,600000);
 
 function exitStudy() {
   if (JSON.parse(localStorage.getItem('condition')).length > 3) {
-    alert('Thank you for your participation in this study. Please complete the summary form.')
     isRedirecting = true;
+    alert('Thank you for your participation in this study. Please complete the summary form.')
     window.location.href = "summary.html";
   }
 }
 
 
 function startTimer() {
-  timer = setTimeout(timeCheck, 180000);
+  timer = setTimeout(timeCheck, 18000000000);
 }
 
 function resetTimer() {
