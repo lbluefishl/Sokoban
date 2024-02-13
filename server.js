@@ -170,7 +170,7 @@ app.post('/submit-survey', async (req, res) => {
 });
 
 app.post('/submit-summary', async (req, res) => {
-  const { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, conditionOrder } = req.body;
+  const { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, conditionOrder } = req.body;
 
   // Access the MongoDB collection based on the level number
   const db = client.db('pilot1'); // Replace 'Sokoban' with your actual database name
@@ -184,7 +184,7 @@ app.post('/submit-summary', async (req, res) => {
       // If a document with the playerId exists, update it with the new survey data
       const result = await collection.updateOne(
         { playerId },
-        { $set: { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, person, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, conditionOrder } }
+        { $set: { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, conditionOrder } }
       );
       console.log('Survey data updated:', result.modifiedCount);
     } else {
@@ -199,7 +199,6 @@ app.post('/submit-summary', async (req, res) => {
         digitalDeviceHours,
         comments,
         playerId,
-        person,
         shortFormVideoHours,
         prolificPID,
         sessionID,

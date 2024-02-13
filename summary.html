@@ -172,8 +172,7 @@
         annoyances, or unique experiences, if any.</label>
       <textarea id="comments" name="comments"></textarea>
 
-      <label for="person">Please enter your full name so that the experimenter can thank you.</label>
-      <textarea id="person" name="person"></textarea>
+
 
       <p>Thank you for participating in this study. If you would like to play continously on the puzzles shown in this study and additional ones, feel free to 
         <a href="index.html" target="_blank">click here</a>.
@@ -200,7 +199,6 @@
         const sokobanFamiliarity = document.querySelector('select[name="sokobanFamiliarity"]').value;
         const digitalDeviceHours = document.querySelector('select[name="digitalDeviceHours"]').value;
         const comments = document.querySelector('textarea[name="comments"]').value;
-        const person = document.querySelector('textarea[name="person"]').value;
         const prolificPID = localStorage.getItem('prolificPID');
         const studyID = localStorage.getItem('studyID');
         const sessionID = localStorage.getItem('sessionID');
@@ -221,7 +219,6 @@
           digitalDeviceHours: digitalDeviceHours,
           comments: comments,
           playerId: localStorage.getItem('playerId'),
-          person: person,
           prolificPID: prolificPID,
           studyID: studyID,
           sessionID: sessionID,
