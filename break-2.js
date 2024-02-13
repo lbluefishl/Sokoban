@@ -55,7 +55,7 @@ function handleChoice(userChoosesOdd) {
     oddButton.style.display = 'inline-block';
     evenButton.style.display = 'inline-block';
     showNumber();
-  }, getRandomNumber(2000, 5000));
+  }, getRandomNumber(2000, 4000));
 }
 
 // Redirect the page after five minutes
@@ -64,7 +64,7 @@ localStorage.setItem('correct',correct);
 localStorage.setItem('incorrect',incorrect);
 isRedirecting = true;
   window.location.href = 'return.html';
-}, 300000); // 60000 milliseconds = 1 minute
+}, 240000); 
 
 
 window.addEventListener("beforeunload", function (e) {
