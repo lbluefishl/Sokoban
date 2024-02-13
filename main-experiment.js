@@ -763,7 +763,7 @@ window.addEventListener("beforeunload", function (e) {
 
 
 // enforce 10 minute timer if user unable to complete pratice trials
-setTimeout(exitStudy,600000);
+setTimeout(exitStudy, 600000);
 
 function exitStudy() {
   if (JSON.parse(localStorage.getItem('condition')).length > 3) {
@@ -775,7 +775,7 @@ function exitStudy() {
 
 
 function startTimer() {
-  timer = setTimeout(timeCheck, 18000000000);
+  timer = setTimeout(timeCheck, 180000);
 }
 
 function resetTimer() {
