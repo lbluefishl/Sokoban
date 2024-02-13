@@ -142,6 +142,9 @@ function handlePlayerMove(dx, dy) {
 function handleKeyDown(event) {
   const key = event.key;
 
+  if ( key === 'ArrowUp' || key === 'ArrowDown') 
+    event.preventDefault();
+
   switch (key) {
     case "ArrowLeft":
       handlePlayerMove(-1, 0);
