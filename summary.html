@@ -184,7 +184,7 @@
 
     <script>
       const form = document.getElementById('surveyForm');
-
+      var isRedirecting = false;
 
       form.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -205,7 +205,8 @@
         const trialOrder = JSON.parse(localStorage.getItem('trialOrder'));
         const conditionOrder = JSON.parse(localStorage.getItem('conditionOrder'));
         const completedAllLevels = localStorage.getItem('completedAllLevels');
-        var isRedirecting = false;
+        const playerId = localStorage.getItem('playerId');
+
 
         // Create the data object to be sent to the server
         const data = {
@@ -218,7 +219,7 @@
           sokobanFamiliarity: sokobanFamiliarity,
           digitalDeviceHours: digitalDeviceHours,
           comments: comments,
-          playerId: localStorage.getItem('playerId'),
+          playerId: playerId,
           prolificPID: prolificPID,
           studyID: studyID,
           sessionID: sessionID,
