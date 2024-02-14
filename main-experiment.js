@@ -558,6 +558,8 @@ function clearLocalStorageExceptPlayerId() {
    const prolificPID = localStorage.getItem('prolificPID');
    const sessionID = localStorage.getItem('sessionID');
    const studyID = localStorage.getItem('studyID');
+   const trialOrder = localStorage.getItem('trialOrder');
+   const conditionOrder = localStorage.getItem('conditionOrder');
    localStorage.clear(); 
    localStorage.setItem('playerId', playerId); 
    localStorage.setItem('condition', JSON.stringify(playerCondition));
@@ -565,6 +567,8 @@ function clearLocalStorageExceptPlayerId() {
    localStorage.setItem('prolificPID', prolificPID);
    localStorage.setItem('sessionID', sessionID);
    localStorage.setItem('studyID', studyID);
+   localStorage.setItem('trialOrder', trialOrder);
+   localStorage.setItem('conditionOrder', conditionOrder);
  }
  
 
