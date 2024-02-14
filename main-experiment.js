@@ -774,6 +774,7 @@ function exitStudy() {
     isRedirecting = true;
     alert('Thank you for your participation in this study. Please complete the summary form.')
     window.location.href = "summary.html";
+    localStorage.setItem('practiceLevels', 0);
   }
 }
 

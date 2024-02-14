@@ -204,7 +204,7 @@
         const sessionID = localStorage.getItem('sessionID');
         const trialOrder = JSON.parse(localStorage.getItem('trialOrder'));
         const conditionOrder = JSON.parse(localStorage.getItem('conditionOrder'));
-
+        const completedAllLevels = localStorage.getItem('completedAllLevels');
         var isRedirecting = false;
 
         // Create the data object to be sent to the server
@@ -223,7 +223,8 @@
           studyID: studyID,
           sessionID: sessionID,
           conditionOrder: conditionOrder,
-          trialOrder: trialOrder
+          trialOrder: trialOrder,
+          completedAllLevels: completedAllLevels
 
         };
 
