@@ -384,6 +384,7 @@ function redirectToSummary() {
 
   summaryBtn.addEventListener("click", function () {
     isRedirecting = true;
+    localStorage.setItem('completedAllLevels', 1);
     window.location.href = "summary.html";
   });
 
@@ -773,8 +774,8 @@ function exitStudy() {
   if (JSON.parse(localStorage.getItem('condition')).length > 3) {
     isRedirecting = true;
     alert('Thank you for your participation in this study. Please complete the summary form.')
+    localStorage.setItem('completedAllLevels', 0);
     window.location.href = "summary.html";
-    localStorage.setItem('practiceLevels', 0);
   }
 }
 
