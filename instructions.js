@@ -1,25 +1,18 @@
 // counterbalanced conditions. the 4 '0' are the initial practice trials that everyone does
 const fullscreenButton = document.getElementById('fullscreenButton')
 const conditions = [
-    [0, 0, 0, 0, 1, 2, 3],
-    [0, 0, 0, 0, 1, 3, 2],
-    [0, 0, 0, 0, 2, 3, 1],
-    [0, 0, 0, 0, 2, 1, 3],
-    [0, 0, 0, 0, 3, 1, 2],
-    [0, 0, 0, 0, 3, 2, 1],
+    [0, 0, 0, 1, 2, 3],
+    [0, 0, 0, 1, 3, 2],
+    [0, 0, 0, 2, 3, 1],
+    [0, 0, 0, 2, 1, 3],
+    [0, 0, 0, 3, 1, 2],
+    [0, 0, 0, 3, 2, 1],
 ];
 //Get Prolific values from URL parameters
 const prolificPID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
 const studyID = new URLSearchParams(window.location.search).get('STUDY_ID');
 const sessionID = new URLSearchParams(window.location.search).get('SESSION_ID');
-const trials = [
-    [5,6,7],
-    [5,7,6],
-    [6,5,7],
-    [6,7,5],
-    [7,5,6],
-    [7,6,5]
-]
+
 
 
 const instructions = [
@@ -27,7 +20,7 @@ const instructions = [
  
     "<div style='text-align: center'><img src='images/unimelb2.png' width='250px' alt='university of melbourne logo'></div> <br><h1>Consent for persons participating in a research project</h1> <hr><br><br>  <ol><li>I consent to participate in this project, the details of which have been explained to me, and I have been provided with a written plain language statement to keep.</li><li>I understand that the purpose of this research is to investigate problem solving behavior.</li><li> I understand that my participation in this project is for research purposes only.</li><li>I acknowledge that the possible effects of participating in this research project have been explained to my satisfaction.  </li><li>In this project I will be required to work on puzzle and sorting tasks, watch short videos, and complete several surveys.   </li><li>I understand that my participation is voluntary and that I am free to withdraw from this project anytime without explanation or prejudice and to withdraw any unprocessed data that I have provided.</li><li> I understand that the data from this research will be stored at the University of Melbourne and will be destroyed 5 years after publication. </li><li>I have been informed that the confidentiality of the information I provide will be safeguarded subject to any legal requirements; my data will be password protected and accessible only by the named researchers.</li></ol><br><br><h1>By clicking continue you acknowledge that you agree to the above.",
 
-    "<h1>Task Description</h1>You will now be asked to complete a series of Sokoban puzzles. These are classic problems where you push boxes around a warehouse towards storage locations.<br><div style='text-align:center'><img src='images/sokoban.gif' alt='Animated GIF'></div><br> It is natural to have trouble completing some puzzles. Please continue to work on the puzzles even if you find yourself stuck on them. You can use the <b>r</b> key to restart and the <b>u</b> key to undo a move as many times as you need.</br> <br>During the study, you may be given short breaks after working on a puzzle for a few minutes. During these breaks please follow the instructions on the screen and remain on the computer. Please enable computer audio for use on some tasks. You will be automatically directed back to the puzzles after a few minutes.<br><br> It is important that you do not press the back and refresh buttons on your browser while you are working on this study. You are free to exit this study at any time by simply closing your browser. If you go back pages, refresh the page, or exit the study, your data will not be used and you will not be compensated for your time.<br><br><b>Your compensation does not increase if you solve the puzzles</b>. We are only interested in individual problem solving behavior. As such, please do not seek external help in order to complete the puzzles. You will be paid the full amount as long as you are working on the puzzles. Please remain active during this study and do not work on other tasks. <u>An additional $1 will be awarded for reasonable effort on the tasks</u>.    </h1>",
+    "<h1>Task Description</h1>You will now be asked to complete a series of Sokoban puzzles. These are classic problems where you push boxes around a warehouse towards storage locations.<br><div style='text-align:center'><img src='images/sokoban.gif' alt='Animated GIF'></div><br> It is natural to have trouble completing some puzzles. Please continue to work on the puzzles even if you find yourself stuck on them. You can use the <b>r</b> key to restart the level as many times as you need.</br> <br>During the study, you may be given short breaks after working on a puzzle for a few minutes. During these breaks please follow the instructions on the screen and remain on the computer. Please enable computer audio for use on some tasks. You will be automatically directed back to the puzzles after a few minutes.<br><br> It is important that you do not press the back and refresh buttons on your browser while you are working on this study. You are free to exit this study at any time by simply closing your browser. If you go back pages, refresh the page, or exit the study, your data will not be used and you will not be compensated for your time.<br><br><b>Your compensation does not increase if you solve the puzzles</b>. We are only interested in individual problem solving behavior. As such, please do not seek external help in order to complete the puzzles. You will be paid the full amount as long as you are working on the puzzles. Please remain active during this study and do not work on other tasks. <u>An additional $1 will be awarded for reasonable effort on the tasks</u>.    </h1>",
 
   
 
@@ -131,9 +124,7 @@ function generateUniqueID() {
     localStorage.setItem('condition', JSON.stringify(participantCondition));
     localStorage.setItem('conditionOrder', JSON.stringify(participantCondition.slice(-3)));
     // Randomize puzzle order
-    const trialOrder = trials[Math.floor(Math.random() * conditions.length)];
-    localStorage.setItem('trial', JSON.stringify(trialOrder));
-    localStorage.setItem('trialOrder', JSON.stringify(trialOrder));
+
     // generate a random number for the participant ID
     const timestamp = new Date().getTime();
     const randomNum = Math.floor(Math.random() * 1000000);

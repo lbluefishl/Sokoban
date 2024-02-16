@@ -18,6 +18,26 @@ const sessionID = localStorage.getItem('sessionID');
 let isRedirecting = false;
 let timer;
 
+let trialOrder = [];
+let practiceTrialTimes = [];
+
+const hardTrials = [
+  [5,6,7],
+  [5,7,6],
+  [6,5,7],
+  [6,7,5],
+  [7,5,6],
+  [7,6,5]
+];
+
+const easyTrials = [
+  [4,8,12],
+  [4,12,8],
+  [8,4,12],
+  [8,12,4],
+  [12,4,8],
+  [12,8,4]
+];
 const levelFiles = [
   "level1.txt",
   "level2.txt",
@@ -29,7 +49,8 @@ const levelFiles = [
   "level8.txt",
   "level9.txt",
   "level10.txt",
-  
+  "level11.txt",
+  "level12.txt"
 ];
 let currentLevel;
 let levelArray; 
@@ -43,8 +64,21 @@ wallSprite.src = "images/wall.jpg";
 boxSprite.src = "images/box.png";
 playerSprite.src = "images/player.png"
 
+const trialRandomIndex = Math.floor(Math.random() * hardTrials.length);
 
 
+
+function generateTrialOrder(difficulty) {
+if (difficulty == 'easy') 
+  {
+    trialOrder = easyTrials[trialRandomIndex];
+  }
+  else {
+    trialOrder = hardTrials[trialRandomIndex];
+  }
+  localStorage.setItem('trial', JSON.stringify(trialOrder));
+  localStorage.setItem('trialOrder', JSON.stringify(trialOrder));
+}
 
 
 
@@ -158,9 +192,9 @@ function handleKeyDown(event) {
     case "ArrowDown":
       handlePlayerMove(0, 1);
       break;
-    case "u":
-      undoLastMove();
-      break;
+ //   case "u":
+ //     undoLastMove();
+ //     break;
     case "r":
       resetLevel();
       break;
@@ -280,7 +314,7 @@ function resetLevel() {
 
 
 
-
+/*
 function undoLastMove() {
   // Check if there's a previous state in the history
   if (gameStateHistory.length > 0) {
@@ -291,6 +325,7 @@ function undoLastMove() {
     renderLevel(levelArray);
   }
 }
+*/
 
 // Assuming you have the levelArray defined and filled with the level data
 
@@ -514,6 +549,7 @@ function recordTimeAtWin() {
   timeAtInitialize = localStorage.getItem('timeAtInitialize');
   // Calculate time intervals
   const durationToBeatGame = ((new Date(timeAtWin) - new Date(timeAtInitialize))/1000).toFixed(2);
+  practiceTrialTimes.push(durationToBeatGame);
   const durationBeforeBreak = timeBeforeBreak ? ((new Date(timeBeforeBreak) - new Date(timeAtInitialize))/1000).toFixed(2) : null;
   const durationAfterBreak = timeBeforeBreak ? ((new Date(timeAtWin) - new Date(timeAfterBreak))/1000).toFixed(2) : null;
   const durationBreak = timeBeforeBreak ? ((new Date(timeAfterBreak) - new Date(timeBeforeBreak))/1000).toFixed(2) : null; 
@@ -608,7 +644,15 @@ function generateNewLevel() {
 
 function determineNextLevel() {
   const currentLevelNumber = localStorage.getItem('currentLevelNumber');
-  if (parseInt(currentLevelNumber)>3) {
+  if (parseInt(currentLevelNumber) == 3) {
+
+    // determine random levels after first 3 practice levels complete
+    // average practice trial durations and check if under threshold (30 seconds)
+    ((parseInt(practiceTrialTimes[0]) + parseInt(practiceTrialTimes[1]) + parseInt(practiceTrialTimes[2]))/3 < 30) ? generateTrialOrder('hard') : generateTrialOrder('easy');
+  }
+
+
+  if (parseInt(currentLevelNumber)>2) {
     const trials = JSON.parse(localStorage.getItem('trial'));
     currentLevel = `levels/level${trials[0]}.txt`;
     trials.shift();
