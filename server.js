@@ -40,7 +40,7 @@ app.post('/complete-level', async (req, res) => {
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('pilot2');
+  const db = client.db('pilot3');
   const collection = db.collection(collectionName);
 
   // Check if the player id exists in the collection
@@ -116,7 +116,7 @@ app.post('/submit-survey', async (req, res) => {
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('pilot2'); // Replace 'Sokoban' with your actual database name
+  const db = client.db('pilot3'); // Replace 'Sokoban' with your actual database name
   const collection = db.collection(collectionName);
 
   // Check if a document with the same playerId already exists in the collection
@@ -170,10 +170,10 @@ app.post('/submit-survey', async (req, res) => {
 });
 
 app.post('/submit-summary', async (req, res) => {
-  const { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, completedAllLevels, conditionOrder } = req.body;
+  const { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, completedAllLevels, idleTime, conditionOrder } = req.body;
 
   // Access the MongoDB collection based on the level number
-  const db = client.db('pilot2'); // Replace 'Sokoban' with your actual database name
+  const db = client.db('pilot3'); // Replace 'Sokoban' with your actual database name
   const collection = db.collection('surveys');
 
   // Check if a document with the same playerId already exists in the collection
@@ -184,7 +184,7 @@ app.post('/submit-summary', async (req, res) => {
       // If a document with the playerId exists, update it with the new survey data
       const result = await collection.updateOne(
         { playerId },
-        { $set: { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, completedAllLevels, conditionOrder } }
+        { $set: { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, completedAllLevels, idleTime, conditionOrder } }
       );
       console.log('Survey data updated:', result.modifiedCount);
     } else {
@@ -205,7 +205,8 @@ app.post('/submit-summary', async (req, res) => {
         studyID,
         trialOrder,
         conditionOrder,
-        completedAllLevels
+        completedAllLevels,
+        idleTime
       });
       console.log('Survey data inserted:', result.insertedId);
     }

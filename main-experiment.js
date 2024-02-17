@@ -597,6 +597,7 @@ function clearLocalStorageExceptPlayerId() {
    const studyID = localStorage.getItem('studyID');
    const trialOrder = localStorage.getItem('trialOrder');
    const conditionOrder = localStorage.getItem('conditionOrder');
+   const idleTime = localStorage.getItem('idleTime');
    localStorage.clear(); 
    localStorage.setItem('playerId', playerId); 
    localStorage.setItem('condition', JSON.stringify(playerCondition));
@@ -606,6 +607,7 @@ function clearLocalStorageExceptPlayerId() {
    localStorage.setItem('studyID', studyID);
    localStorage.setItem('trialOrder', trialOrder);
    localStorage.setItem('conditionOrder', conditionOrder);
+   localStorage.setItem('idleTime', idleTime);
  }
  
 
@@ -833,6 +835,45 @@ function resetTimer() {
   clearTimeout(timer); // Clear the existing timer
   startTimer(); // Start a new timer
 }
+
+
+
+
+let lastActiveTime = Date.now();
+let idleInterval = setInterval(timerIncrement, 60000); 
+
+function timerIncrement() {
+    let currentTime = Date.now();
+    let idleTime = (currentTime - lastActiveTime) / (60000); 
+    let storedIdleTime = parseInt(localStorage.getItem('idleTime'));
+    storedIdleTime += idleTime;
+    localStorage.setItem('idleTime', storedIdleTime);
+    console.log("Total Idle Time: " + storedIdleTime.toFixed(2) + " minute(s)");
+    lastActiveTime = Date.now();
+}
+
+// Reset idle time on user interaction
+function resetIdleTime() {
+    lastActiveTime = Date.now();
+}
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('mousemove', resetIdleTime);
+document.addEventListener('keypress', resetIdleTime);
+
+
+
+
+
 
 // enforce 3 minute timer if user working
 startTimer();

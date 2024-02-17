@@ -205,6 +205,7 @@
         const trialOrder = JSON.parse(localStorage.getItem('trialOrder'));
         const conditionOrder = JSON.parse(localStorage.getItem('conditionOrder'));
         const completedAllLevels = localStorage.getItem('completedAllLevels');
+        const idleTime = localStorage.getItem('idleTime');
         const playerId = localStorage.getItem('playerId');
 
 
@@ -225,7 +226,8 @@
           sessionID: sessionID,
           conditionOrder: conditionOrder,
           trialOrder: trialOrder,
-          completedAllLevels: completedAllLevels
+          completedAllLevels: completedAllLevels,
+          idleTime: idleTime
 
         };
 
