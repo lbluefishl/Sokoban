@@ -709,7 +709,6 @@ function showPopup(message, type) {
 
   
 function removePopup() {
-  console.log('removed event listeners');
   confirmButton.removeEventListener('click', handleBreakClick);
   continueButton.removeEventListener('click', handleNextLevelClick);
   confirmButton.removeEventListener('click', handleContinueClick);
@@ -723,7 +722,6 @@ function removePopup() {
   if (type === 'control') {
     form.style.display = 'block';
     recordTimeBeforeBreak();
-    console.log('added event listener for continue')
     confirmButton.addEventListener('click', handleContinueClick)
   }
 
@@ -787,7 +785,6 @@ function redirectToBreak() {
  
 // participant is in each condition until no more conditions remain. At that point they finish with a survey. 
 function removeCondition() {
-  console.log('condition removed');
   const participantCondition = JSON.parse(localStorage.getItem('condition'));
   participantCondition.shift();
   if (participantCondition.length === 0) redirectToSummary();
@@ -848,7 +845,6 @@ function timerIncrement() {
     let storedIdleTime = parseInt(localStorage.getItem('idleTime'));
     storedIdleTime += idleTime;
     localStorage.setItem('idleTime', storedIdleTime);
-    console.log("Total Idle Time: " + storedIdleTime.toFixed(2) + " minute(s)");
     lastActiveTime = Date.now();
 }
 
