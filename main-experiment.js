@@ -641,7 +641,7 @@ function timeCheck() {
 
   // check if in a practice round. If not, assign participant to break task or move to next level
   const currentLevelNumber = parseInt(localStorage.getItem('currentLevelNumber'));
-  if (currentLevelNumber < 5) return;
+  if (currentLevelNumber < 4) return;
   if (totalTimePassed()) {
     showPopup("Thank you for your effort on this puzzle. You will now move on.","nextlevel");
     return
