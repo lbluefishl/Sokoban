@@ -34,8 +34,6 @@ wallSprite.src = "images/wall.jpg";
 boxSprite.src = "images/box.png";
 playerSprite.src = "images/player.png"
 
-const trialRandomIndex = Math.floor(Math.random() * hardTrials.length);
-
 
 /*
 function generateTrialOrder(difficulty) {
