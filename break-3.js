@@ -56,7 +56,7 @@ videos.forEach(video => {
     localStorage.setItem('scroll', scrollCount)
     isRedirecting = true;
       window.location.href = 'return.html'; // Replace with your desired URL
-    }, 240000);   // 4 minutes
+    }, 180000);   // 3 minutes
 
 
     function shuffleArray(array) {

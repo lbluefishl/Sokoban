@@ -8,6 +8,11 @@ const conditions = [
     [0, 0, 0, 3, 1, 2],
     [0, 0, 0, 3, 2, 1],
 ];
+
+const nums = [5,6,7,8,11];
+const trials = permute(nums);
+
+
 //Get Prolific values from URL parameters
 const prolificPID = new URLSearchParams(window.location.search).get('PROLIFIC_PID');
 const studyID = new URLSearchParams(window.location.search).get('STUDY_ID');
@@ -125,7 +130,9 @@ function generateUniqueID() {
     localStorage.setItem('condition', JSON.stringify(participantCondition));
     localStorage.setItem('conditionOrder', JSON.stringify(participantCondition.slice(-3)));
     // Randomize puzzle order
-
+    const trialOrder = trials[Math.floor(Math.random() * trials.length)];
+    localStorage.setItem('trial', JSON.stringify(trialOrder));
+    localStorage.setItem('trialOrder', JSON.stringify(trialOrder));
     // generate a random number for the participant ID
     const timestamp = new Date().getTime();
     const randomNum = Math.floor(Math.random() * 1000000);
@@ -168,7 +175,26 @@ window.onload = function() {
 };
 
 
-
+function permute(nums) {
+    const result = [];
+    
+    function backtrack(currPerm, remainingNums) {
+        if (remainingNums.length === 0) {
+            result.push(currPerm.slice()); // Push a copy of the current permutation to the result
+            return;
+        }
+        
+        for (let i = 0; i < remainingNums.length; i++) {
+            currPerm.push(remainingNums[i]); // Choose
+            const newRemaining = remainingNums.slice(0, i).concat(remainingNums.slice(i + 1)); // Explore
+            backtrack(currPerm, newRemaining); // Explore
+            currPerm.pop(); // Unchoose
+        }
+    }
+    
+    backtrack([], nums);
+    return result;
+}
 
 
 

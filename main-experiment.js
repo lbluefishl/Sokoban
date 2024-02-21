@@ -15,43 +15,13 @@ const canvas = document.getElementById("gameCanvas");
 const prolificPID = localStorage.getItem('prolificPID');
 const studyID = localStorage.getItem('studyID');
 const sessionID = localStorage.getItem('sessionID');
+const maxTime = 210000;
+const halfTime = 180000;
+
 let isRedirecting = false;
 let timer;
 
-let trialOrder = [];
-let practiceTrialTimes = [];
 
-const hardTrials = [
-  [5,6,7],
-  [5,7,6],
-  [6,5,7],
-  [6,7,5],
-  [7,5,6],
-  [7,6,5]
-];
-
-const easyTrials = [
-  [4,8,12],
-  [4,12,8],
-  [8,4,12],
-  [8,12,4],
-  [12,4,8],
-  [12,8,4]
-];
-const levelFiles = [
-  "level1.txt",
-  "level2.txt",
-  "level3.txt",
-  "level4.txt",
-  "level5.txt",
-  "level6.txt",
-  "level7.txt",
-  "level8.txt",
-  "level9.txt",
-  "level10.txt",
-  "level11.txt",
-  "level12.txt"
-];
 let currentLevel;
 let levelArray; 
 let gameStateHistory = []; 
@@ -67,7 +37,7 @@ playerSprite.src = "images/player.png"
 const trialRandomIndex = Math.floor(Math.random() * hardTrials.length);
 
 
-
+/*
 function generateTrialOrder(difficulty) {
 if (difficulty == 'easy') 
   {
@@ -79,6 +49,7 @@ if (difficulty == 'easy')
   localStorage.setItem('trial', JSON.stringify(trialOrder));
   localStorage.setItem('trialOrder', JSON.stringify(trialOrder));
 }
+*/
 
 
 
@@ -624,7 +595,7 @@ function initialTimePassed() {
     return false; 
   }
  // 2 minutes 
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > 120000 ;
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > halfTime ;
 }
 
 function totalTimePassed() {
@@ -633,7 +604,7 @@ function totalTimePassed() {
     return false; 
   }
   // 2 minutes
-  return new Date() - new Date(timeAfterBreak) > 120000 ;
+  return new Date() - new Date(timeAfterBreak) > halfTime ;
 }
 
 function generateNewLevel() {
@@ -643,18 +614,11 @@ function generateNewLevel() {
   recordTimeAtInitialize();
   resetTimer();
 }
-
+  
 function determineNextLevel() {
-  const currentLevelNumber = localStorage.getItem('currentLevelNumber');
-  if (parseInt(currentLevelNumber) == 3) {
+  const currentLevelNumber = localStorage.getItem('currentLevelNumber'); 
 
-    // determine random levels after first 3 practice levels complete
-    // average practice trial durations and check if under threshold (30 seconds)
-    ((parseInt(practiceTrialTimes[0]) + parseInt(practiceTrialTimes[1]) + parseInt(practiceTrialTimes[2]))/3 < 30) ? generateTrialOrder('hard') : generateTrialOrder('easy');
-  }
-
-
-  if (parseInt(currentLevelNumber)>2) {
+  if (parseInt(currentLevelNumber)>3) {
     const trials = JSON.parse(localStorage.getItem('trial'));
     currentLevel = `levels/level${trials[0]}.txt`;
     trials.shift();
@@ -824,7 +788,7 @@ function exitStudy() {
 
 
 function startTimer() {
-  timer = setTimeout(timeCheck, 180000);
+  timer = setTimeout(timeCheck, maxTime);
 }
 
 function resetTimer() {
@@ -855,18 +819,8 @@ function resetIdleTime() {
 
 
 
-
-
-
-
-
-
-
-
 document.addEventListener('mousemove', resetIdleTime);
 document.addEventListener('keypress', resetIdleTime);
-
-
 
 
 

@@ -58,13 +58,13 @@ function handleChoice(userChoosesOdd) {
   }, getRandomNumber(2000, 4000));
 }
 
-// Redirect the page after five minutes
+// Redirect the page after three minutes
 setTimeout(() => {
 localStorage.setItem('correct',correct);
 localStorage.setItem('incorrect',incorrect);
 isRedirecting = true;
   window.location.href = 'return.html';
-}, 240000); 
+}, 180000); 
 
 
 window.addEventListener("beforeunload", function (e) {

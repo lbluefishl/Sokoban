@@ -97,8 +97,6 @@ app.post('/complete-level', async (req, res) => {
 });
 
 
-
-
 app.post('/submit-survey', async (req, res) => {
   const { mw1, 
     mw2, 
@@ -171,6 +169,8 @@ app.post('/submit-survey', async (req, res) => {
 
 app.post('/submit-summary', async (req, res) => {
   const { age, sex, handedness, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, comments, playerId, shortFormVideoHours, prolificPID, sessionID, studyID, trialOrder, completedAllLevels, idleTime, conditionOrder } = req.body;
+
+  
 
   // Access the MongoDB collection based on the level number
   const db = client.db('pilot3'); // Replace 'Sokoban' with your actual database name
