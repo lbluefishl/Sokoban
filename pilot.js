@@ -10,13 +10,13 @@ const levelDisplay = document.getElementById("currentLevel");
 const skipButton = document.getElementById('skip');
 let moveset = [];
 const levelFiles = [
-    "level11.txt",
- //   "level5.txt",
- //   "level6.txt",
-  //  "level7.txt",
-    "level8.txt",
- //   "level9.txt",
- //   "level10.txt"
+  //  "level11.txt",
+    "level5.txt",
+    "level6.txt",
+    "level7.txt",
+  //  "level8.txt",
+ //  "level9.txt",
+  //  "level10.txt"
 ];
 let currentLevel = 'levels/level11.txt';
 let levelArray; 
@@ -292,7 +292,7 @@ function generateNewLevel() {
     storeLevelNumber();
     showLevel();
     recordTimeAtInitialize();
-    if (currentLevel === 'levels/level11.txt') {alert('You beat all levels. Nice!')}
+    if (currentLevel === 'levels/level8.txt') {alert('You beat all levels. Nice!')}
   }
 
 function initializeGame() {
@@ -318,7 +318,7 @@ function initializeGame() {
                 renderLevel(levelArray);
             } else {
                 // No stored game state, load a random level
-                loadAndRenderLevel('levels/level7.txt');
+                loadAndRenderLevel('levels/level5.txt');
                 recordTimeAtInitialize();
                 
             }
