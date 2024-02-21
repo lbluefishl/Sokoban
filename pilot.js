@@ -18,7 +18,7 @@ const levelFiles = [
  //  "level9.txt",
   //  "level10.txt"
 ];
-let currentLevel = 'levels/level11.txt';
+let currentLevel = 'levels/level5.txt';
 let levelArray; 
 let gameStateHistory = []; 
 let timeAtInitialize;
