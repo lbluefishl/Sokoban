@@ -615,7 +615,7 @@ function generateNewLevel() {
 function determineNextLevel() {
   const currentLevelNumber = localStorage.getItem('currentLevelNumber'); 
 
-  if (parseInt(currentLevelNumber)>3) {
+  if (parseInt(currentLevelNumber) > 2) {
     const trials = JSON.parse(localStorage.getItem('trial'));
     currentLevel = `levels/level${trials[0]}.txt`;
     trials.shift();
