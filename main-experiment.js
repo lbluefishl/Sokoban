@@ -518,7 +518,6 @@ function recordTimeAtWin() {
   timeAtInitialize = localStorage.getItem('timeAtInitialize');
   // Calculate time intervals
   const durationToBeatGame = ((new Date(timeAtWin) - new Date(timeAtInitialize))/1000).toFixed(2);
-  practiceTrialTimes.push(durationToBeatGame);
   const durationBeforeBreak = timeBeforeBreak ? ((new Date(timeBeforeBreak) - new Date(timeAtInitialize))/1000).toFixed(2) : null;
   const durationAfterBreak = timeBeforeBreak ? ((new Date(timeAtWin) - new Date(timeAfterBreak))/1000).toFixed(2) : null;
   const durationBreak = timeBeforeBreak ? ((new Date(timeAfterBreak) - new Date(timeBeforeBreak))/1000).toFixed(2) : null; 
