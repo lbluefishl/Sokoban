@@ -9,8 +9,9 @@ const conditions = [
     [0, 0, 0, 3, 2, 1],
 ];
 
-const nums = [5,6,7,8,11];
-const trials = permute(nums);
+const totalTrials = 3;
+const nums = [5, 6, 7, 8, 11];
+const trials = permute(nums, totalTrials);
 
 
 //Get Prolific values from URL parameters
@@ -175,11 +176,11 @@ window.onload = function() {
 };
 
 
-function permute(nums) {
+function permute(nums, k) {
     const result = [];
     
     function backtrack(currPerm, remainingNums) {
-        if (remainingNums.length === 0) {
+        if (currPerm.length === k) {
             result.push(currPerm.slice()); // Push a copy of the current permutation to the result
             return;
         }
@@ -195,7 +196,6 @@ function permute(nums) {
     backtrack([], nums);
     return result;
 }
-
 
 
 getplayerId();
