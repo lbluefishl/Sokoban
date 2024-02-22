@@ -132,6 +132,7 @@ function handlePlayerMove(dx, dy) {
     }
 
     capturePlayerMove(dx, dy);
+    resetIdleTime();
     gameStateHistory.push(previousState);
     checkRepetitiveMoves();
     renderLevel(levelArray);
@@ -815,21 +816,18 @@ let idleInterval = setInterval(timerIncrement, 1000);
 
 function timerIncrement() {
   let currentTime = Date.now();
-  let idleTime = (currentTime - lastActiveTime) / (1000);
+  let idleTime = Math.round((currentTime - lastActiveTime) / 1000);
   let storedIdleTime = parseInt(localStorage.getItem('idleTime'));
   storedIdleTime += idleTime;
   localStorage.setItem('idleTime', storedIdleTime);
   lastActiveTime = Date.now();
 }
 
+
 function resetIdleTime() {
   lastActiveTime = Date.now();
+  console.log('test');
 }
-
-document.addEventListener('mousemove', resetIdleTime);
-document.addEventListener('keypress', resetIdleTime);
-
-
 
 
 // enforce 3 minute timer if user working
