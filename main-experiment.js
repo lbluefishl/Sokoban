@@ -828,7 +828,6 @@ function timerIncrement() {
 
 function resetIdleTime() {
   lastActiveTime = Date.now();
-  console.log('test');
 }
 
 
