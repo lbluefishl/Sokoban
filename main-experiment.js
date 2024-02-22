@@ -15,8 +15,8 @@ const canvas = document.getElementById("gameCanvas");
 const prolificPID = localStorage.getItem('prolificPID');
 const studyID = localStorage.getItem('studyID');
 const sessionID = localStorage.getItem('sessionID');
-const maxTime = 210000;
-const halfTime = 180000;
+const maxTime = 180000;
+const halfTime = 120000;
 
 let isRedirecting = false;
 let timer;
@@ -133,15 +133,26 @@ function handlePlayerMove(dx, dy) {
 
     capturePlayerMove(dx, dy);
     gameStateHistory.push(previousState);
+    checkRepetitiveMoves();
     renderLevel(levelArray);
     checkWinCondition();
   }
 }
 
+function checkRepetitiveMoves() {
+  // check 2 states before
+  if (gameStateHistory.length < 2) return;
+  for (let i = gameStateHistory.length - 2 ; i >= 0; i--) {
+    if (JSON.stringify(gameStateHistory[i]) === JSON.stringify(levelArray)) {
+      console.log('same array')
+      moveset.splice(i); 
+      gameStateHistory.splice(i);
+      return;
+    }
+  }
+}
+
 // Event listener for keyboard arrow key press
-
-
-
 function handleKeyDown(event) {
   const key = event.key;
 
@@ -278,6 +289,7 @@ function resetLevel() {
     .catch(error => {
       console.error("Error loading or parsing the level data:", error);
     });
+    
 }
 
 
@@ -336,23 +348,13 @@ function initializeGame() {
     imageLoaded(playerSprite),
   ])
     .then(() => {
-
-      getplayerId();
-  // Check if there is a stored game state in localStorage
-  const storedGameState = localStorage.getItem('gameState');
-  if (storedGameState) {
-    // Parse and set the game state variables
-    const gameState = JSON.parse(storedGameState);
-    currentLevel = gameState.currentLevel;
-    loadAndRenderLevel(currentLevel);
-  } else {
-    // No stored game state, load a random level
+    getplayerId();
     currentLevel = 'levels/level1.txt'
     loadAndRenderLevel(currentLevel);
+    
     recordTimeAtInitialize();
-  }
-  storeLevelNumber();
-  showLevel();
+    storeLevelNumber();
+    showLevel();
 })
     .catch((error) => {
       console.error("Error loading sprites:", error);
