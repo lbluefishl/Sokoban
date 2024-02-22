@@ -461,6 +461,7 @@ function capturePlayerMove(dx, dy) {
 function recordUserCompletion() {
 
   const data = {
+    idleTime: localStorage.getItem('idleTime'),
     playerId: localStorage.getItem('playerId'),
     durationAfterBreak: localStorage.getItem('durationAfterBreak'),
     durationBeforeBreak: localStorage.getItem('durationBeforeBreak'),
@@ -624,6 +625,7 @@ function generateNewLevel() {
   showLevel();
   recordTimeAtInitialize();
   resetTimer();
+  localStorage.setItem('idleTime', 0);
 }
 
 function determineNextLevel() {
