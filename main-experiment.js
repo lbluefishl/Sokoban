@@ -811,23 +811,20 @@ function resetTimer() {
 
 
 let lastActiveTime = Date.now();
-let idleInterval = setInterval(timerIncrement, 60000);
+let idleInterval = setInterval(timerIncrement, 1000);
 
 function timerIncrement() {
   let currentTime = Date.now();
-  let idleTime = (currentTime - lastActiveTime) / (60000);
+  let idleTime = (currentTime - lastActiveTime) / (1000);
   let storedIdleTime = parseInt(localStorage.getItem('idleTime'));
   storedIdleTime += idleTime;
   localStorage.setItem('idleTime', storedIdleTime);
   lastActiveTime = Date.now();
 }
 
-// Reset idle time on user interaction
 function resetIdleTime() {
   lastActiveTime = Date.now();
 }
-
-
 
 document.addEventListener('mousemove', resetIdleTime);
 document.addEventListener('keypress', resetIdleTime);
