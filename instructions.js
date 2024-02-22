@@ -10,7 +10,7 @@ const conditions = [
 ];
 
 const totalTrials = 3;
-const nums = [5, 6, 7, 8, 11];
+const nums = [5, 6, 7, 8];
 const trials = permute(nums, totalTrials);
 
 
