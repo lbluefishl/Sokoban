@@ -144,7 +144,6 @@ function checkRepetitiveMoves() {
   if (gameStateHistory.length < 2) return;
   for (let i = gameStateHistory.length - 2 ; i >= 0; i--) {
     if (JSON.stringify(gameStateHistory[i]) === JSON.stringify(levelArray)) {
-      console.log('same array')
       moveset.splice(i); 
       gameStateHistory.splice(i);
       return;
