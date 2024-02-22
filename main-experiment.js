@@ -23,8 +23,8 @@ let timer;
 
 
 let currentLevel;
-let levelArray; 
-let gameStateHistory = []; 
+let levelArray;
+let gameStateHistory = [];
 let timeAtInitialize;
 let timeBeforeBreak;
 let timeAtWin;
@@ -142,9 +142,10 @@ function handlePlayerMove(dx, dy) {
 function checkRepetitiveMoves() {
   // check 2 states before
   if (gameStateHistory.length < 2) return;
-  for (let i = gameStateHistory.length - 2 ; i >= 0; i--) {
+  for (let i = gameStateHistory.length - 2; i >= 0; i--) {
     if (JSON.stringify(gameStateHistory[i]) === JSON.stringify(levelArray)) {
-      moveset.splice(i); 
+
+      moveset.splice(i);
       gameStateHistory.splice(i);
       return;
     }
@@ -155,7 +156,7 @@ function checkRepetitiveMoves() {
 function handleKeyDown(event) {
   const key = event.key;
 
-  if ( key === 'ArrowUp' || key === 'ArrowDown') 
+  if (key === 'ArrowUp' || key === 'ArrowDown')
     event.preventDefault();
 
   switch (key) {
@@ -171,9 +172,9 @@ function handleKeyDown(event) {
     case "ArrowDown":
       handlePlayerMove(0, 1);
       break;
- //   case "u":
- //     undoLastMove();
- //     break;
+    //   case "u":
+    //     undoLastMove();
+    //     break;
     case "r":
       resetLevel();
       break;
@@ -263,7 +264,8 @@ function renderLevel(levelArray) {
     }
   }
   setTimeout(() => {
-    loadingScreen.style.display = "none";},2000)
+    loadingScreen.style.display = "none";
+  }, 2000)
 }
 
 
@@ -288,7 +290,7 @@ function resetLevel() {
     .catch(error => {
       console.error("Error loading or parsing the level data:", error);
     });
-    
+
 }
 
 
@@ -347,18 +349,28 @@ function initializeGame() {
     imageLoaded(playerSprite),
   ])
     .then(() => {
-    getplayerId();
-    currentLevel = 'levels/level1.txt'
-    loadAndRenderLevel(currentLevel);
-    
-    recordTimeAtInitialize();
-    storeLevelNumber();
-    showLevel();
-})
+
+      getplayerId();
+      // Check if there is a stored game state in localStorage
+      const storedGameState = localStorage.getItem('gameState');
+      if (storedGameState) {
+        // Parse and set the game state variables
+        const gameState = JSON.parse(storedGameState);
+        currentLevel = gameState.currentLevel;
+        loadAndRenderLevel(currentLevel);
+      } else {
+        getplayerId();
+        currentLevel = 'levels/level1.txt'
+        loadAndRenderLevel(currentLevel);
+        recordTimeAtInitialize();
+      }
+      storeLevelNumber();
+      showLevel();
+    })
     .catch((error) => {
       console.error("Error loading sprites:", error);
     });
-   
+
 }
 
 
@@ -464,14 +476,14 @@ function recordUserCompletion() {
     r3b: localStorage.getItem('r3b'),
     correctValue: localStorage.getItem('correct'),
     incorrectValue: localStorage.getItem('incorrect'),
-     prolificPID: localStorage.getItem('prolificPID'),
-     studyID: localStorage.getItem('studyID'),
-     sessionID: localStorage.getItem('sessionID'),
+    prolificPID: localStorage.getItem('prolificPID'),
+    studyID: localStorage.getItem('studyID'),
+    sessionID: localStorage.getItem('sessionID'),
     condition: JSON.parse(localStorage.getItem('condition'))[0],
     beforeBreakMovesets: JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]').map(arr => [arr.join('')]),
     afterBreakMovesets: JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]').map(arr => [arr.join('')])
   };
-  
+
   fetch('https://sokoban-badc101a491f.herokuapp.com/complete-level', {
     method: 'POST',
     headers: {
@@ -479,16 +491,16 @@ function recordUserCompletion() {
     },
     body: JSON.stringify(data),
   })
-  .then(response => {
-    if (response.ok) {
-      console.log('User completion recorded successfully!');
-    } else {
-      console.log('Error recording user completion:', response.status);
-    }
-  })
-  .catch(error => {
-    console.error('Error recording user completion:', error);
-  });
+    .then(response => {
+      if (response.ok) {
+        console.log('User completion recorded successfully!');
+      } else {
+        console.log('Error recording user completion:', response.status);
+      }
+    })
+    .catch(error => {
+      console.error('Error recording user completion:', error);
+    });
 }
 
 
@@ -518,10 +530,10 @@ function recordTimeAtWin() {
   timeAfterBreak = localStorage.getItem('timeAfterBreak');
   timeAtInitialize = localStorage.getItem('timeAtInitialize');
   // Calculate time intervals
-  const durationToBeatGame = ((new Date(timeAtWin) - new Date(timeAtInitialize))/1000).toFixed(2);
-  const durationBeforeBreak = timeBeforeBreak ? ((new Date(timeBeforeBreak) - new Date(timeAtInitialize))/1000).toFixed(2) : null;
-  const durationAfterBreak = timeBeforeBreak ? ((new Date(timeAtWin) - new Date(timeAfterBreak))/1000).toFixed(2) : null;
-  const durationBreak = timeBeforeBreak ? ((new Date(timeAfterBreak) - new Date(timeBeforeBreak))/1000).toFixed(2) : null; 
+  const durationToBeatGame = ((new Date(timeAtWin) - new Date(timeAtInitialize)) / 1000).toFixed(2);
+  const durationBeforeBreak = timeBeforeBreak ? ((new Date(timeBeforeBreak) - new Date(timeAtInitialize)) / 1000).toFixed(2) : null;
+  const durationAfterBreak = timeBeforeBreak ? ((new Date(timeAtWin) - new Date(timeAfterBreak)) / 1000).toFixed(2) : null;
+  const durationBreak = timeBeforeBreak ? ((new Date(timeAfterBreak) - new Date(timeBeforeBreak)) / 1000).toFixed(2) : null;
   // Store time intervals in localStorage
   localStorage.setItem('durationToBeatGame', durationToBeatGame);
   localStorage.setItem('durationBeforeBreak', durationBeforeBreak);
@@ -558,27 +570,27 @@ function saveMoveset() {
 
 function clearLocalStorageExceptPlayerId() {
   // clears local storage except for playerID, condition, and trial so that it is kept for further trials; condition array is reduced until it is empty so that all participants participate in all conditions
-   const playerId = localStorage.getItem('playerId'); 
-   const playerCondition = JSON.parse(localStorage.getItem('condition'));
-   const playerTrial = JSON.parse(localStorage.getItem('trial'));
-   const prolificPID = localStorage.getItem('prolificPID');
-   const sessionID = localStorage.getItem('sessionID');
-   const studyID = localStorage.getItem('studyID');
-   const trialOrder = localStorage.getItem('trialOrder');
-   const conditionOrder = localStorage.getItem('conditionOrder');
-   const idleTime = localStorage.getItem('idleTime');
-   localStorage.clear(); 
-   localStorage.setItem('playerId', playerId); 
-   localStorage.setItem('condition', JSON.stringify(playerCondition));
-   localStorage.setItem('trial', JSON.stringify(playerTrial));
-   localStorage.setItem('prolificPID', prolificPID);
-   localStorage.setItem('sessionID', sessionID);
-   localStorage.setItem('studyID', studyID);
-   localStorage.setItem('trialOrder', trialOrder);
-   localStorage.setItem('conditionOrder', conditionOrder);
-   localStorage.setItem('idleTime', idleTime);
- }
- 
+  const playerId = localStorage.getItem('playerId');
+  const playerCondition = JSON.parse(localStorage.getItem('condition'));
+  const playerTrial = JSON.parse(localStorage.getItem('trial'));
+  const prolificPID = localStorage.getItem('prolificPID');
+  const sessionID = localStorage.getItem('sessionID');
+  const studyID = localStorage.getItem('studyID');
+  const trialOrder = localStorage.getItem('trialOrder');
+  const conditionOrder = localStorage.getItem('conditionOrder');
+  const idleTime = localStorage.getItem('idleTime');
+  localStorage.clear();
+  localStorage.setItem('playerId', playerId);
+  localStorage.setItem('condition', JSON.stringify(playerCondition));
+  localStorage.setItem('trial', JSON.stringify(playerTrial));
+  localStorage.setItem('prolificPID', prolificPID);
+  localStorage.setItem('sessionID', sessionID);
+  localStorage.setItem('studyID', studyID);
+  localStorage.setItem('trialOrder', trialOrder);
+  localStorage.setItem('conditionOrder', conditionOrder);
+  localStorage.setItem('idleTime', idleTime);
+}
+
 
 function showLevel() {
   levelDisplay.innerHTML = localStorage.getItem('currentLevelNumber')
@@ -590,19 +602,19 @@ function initialTimePassed() {
   const timeAfterBreak = localStorage.getItem('timeAfterBreak'); // If break already taken, do not prompt another break. Else check if time has passed for break. 
   if (timeAfterBreak) {
 
-    return false; 
+    return false;
   }
- // 2 minutes 
-  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > halfTime ;
+  // 2 minutes 
+  return new Date() - new Date(localStorage.getItem('timeAtInitialize')) > halfTime;
 }
 
 function totalTimePassed() {
   const timeAfterBreak = localStorage.getItem('timeAfterBreak');
   if (timeAfterBreak === null || timeAfterBreak === undefined) {
-    return false; 
+    return false;
   }
   // 2 minutes
-  return new Date() - new Date(timeAfterBreak) > halfTime ;
+  return new Date() - new Date(timeAfterBreak) > halfTime;
 }
 
 function generateNewLevel() {
@@ -612,9 +624,9 @@ function generateNewLevel() {
   recordTimeAtInitialize();
   resetTimer();
 }
-  
+
 function determineNextLevel() {
-  const currentLevelNumber = localStorage.getItem('currentLevelNumber'); 
+  const currentLevelNumber = localStorage.getItem('currentLevelNumber');
 
   if (parseInt(currentLevelNumber) > 2) {
     const trials = JSON.parse(localStorage.getItem('trial'));
@@ -622,7 +634,7 @@ function determineNextLevel() {
     trials.shift();
     localStorage.setItem('trial', JSON.stringify(trials));
   } else {
-    currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber'))+1}.txt`
+    currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber')) + 1}.txt`
   }
 
 }
@@ -644,15 +656,15 @@ function timeCheck() {
   const currentLevelNumber = parseInt(localStorage.getItem('currentLevelNumber'));
   if (currentLevelNumber < 4) return;
   if (totalTimePassed()) {
-    showPopup("Thank you for your effort on this puzzle. You will now move on.","nextlevel");
+    showPopup("Thank you for your effort on this puzzle. You will now move on.", "nextlevel");
     return
   } else if (initialTimePassed()) {
     if (JSON.parse(localStorage.getItem('condition'))[0] == 1) {
-      showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then continue working on the puzzle.","control");
+      showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then continue working on the puzzle.", "control");
       return
     }
-    showPopup("Please respond to the following statements. Afterwards, you will take a short break prior to resuming work on the puzzle. ","break");
-    
+    showPopup("Please respond to the following statements. Afterwards, you will take a short break prior to resuming work on the puzzle. ", "break");
+
   }
 }
 
@@ -669,17 +681,17 @@ function showPopup(message, type) {
   form.reset();
   document.removeEventListener("keydown", handleKeyDown);
 
-  
-function removePopup() {
-  confirmButton.removeEventListener('click', handleBreakClick);
-  continueButton.removeEventListener('click', handleNextLevelClick);
-  confirmButton.removeEventListener('click', handleContinueClick);
-  form.style.display = 'none';
-  overlay.style.display = 'none';
-  popup.style.display = 'none';
-  continueButton.style.display = 'none';
-  document.addEventListener("keydown", handleKeyDown);
-}
+
+  function removePopup() {
+    confirmButton.removeEventListener('click', handleBreakClick);
+    continueButton.removeEventListener('click', handleNextLevelClick);
+    confirmButton.removeEventListener('click', handleContinueClick);
+    form.style.display = 'none';
+    overlay.style.display = 'none';
+    popup.style.display = 'none';
+    continueButton.style.display = 'none';
+    document.addEventListener("keydown", handleKeyDown);
+  }
 
   if (type === 'control') {
     form.style.display = 'block';
@@ -717,8 +729,8 @@ function removePopup() {
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
     localStorage.setItem('confidence_before', document.querySelector('input[name="confidence_before"]:checked').value);
     localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
-    localStorage.setItem('r2b',  document.querySelector('input[name="r2b"]:checked').value);
-    localStorage.setItem('r3b',  document.querySelector('input[name="r3b"]:checked').value);
+    localStorage.setItem('r2b', document.querySelector('input[name="r2b"]:checked').value);
+    localStorage.setItem('r3b', document.querySelector('input[name="r3b"]:checked').value);
     removePopup();
     const gameState = {
       currentLevel: currentLevel,
@@ -742,15 +754,15 @@ function removePopup() {
 function redirectToBreak() {
   participantCondition = JSON.parse(localStorage.getItem('condition'))[0];
   isRedirecting = true;
-  window.location.href =  `break-${participantCondition}.html`;
+  window.location.href = `break-${participantCondition}.html`;
 }
- 
+
 // participant is in each condition until no more conditions remain. At that point they finish with a survey. 
 function removeCondition() {
   const participantCondition = JSON.parse(localStorage.getItem('condition'));
   participantCondition.shift();
   if (participantCondition.length === 0) redirectToSummary();
-  localStorage.setItem('condition',JSON.stringify(participantCondition));
+  localStorage.setItem('condition', JSON.stringify(participantCondition));
 }
 
 
@@ -799,20 +811,20 @@ function resetTimer() {
 
 
 let lastActiveTime = Date.now();
-let idleInterval = setInterval(timerIncrement, 60000); 
+let idleInterval = setInterval(timerIncrement, 60000);
 
 function timerIncrement() {
-    let currentTime = Date.now();
-    let idleTime = (currentTime - lastActiveTime) / (60000); 
-    let storedIdleTime = parseInt(localStorage.getItem('idleTime'));
-    storedIdleTime += idleTime;
-    localStorage.setItem('idleTime', storedIdleTime);
-    lastActiveTime = Date.now();
+  let currentTime = Date.now();
+  let idleTime = (currentTime - lastActiveTime) / (60000);
+  let storedIdleTime = parseInt(localStorage.getItem('idleTime'));
+  storedIdleTime += idleTime;
+  localStorage.setItem('idleTime', storedIdleTime);
+  lastActiveTime = Date.now();
 }
 
 // Reset idle time on user interaction
 function resetIdleTime() {
-    lastActiveTime = Date.now();
+  lastActiveTime = Date.now();
 }
 
 
