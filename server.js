@@ -40,7 +40,7 @@ app.post('/complete-level', async (req, res) => {
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('pilot4');
+  const db = client.db('pilot5');
   const collection = db.collection(collectionName);
 
   // Check if the player id exists in the collection
@@ -116,7 +116,7 @@ app.post('/submit-survey', async (req, res) => {
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('pilot4'); // Replace 'Sokoban' with your actual database name
+  const db = client.db('pilot5'); // Replace 'Sokoban' with your actual database name
   const collection = db.collection(collectionName);
 
   // Check if a document with the same playerId already exists in the collection
@@ -175,7 +175,7 @@ app.post('/submit-summary', async (req, res) => {
   
 
   // Access the MongoDB collection based on the level number
-  const db = client.db('pilot4'); // Replace 'Sokoban' with your actual database name
+  const db = client.db('pilot5'); // Replace 'Sokoban' with your actual database name
   const collection = db.collection('surveys');
 
   // Check if a document with the same playerId already exists in the collection
@@ -229,7 +229,7 @@ app.post('/complete-level-pilot', async (req, res) => {
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
-  const db = client.db('Sokoban-pilot4');
+  const db = client.db('Sokoban-pilot5');
   const collection = db.collection(collectionName);
 
   // Check if the player id exists in the collection
