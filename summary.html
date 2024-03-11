@@ -202,8 +202,8 @@
         const prolificPID = localStorage.getItem('prolificPID');
         const studyID = localStorage.getItem('studyID');
         const sessionID = localStorage.getItem('sessionID');
-        const trialOrder = JSON.parse(localStorage.getItem('trialOrder').map(arr => [arr.join('')]));
-        const conditionOrder = JSON.parse(localStorage.getItem('conditionOrder').map(arr => [arr.join('')]));
+        const trialOrder = JSON.parse(localStorage.getItem('trialOrder')).join('');
+        const conditionOrder = JSON.parse(localStorage.getItem('conditionOrder')).join('');
         const completedAllLevels = localStorage.getItem('completedAllLevels');
         const idleTime = localStorage.getItem('idleTime');
         const playerId = localStorage.getItem('playerId');

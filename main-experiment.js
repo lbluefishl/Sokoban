@@ -472,7 +472,6 @@ function recordUserCompletion() {
     difficultyValue: localStorage.getItem('difficulty'),
     scrollCount: localStorage.getItem('scroll'),
     stuckValue: localStorage.getItem('stuck'),
-    confidence_before: localStorage.getItem('confidence_before'),
     r1b: localStorage.getItem('r1b'),
     r2b: localStorage.getItem('r2b'),
     r3b: localStorage.getItem('r3b'),
@@ -717,7 +716,7 @@ function showPopup(message, type) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
-    localStorage.setItem('confidence_before', document.querySelector('input[name="confidence_before"]:checked').value);
+
     localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
     localStorage.setItem('r2b', document.querySelector('input[name="r2b"]:checked').value);
     localStorage.setItem('r3b', document.querySelector('input[name="r3b"]:checked').value);
@@ -730,7 +729,6 @@ function showPopup(message, type) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
-    localStorage.setItem('confidence_before', document.querySelector('input[name="confidence_before"]:checked').value);
     localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
     localStorage.setItem('r2b', document.querySelector('input[name="r2b"]:checked').value);
     localStorage.setItem('r3b', document.querySelector('input[name="r3b"]:checked').value);
