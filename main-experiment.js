@@ -330,7 +330,6 @@ function checkWinCondition() {
   recordUserCompletion();
   determineNextLevel();
   clearLocalStorageExceptPlayerId();
-  storeLevelNumber();
   handleEarlyCompletion();
 }
 
@@ -340,15 +339,13 @@ function handleEarlyCompletion() {
   const practiceTrials = conditions.length > 3;
   const controlCondition = conditions[0] == 1;
   if (!practiceTrials && !controlCondition && !allTrialsDone)
-    showPopup("Please respond to the following statements about your current status and feelings towards the puzzle you were working on. You will then take a short break before working on the next puzzle.", "break");
-
-  else if (!practiceTrials && controlCondition && !allTrialsDone)
   {
-    removeCondition();
-    showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then work on the next puzzle.", "control");
+    showPopup("Please respond to the following statements about your current status and feelings towards the puzzle you were working on. You will then take a short break before working on the next puzzle.", "break");
+    storeLevelNumber();
   }
   else 
   {
+    storeLevelNumber();
     removeCondition();
     generateNewLevel();
   }
@@ -743,7 +740,6 @@ function showPopup(message, type) {
     removePopup();
     recordTimeAfterBreak();
     resetTimer();
-    if (levelComplete == 1) generateNewLevel();
   }
 
   function handleBreakClick(event) {
