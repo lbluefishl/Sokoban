@@ -18,7 +18,6 @@ const sessionID = localStorage.getItem('sessionID');
 const maxTime = 180000;
 const halfTime = 120000;
 
-let levelComplete = 0;
 let isRedirecting = false;
 let timer;
 
@@ -323,37 +322,18 @@ function checkWinCondition() {
   }
 
   // Assuming you meet win conditions, store participant data and move to new level
+  const playerId = localStorage.getItem('playerId');
+  const currentLevelNumber = localStorage.getItem('currentLevelNumber');
   localStorage.setItem('completedLevel', "1");
-  levelComplete = 1;
   recordTimeAtWin();
   saveMoveset();
   recordUserCompletion();
+  removeCondition();
   determineNextLevel();
   clearLocalStorageExceptPlayerId();
-  storeLevelNumber();
-  handleEarlyCompletion();
+  generateNewLevel();
 }
 
-function handleEarlyCompletion() {
-  const conditions = JSON.parse(localStorage.getItem('condition'));
-  const allTrialsDone = conditions.length == 1;
-  const practiceTrials = conditions.length > 3;
-  const controlCondition = conditions[0] == 1;
-  if (!practiceTrials && !controlCondition && !allTrialsDone)
-    showPopup("Please respond to the following statements about your current status and feelings towards the puzzle you were working on. You will then take a short break before working on the next puzzle.", "break");
-
-  else if (!practiceTrials && controlCondition && !allTrialsDone)
-  {
-    removeCondition();
-    showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then work on the next puzzle.", "control");
-  }
-  else 
-  {
-    removeCondition();
-    generateNewLevel();
-  }
-    
-}
 
 
 
@@ -384,7 +364,6 @@ function initializeGame() {
         currentLevel = 'levels/level1.txt'
         loadAndRenderLevel(currentLevel);
         recordTimeAtInitialize();
-        levelComplete = 0;
       }
       storeLevelNumber();
       showLevel();
@@ -493,6 +472,7 @@ function recordUserCompletion() {
     difficultyValue: localStorage.getItem('difficulty'),
     scrollCount: localStorage.getItem('scroll'),
     stuckValue: localStorage.getItem('stuck'),
+    confidence_before: localStorage.getItem('confidence_before'),
     r1b: localStorage.getItem('r1b'),
     r2b: localStorage.getItem('r2b'),
     r3b: localStorage.getItem('r3b'),
@@ -565,8 +545,7 @@ function recordTimeAtWin() {
 
 
 function storeLevelNumber() {
-  const level = parseInt(currentLevel.split("level")[2].split(".")[0]);
-  localStorage.setItem('currentLevelNumber', level);
+  localStorage.setItem('currentLevelNumber', parseInt(currentLevel.split("level")[2].split(".")[0]));
 }
 
 
@@ -642,6 +621,7 @@ function totalTimePassed() {
 
 function generateNewLevel() {
   loadAndRenderLevel(currentLevel);
+  storeLevelNumber();
   showLevel();
   recordTimeAtInitialize();
   resetTimer();
@@ -659,6 +639,7 @@ function determineNextLevel() {
   } else {
     currentLevel = `levels/level${parseInt(localStorage.getItem('currentLevelNumber')) + 1}.txt`
   }
+
 }
 
 function skipLevel() {
@@ -685,11 +666,10 @@ function timeCheck() {
       showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then continue working on the puzzle.", "control");
       return
     }
-    showPopup("Please respond to the following statements about your current status and feelings towards the puzzle you were working on. Afterwards, you will take a short break prior to resuming work on the puzzle. ", "break");
+    showPopup("Please respond to the following statements. Afterwards, you will take a short break prior to resuming work on the puzzle. ", "break");
 
   }
 }
-
 
 function showPopup(message, type) {
   const overlay = document.getElementById('overlay');
@@ -737,19 +717,20 @@ function showPopup(message, type) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
+    localStorage.setItem('confidence_before', document.querySelector('input[name="confidence_before"]:checked').value);
     localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
     localStorage.setItem('r2b', document.querySelector('input[name="r2b"]:checked').value);
     localStorage.setItem('r3b', document.querySelector('input[name="r3b"]:checked').value);
     removePopup();
     recordTimeAfterBreak();
     resetTimer();
-    if (levelComplete == 1) generateNewLevel();
   }
 
   function handleBreakClick(event) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
+    localStorage.setItem('confidence_before', document.querySelector('input[name="confidence_before"]:checked').value);
     localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
     localStorage.setItem('r2b', document.querySelector('input[name="r2b"]:checked').value);
     localStorage.setItem('r3b', document.querySelector('input[name="r3b"]:checked').value);
@@ -776,7 +757,6 @@ function showPopup(message, type) {
 function redirectToBreak() {
   participantCondition = JSON.parse(localStorage.getItem('condition'))[0];
   isRedirecting = true;
-  if (levelComplete == 1) removeCondition();
   window.location.href = `break-${participantCondition}.html`;
 }
 

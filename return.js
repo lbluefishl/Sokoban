@@ -19,6 +19,7 @@ form.addEventListener("submit", function (event) {
     const r1 = document.querySelector('input[name="r1"]:checked').value;
     const r2 = document.querySelector('input[name="r2"]:checked').value;
     const r3 = document.querySelector('input[name="r3"]:checked').value;
+    const confidence_after = document.querySelector('input[name="confidence_after"]:checked').value;
     // Create the data object to be sent to the server
     const data = {
       mw1: mw1,
@@ -33,6 +34,7 @@ form.addEventListener("submit", function (event) {
       r3: r3,
         playerId: localStorage.getItem('playerId'),
         levelNumber: localStorage.getItem('currentLevelNumber'),
+        confidence_after: confidence_after
       };
     
   

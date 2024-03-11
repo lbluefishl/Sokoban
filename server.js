@@ -36,7 +36,7 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, idleTime } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, confidence_before, idleTime } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -50,7 +50,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, levelNumber, idleTime } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, confidence_before, levelNumber, idleTime } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -84,6 +84,7 @@ app.post('/complete-level', async (req, res) => {
         prolificPID,
         studyID,
         sessionID,
+        confidence_before,
         idleTime
       });
       console.log('Document inserted:', result.insertedId);
@@ -110,6 +111,7 @@ app.post('/submit-survey', async (req, res) => {
     r2,
     r3, 
     playerId, 
+    confidence_after,
     levelNumber } = req.body;
 
   // Access the MongoDB collection based on the level number
@@ -137,6 +139,7 @@ app.post('/submit-survey', async (req, res) => {
             r1,
             r2,
             r3,
+            confidence_after
           }
         }
       );
@@ -155,6 +158,7 @@ app.post('/submit-survey', async (req, res) => {
         r1,
         r2,
         r3,
+        confidence_after
       });
       console.log('Survey data inserted:', result.insertedId);
     }
