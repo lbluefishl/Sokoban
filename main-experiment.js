@@ -197,6 +197,7 @@ function loadAndRenderLevel(levelFile) {
       playerX = playerStartPosition.x;
       playerY = playerStartPosition.y;
       gameStateHistory = [];
+      levelComplete = 0;
       renderLevel(levelArray);
     })
     .catch(error => {
@@ -341,7 +342,6 @@ function handleEarlyCompletion() {
   if (!practiceTrials && !controlCondition && !allTrialsDone)
   {
     showPopup("Please respond to the following statements about your current status and feelings towards the puzzle you were working on. You will then take a short break before working on the next puzzle.", "break");
-    storeLevelNumber();
   }
   else 
   {
@@ -381,7 +381,6 @@ function initializeGame() {
         currentLevel = 'levels/level1.txt'
         loadAndRenderLevel(currentLevel);
         recordTimeAtInitialize();
-        levelComplete = 0;
       }
       storeLevelNumber();
       showLevel();
