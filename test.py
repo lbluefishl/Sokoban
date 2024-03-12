@@ -3,7 +3,7 @@ import numpy as np
 from collections import defaultdict
 
 #lvl5
-movesets5 = [
+movesets = [
 "rrddlludrruullulduuurdddrrddlludrruull",
 "rrddllulurluurdddur",
 "rrddllulurluurddld",
@@ -43,7 +43,7 @@ movesets5 = [
 
 ]
 #level6
-movesets = [
+movesets6 = [
 "uluuldurrd",
 "uluurddluuldrrdld",
 "luuurdlddrrulluul",
@@ -149,7 +149,7 @@ movesets7 = [
 ]
 
 #level8
-movesets8 = [
+movesets = [
  "rlddrur", 
 "rlddr", 
 "rdrrulldluuddd", 
@@ -217,10 +217,14 @@ movesets8 = [
 
 # Define custom distance metric
 def distance(moveset1, moveset2):
-    common_positions = min(len(moveset1), len(moveset2))
-    num_differences = sum(1 for i in range(common_positions) if moveset1[i] != moveset2[i])
+    common_prefix_length = 0
     min_length = min(len(moveset1), len(moveset2))
-    proportion_difference = num_differences / min_length
+    for i in range(min_length):
+        if moveset1[i] == moveset2[i]:
+            common_prefix_length += 1
+        else:
+            break
+    proportion_difference = 1 - common_prefix_length / min_length
     return proportion_difference
 
 # Calculate distance matrix
@@ -235,7 +239,7 @@ for i in range(len(movesets)):
 cluster_sum_distances = defaultdict(list)
 for n_clusters in range(1, 20):
     # Apply Agglomerative Clustering
-    agg_clustering = AgglomerativeClustering(n_clusters=n_clusters, metric='precomputed', linkage='single')
+    agg_clustering = AgglomerativeClustering(n_clusters=n_clusters, metric='precomputed', linkage='complete')
     cluster_labels = agg_clustering.fit_predict(dist_matrix)
 
     # Calculate sum of distances within clusters
