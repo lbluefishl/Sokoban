@@ -11,10 +11,13 @@ form.addEventListener("submit", function (event) {
     // Get the form values
     const mw1 = document.querySelector('input[name="mw1"]:checked').value;
     const mw2 = document.querySelector('input[name="mw2"]:checked').value;
+    const mw3 = document.querySelector('input[name="mw3"]:checked').value;
     const f1 = document.querySelector('input[name="f1"]:checked').value;   
     const f2 = document.querySelector('input[name="f2"]:checked').value;   
+    const f3 = document.querySelector('input[name="f3"]:checked').value;   
     const e1 = document.querySelector('input[name="e1"]:checked').value;
     const e2 = document.querySelector('input[name="e2"]:checked').value;
+    const e3 = document.querySelector('input[name="e3"]:checked').value;
     const pw = document.querySelector('input[name="pw"]:checked').value;
     const r1 = document.querySelector('input[name="r1"]:checked').value;
     const r2 = document.querySelector('input[name="r2"]:checked').value;
@@ -24,10 +27,13 @@ form.addEventListener("submit", function (event) {
     const data = {
       mw1: mw1,
       mw2: mw2,
+      mw3: mw3,
       f1: f1,
       f2: f2,
+      f3: f3,
       e1: e1,
       e2: e2,
+      e3: e3,
       pw: pw,
       r1: r1,
       r2: r2,
