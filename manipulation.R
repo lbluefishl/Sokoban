@@ -1,0 +1,7 @@
+library(lme4)
+data <- read_csv("")
+attach(data)
+id <- as.factor(prolificPID)
+condition <- as.factor(condition)
+lm <- lmer(focus ~ condition + (1|id))
+summary(lm)
