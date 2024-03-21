@@ -1,8 +1,7 @@
-library(readr)
-factors <- read_csv("factors.csv")
-model <- factanal(factors, factor=4)
+library(readxl)
+data <- read_excel("pilotrawdata.xlsx", sheet = "factors578")
+model <- factanal(data, factor=4)
 
 
 library(psych)
-alpha(factors[,1:2])
-alpha(factors[,3:4])
+alpha(data[,1:2])

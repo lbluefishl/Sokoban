@@ -1,7 +1,15 @@
 library(lme4)
-data <- read_csv("")
+library(readxl)
+library(lmerTest)
+data <- read_excel("pilotrawdata.xlsx", sheet = "condition23")
 attach(data)
 id <- as.factor(prolificPID)
 condition <- as.factor(condition)
 lm <- lmer(focus ~ condition + (1|id))
-summary(lm)
+lm2 <- lmer(enjoy ~ condition + (1|id))
+lm3 <- lmer(mw ~ condition + (1|id))
+lm4 <- lmer(pw ~ condition + (1|id))
+lm5 <- lmer(rd ~ condition + (1|id))
+
+#mind waandering associated with solving?
+lm6 <- glmer(completedLevel ~ mw + (1|id), family="binomial")

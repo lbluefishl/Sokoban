@@ -43,7 +43,7 @@ movesets5 = [
 
 ]
 #level6
-movesets6 = [
+movesets = [
 "uluuldurrd",
 "uluurddluuldrrdld",
 "luuurdlddrrulluul",
@@ -120,7 +120,7 @@ movesets6 = [
 "uluuldrurdld"
 ]
 #level7
-movesets = [
+movesets7 = [
      "rulurrrdlrdrruul", 
  "rulurrrdlrdrruul", 
  "uurrrddlurul", 

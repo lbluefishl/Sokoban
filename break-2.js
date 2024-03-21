@@ -24,7 +24,7 @@ function getRandomNumber(min, max) {
 
 // Function to display a new number on the screen
 function showNumber() {
-  const number = getRandomNumber(1, 1000); // Generate a random number
+  const number = getRandomNumber(1, 9); // Generate a random number
   numberContainer.textContent = number; // Display the number
 }
 
@@ -55,7 +55,7 @@ function handleChoice(userChoosesOdd) {
     oddButton.style.display = 'inline-block';
     evenButton.style.display = 'inline-block';
     showNumber();
-  }, getRandomNumber(2000, 4000));
+  }, getRandomNumber(5000, 10000));
 }
 
 // Redirect the page after three minutes
