@@ -4,6 +4,7 @@ const loadingText = document.getElementById('loading');
 const startButton = document.getElementById('start');
 let loadedVideosCount = 0;
 var isRedirecting = false;
+const breakTime = 180000;
 
 // Function to check if all videos are loaded
 function checkAllVideosLoaded() {
@@ -56,7 +57,7 @@ videos.forEach(video => {
     localStorage.setItem('scroll', scrollCount)
     isRedirecting = true;
       window.location.href = 'return.html'; // Replace with your desired URL
-    }, 180000);   // 3 minutes
+    }, breakTime);   
 
 
     function shuffleArray(array) {

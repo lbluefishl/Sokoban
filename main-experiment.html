@@ -32,7 +32,7 @@
       <div id="popup-message" style="margin: 10px;">
       </div>
       <form id="difficulty-form" style="display: none;">
-          <table style="margin:auto; margin-bottom: 20px; ">
+        <table style="margin:auto; margin-bottom: 20px; ">
             <tr>
               <th></th>
               <th>Very Low</th>
@@ -105,6 +105,101 @@
             <button class='button' type="submit" id="confirm-button">Submit</button>
           </div>
       </form>
+      <form id="nextlevel-form" style="display: none;">
+        <p style="text-align: center;">Please select the option that best describes your experiences for the level you just worked on.</p>
+        <table id="newMovesTable">
+          <tr>
+            <th></th>
+            <th>Strongly Disagree</th>
+            <th>Disagree</th>
+            <th>Somewhat Disagree</th>
+            <th>Neutral</th>
+            <th>Somewhat Agree</th>
+            <th>Agree</th>
+            <th>Strongly Agree</th>
+          </tr>
+
+          <tr>
+            <td>After the break, I tried new strategies compared to the ones I used in past attempts</td>
+            <td><input type="radio" name="nm1" value="1" required></td>
+            <td><input type="radio" name="nm1" value="2"></td>
+            <td><input type="radio" name="nm1" value="3"></td>
+            <td><input type="radio" name="nm1" value="4"></td>
+            <td><input type="radio" name="nm1" value="5"></td>
+            <td><input type="radio" name="nm1" value="6"></td>
+            <td><input type="radio" name="nm1" value="7"></td>
+          </tr>
+          <tr>
+            <td>After the break, I attempted different moves compared to the ones I used in past attempts.</td>
+            <td><input type="radio" name="nm2" value="1" required></td>
+            <td><input type="radio" name="nm2" value="2"></td>
+            <td><input type="radio" name="nm2" value="3"></td>
+            <td><input type="radio" name="nm2" value="4"></td>
+            <td><input type="radio" name="nm2" value="5"></td>
+            <td><input type="radio" name="nm2" value="6"></td>
+            <td><input type="radio" name="nm2" value="7"></td>
+          </tr>
+          <tr>
+            <td>After the break, I considered moves that diverged from the ones I used in past attempts.</td>
+            <td><input type="radio" name="nm3" value="1" required></td>
+            <td><input type="radio" name="nm3" value="2"></td>
+            <td><input type="radio" name="nm3" value="3"></td>
+            <td><input type="radio" name="nm3" value="4"></td>
+            <td><input type="radio" name="nm3" value="5"></td>
+            <td><input type="radio" name="nm3" value="6"></td>
+            <td><input type="radio" name="nm3" value="7"></td>
+          </tr>
+        </table>
+        <p style="text-align: center;">Some people feel a surprising moment where a solution pops into someone’s mind. The accompanying experience is often called the ‘Aha!’ experience. While working,   </p>
+
+        <table id="aha-moment">
+          <tr>
+            <th></th>
+            <th>Strongly Disagree</th>
+            <th>Disagree</th>
+            <th>Somewhat Disagree</th>
+            <th>Neutral</th>
+            <th>Somewhat Agree</th>
+            <th>Agree</th>
+            <th>Strongly Agree</th>
+          </tr>
+          <tr>
+            <td>I experienced this feeling.</td>
+            <td><input type="radio" name="aha1" value="1" required></td>
+            <td><input type="radio" name="aha1" value="2"></td>
+            <td><input type="radio" name="aha1" value="3"></td>
+            <td><input type="radio" name="aha1" value="4"></td>
+            <td><input type="radio" name="aha1" value="5"></td>
+            <td><input type="radio" name="aha1" value="6"></td>
+            <td><input type="radio" name="aha1" value="7"></td>
+          </tr>
+          <tr>
+            <td>I had a sudden realization of novel puzzle moves.</td>
+            <td><input type="radio" name="aha2" value="1" required></td>
+            <td><input type="radio" name="aha2" value="2"></td>
+            <td><input type="radio" name="aha2" value="3"></td>
+            <td><input type="radio" name="aha2" value="4"></td>
+            <td><input type="radio" name="aha2" value="5"></td>
+            <td><input type="radio" name="aha2" value="6"></td>
+            <td><input type="radio" name="aha2" value="7"></td>
+          </tr>
+          <tr>
+            <td>I felt an unintended burst of puzzle move idea that diverged from the ones I used before the break.</td>
+            <td><input type="radio" name="aha3" value="1" required></td>
+            <td><input type="radio" name="aha3" value="2"></td>
+            <td><input type="radio" name="aha3" value="3"></td>
+            <td><input type="radio" name="aha3" value="4"></td>
+            <td><input type="radio" name="aha3" value="5"></td>
+            <td><input type="radio" name="aha3" value="6"></td>
+            <td><input type="radio" name="aha3" value="7"></td>
+          </tr>
+          </table>  
+        <div class="button-container">
+          <button class='button' type="submit" id="confirm-button2">Submit</button>
+        </div>
+    </form>
+
+
     </div>
     <div class="button-container" style="text-align: center;">
       <button class="button" id="continue-button" style="display: none;">Continue</button>

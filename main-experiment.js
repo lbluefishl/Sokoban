@@ -322,16 +322,9 @@ function checkWinCondition() {
   }
 
   // Assuming you meet win conditions, store participant data and move to new level
-  const playerId = localStorage.getItem('playerId');
-  const currentLevelNumber = localStorage.getItem('currentLevelNumber');
   localStorage.setItem('completedLevel', "1");
   recordTimeAtWin();
-  saveMoveset();
-  recordUserCompletion();
-  removeCondition();
-  determineNextLevel();
-  clearLocalStorageExceptPlayerId();
-  generateNewLevel();
+  showNextLevelPopup()
 }
 
 
@@ -475,6 +468,12 @@ function recordUserCompletion() {
     r1b: localStorage.getItem('r1b'),
     r2b: localStorage.getItem('r2b'),
     r3b: localStorage.getItem('r3b'),
+    nm1: localStorage.getItem('nm1'),
+    nm2: localStorage.getItem('nm2'),
+    nm3: localStorage.getItem('nm3'),
+    aha1: localStorage.getItem('aha1'),
+    aha2: localStorage.getItem('aha2'),
+    aha3: localStorage.getItem('aha3'),
     correctValue: localStorage.getItem('correct'),
     incorrectValue: localStorage.getItem('incorrect'),
     prolificPID: localStorage.getItem('prolificPID'),
@@ -641,9 +640,7 @@ function determineNextLevel() {
 
 }
 
-function skipLevel() {
-  localStorage.setItem('completedLevel', "0");
-  recordTimeAtWin();
+function moveToNextLevel() {
   saveMoveset();
   recordUserCompletion();
   removeCondition();
@@ -669,6 +666,67 @@ function timeCheck() {
 
   }
 }
+
+function showNextLevelPopup() {
+  const currentLevelNumber = parseInt(localStorage.getItem('currentLevelNumber'));
+  const participantCondition = JSON.parse(localStorage.getItem('condition'))[0];
+  const popupMessage = document.getElementById('popup-message');
+  popupMessage.innerHTML = '';
+  if (currentLevelNumber > 3) {
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const confirmButton = document.getElementById('confirm-button2');
+    const form = document.getElementById('nextlevel-form');
+    const newMovesQuestions = document.getElementById('newMovesTable');
+    overlay.style.display = 'block';
+    form.style.display = 'block';
+    if (participantCondition == 1) 
+    {
+      newMovesQuestions.style.display = 'none';
+    }
+    popup.style.display = 'block';
+    form.reset();
+    document.removeEventListener("keydown", handleKeyDown);
+    confirmButton.addEventListener('click', handleFinishClick)
+
+    function handleFinishClick(event) {
+      event.preventDefault();
+      const nm1Input = document.querySelector('input[name="nm1"]:checked');
+      const nm2Input = document.querySelector('input[name="nm2"]:checked');
+      const nm3Input = document.querySelector('input[name="nm3"]:checked');
+
+      if (nm1Input) {
+        localStorage.setItem('nm1', nm1Input.value);
+    }
+    
+    if (nm2Input) {
+        localStorage.setItem('nm2', nm2Input.value);
+    }
+    
+    if (nm3Input) {
+        localStorage.setItem('nm3', nm3Input.value);
+    }
+      localStorage.setItem('aha1', document.querySelector('input[name="aha1"]:checked').value);
+      localStorage.setItem('aha2', document.querySelector('input[name="aha2"]:checked').value);
+      localStorage.setItem('aha3', document.querySelector('input[name="aha3"]:checked').value);
+      confirmButton.removeEventListener('click', handleFinishClick);
+      form.style.display = 'none';
+      overlay.style.display = 'none';
+      popup.style.display = 'none';
+      newMovesQuestions.display = 'block';
+      document.addEventListener("keydown", handleKeyDown);
+      moveToNextLevel();
+    }
+  }
+  else {
+    moveToNextLevel();
+  }
+
+
+}
+
+
+
 
 function showPopup(message, type) {
   const overlay = document.getElementById('overlay');
@@ -743,7 +801,9 @@ function showPopup(message, type) {
   function handleNextLevelClick(event) {
     event.preventDefault();
     removePopup();
-    skipLevel();
+    localStorage.setItem('completedLevel', "0");
+    recordTimeAtWin();
+    showNextLevelPopup();
   }
 
 
@@ -753,6 +813,7 @@ function showPopup(message, type) {
 
 // redirects participants to the corresponding type of break condition
 function redirectToBreak() {
+  saveMoveset();
   participantCondition = JSON.parse(localStorage.getItem('condition'))[0];
   isRedirecting = true;
   window.location.href = `break-${participantCondition}.html`;
@@ -804,8 +865,8 @@ function startTimer() {
 
 function resetTimer() {
   if (JSON.parse(localStorage.getItem('condition'))[0] == undefined) return;
-  clearTimeout(timer); // Clear the existing timer
-  startTimer(); // Start a new timer
+  clearTimeout(timer);
+  startTimer();
 }
 
 

@@ -7,6 +7,7 @@ const overlay = document.getElementById('overlay');
 var correct = 0;
 var incorrect = 0;
 var isRedirecting = false;
+const breakTime = 180000;
 
 continueButton.addEventListener('click', () => {
   showNumber();
@@ -64,7 +65,7 @@ localStorage.setItem('correct',correct);
 localStorage.setItem('incorrect',incorrect);
 isRedirecting = true;
   window.location.href = 'return.html';
-}, 180000); 
+}, breakTime); 
 
 
 window.addEventListener("beforeunload", function (e) {
