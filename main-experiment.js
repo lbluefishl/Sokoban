@@ -323,6 +323,7 @@ function checkWinCondition() {
 
   // Assuming you meet win conditions, store participant data and move to new level
   localStorage.setItem('completedLevel', "1");
+  localStorage.setItem('completedEarly', localStorage.getItem('timeAfterBreak') ? 0 : 1);
   recordTimeAtWin();
   showNextLevelPopup()
 }
@@ -462,6 +463,7 @@ function recordUserCompletion() {
     durationBreak: localStorage.getItem('durationBreak'),
     levelNumber: localStorage.getItem('currentLevelNumber'),
     completedLevel: localStorage.getItem('completedLevel'),
+    completedEarly: localStorage.getItem('completedEarly'),
     difficultyValue: localStorage.getItem('difficulty'),
     scrollCount: localStorage.getItem('scroll'),
     stuckValue: localStorage.getItem('stuck'),
@@ -678,11 +680,14 @@ function showNextLevelPopup() {
     const confirmButton = document.getElementById('confirm-button2');
     const form = document.getElementById('nextlevel-form');
     const newMovesQuestions = document.getElementById('newMovesTable');
+    const newMovesQuestionsText = document.getElementById('newMovesTableText');
     overlay.style.display = 'block';
     form.style.display = 'block';
-    if (participantCondition == 1) 
+    if (participantCondition == 1 || localStorage.getItem('completedEarly') == "1") 
     {
       newMovesQuestions.style.display = 'none';
+      newMovesQuestionsText.style.display = 'none';
+
     }
     popup.style.display = 'block';
     form.reset();
@@ -802,6 +807,7 @@ function showPopup(message, type) {
     event.preventDefault();
     removePopup();
     localStorage.setItem('completedLevel', "0");
+    localStorage.setItem('completedEarly', "0");
     recordTimeAtWin();
     showNextLevelPopup();
   }

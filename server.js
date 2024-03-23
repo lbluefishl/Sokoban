@@ -36,7 +36,7 @@ connectToMongoDB().then(() => {
 });
 
 app.post('/complete-level', async (req, res) => {
-  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, nm1, nm2, nm3, aha1, aha2, aha3, idleTime } = req.body;
+  const { playerId, durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, levelNumber, condition, completedLevel, completedEarly, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, nm1, nm2, nm3, aha1, aha2, aha3, idleTime } = req.body;
 
   // Access the MongoDB collection based on the level number
   const collectionName = `level${levelNumber}`;
@@ -50,7 +50,7 @@ app.post('/complete-level', async (req, res) => {
     try {
       const result = await collection.updateOne(
         { playerId },
-        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, nm1, nm2, nm3, aha1, aha2, aha3, levelNumber, idleTime } }
+        { $set: { durationAfterBreak, durationBeforeBreak, durationToBeatGame, durationBreak, condition, completedLevel, completedEarly, beforeBreakMovesets, afterBreakMovesets, difficultyValue, stuckValue, scrollCount, correctValue, incorrectValue, prolificPID, studyID, sessionID, r1b, r2b, r3b, nm1, nm2, nm3, aha1, aha2, aha3, levelNumber, idleTime } }
       );
       console.log('Document updated:', result.modifiedCount);
     } catch (err) {
@@ -71,6 +71,7 @@ app.post('/complete-level', async (req, res) => {
         durationBreak,
         condition,
         completedLevel,
+        completedEarly,
         beforeBreakMovesets,
         afterBreakMovesets,
         difficultyValue,
