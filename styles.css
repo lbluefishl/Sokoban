@@ -123,9 +123,7 @@ h1 {
 }
 
 .popup {
-  display: none;
   position: fixed;
-
   background-color: #fff;
   padding: 20px;
   border: 1px solid #ccc;

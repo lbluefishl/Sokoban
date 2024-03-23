@@ -655,8 +655,10 @@ function timeCheck() {
 
   // check if in a practice round. If not, assign participant to break task or move to next level
   const currentLevelNumber = parseInt(localStorage.getItem('currentLevelNumber'));
-  if (currentLevelNumber < 4) return;
+  const popup = document.getElementById('popup').style.display;
+  if (currentLevelNumber < 4 || popup != 'none') return;
   if (totalTimePassed()) {
+    recordTimeAtWin();
     showPopup("Thank you for your effort on this puzzle. You will now move on.", "nextlevel");
     return
   } else if (initialTimePassed()) {
@@ -808,7 +810,6 @@ function showPopup(message, type) {
     removePopup();
     localStorage.setItem('completedLevel', "0");
     localStorage.setItem('completedEarly', "0");
-    recordTimeAtWin();
     continueButton.style.display = 'none';
     showNextLevelPopup();
   }
@@ -886,7 +887,9 @@ function timerIncrement() {
   let currentTime = Date.now();
   let idleTime = Math.round((currentTime - lastActiveTime) / 1000);
   let storedIdleTime = parseInt(localStorage.getItem('idleTime'));
-  storedIdleTime += idleTime;
+  const popup = document.getElementById('popup').style.display;
+  if (popup == 'none')
+    storedIdleTime += idleTime;
   localStorage.setItem('idleTime', storedIdleTime);
   lastActiveTime = Date.now();
 }
