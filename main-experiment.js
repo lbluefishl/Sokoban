@@ -809,6 +809,7 @@ function showPopup(message, type) {
     localStorage.setItem('completedLevel', "0");
     localStorage.setItem('completedEarly', "0");
     recordTimeAtWin();
+    continueButton.style.display = 'none';
     showNextLevelPopup();
   }
 
