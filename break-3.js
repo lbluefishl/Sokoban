@@ -9,12 +9,12 @@ const breakTime = 180000;
 // Function to check if all videos are loaded
 function checkAllVideosLoaded() {
   loadedVideosCount++;
-  if (loadedVideosCount >= 8) {
+  if (loadedVideosCount >= 10) {
     // All videos are loaded, introduce a 2-second delay and then show the content
     setTimeout(() => {
       loadingText.style.display = 'none';
         startButton.style.display ='block';
-    }, 2000); // 2000 milliseconds (2 seconds) delay
+    }, 5000); // 2000 milliseconds (2 seconds) delay
   }
 
 }

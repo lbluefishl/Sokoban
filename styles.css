@@ -152,5 +152,10 @@ th, td {
 th {
   background-color: #726f6f;
   color: white;
+  width: 100px;
+}
+
+tr {
+
 }
 
