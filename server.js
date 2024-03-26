@@ -116,6 +116,7 @@ app.post('/submit-survey', async (req, res) => {
     e2,
     e3,
     pw,
+    ra,
     r1,
     r2,
     r3,
@@ -147,6 +148,7 @@ app.post('/submit-survey', async (req, res) => {
             e2,
             e3,
             pw,
+            ra,
             r1,
             r2,
             r3
@@ -169,6 +171,7 @@ app.post('/submit-survey', async (req, res) => {
         e2,
         e3,
         pw,
+        ra,
         r1,
         r2,
         r3
