@@ -19,6 +19,7 @@ form.addEventListener("submit", function (event) {
     const e2 = document.querySelector('input[name="e2"]:checked').value;
     const e3 = document.querySelector('input[name="e3"]:checked').value;
     const pw = document.querySelector('input[name="pw"]:checked').value;
+    const ra = document.querySelector('input[name="ra"]:checked').value;
     const r1 = document.querySelector('input[name="r1"]:checked').value;
     const r2 = document.querySelector('input[name="r2"]:checked').value;
     const r3 = document.querySelector('input[name="r3"]:checked').value;
@@ -38,6 +39,7 @@ form.addEventListener("submit", function (event) {
       r1: r1,
       r2: r2,
       r3: r3,
+      ra: ra,
         playerId: localStorage.getItem('playerId'),
         levelNumber: localStorage.getItem('currentLevelNumber')
 
