@@ -663,10 +663,10 @@ function timeCheck() {
     return
   } else if (initialTimePassed()) {
     if (JSON.parse(localStorage.getItem('condition'))[0] == 1) {
-      showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then continue working on the puzzle.", "control");
+      showPopup("Select the option that best describes how you currently feel. You will then continue working on the puzzle.", "control");
       return
     }
-    showPopup("Respond to the following statements with the option which best represents how you currently feel. Afterwards, you will then take a short break prior to resuming work on the puzzle. ", "break");
+    showPopup("Select the option that best describes how you currently feel. Afterwards, you will then take a short break prior to resuming work on the puzzle. ", "break");
 
   }
 }
