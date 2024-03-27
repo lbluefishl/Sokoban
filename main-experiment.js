@@ -666,7 +666,7 @@ function timeCheck() {
       showPopup("Respond to the following statements with the option which best represents how you currently feel. You will then continue working on the puzzle.", "control");
       return
     }
-    showPopup("Respond to the following statements. Afterwards, you will take a short break prior to resuming work on the puzzle. ", "break");
+    showPopup("Respond to the following statements with the option which best represents how you currently feel. Afterwards, you will then take a short break prior to resuming work on the puzzle. ", "break");
 
   }
 }
