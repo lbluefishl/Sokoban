@@ -178,6 +178,8 @@ function handleKeyDown(event) {
     //     break;
     case "r":
       resetLevel();
+      saveMoveset();
+      timeCheck();
       break;
     default:
       break;
@@ -283,10 +285,8 @@ function resetLevel() {
       const playerStartPosition = findPlayerStartingPosition(levelArray);
       playerX = playerStartPosition.x;
       playerY = playerStartPosition.y;
-      saveMoveset();
       gameStateHistory = [];
       renderLevel(levelArray);
-      timeCheck();
     })
     .catch(error => {
       console.error("Error loading or parsing the level data:", error);
@@ -324,6 +324,7 @@ function checkWinCondition() {
   // Assuming you meet win conditions, store participant data and move to new level
   localStorage.setItem('completedLevel', "1");
   localStorage.setItem('completedEarly', localStorage.getItem('timeAfterBreak') ? 0 : 1);
+  saveMoveset();
   recordTimeAtWin();
   showNextLevelPopup()
 }
@@ -552,17 +553,22 @@ function storeLevelNumber() {
 
 function saveMoveset() {
   const timeBeforeBreak = localStorage.getItem('timeBeforeBreak');
-  if (timeBeforeBreak) {
-    // Player took a break, store moveset in "After Break Movesets" array
-    const afterBreakMovesets = JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]');
-    afterBreakMovesets.push(moveset);
-    localStorage.setItem('afterBreakMovesets', JSON.stringify(afterBreakMovesets));
-  } else {
-    // Player did not take a break, store moveset in "Before Break Movesets" array
-    const beforeBreakMovesets = JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]');
-    beforeBreakMovesets.push(moveset);
-    localStorage.setItem('beforeBreakMovesets', JSON.stringify(beforeBreakMovesets));
+  if (moveset.length != 0)
+  {
+    if (timeBeforeBreak) {
+      // Player took a break, store moveset in "After Break Movesets" array
+      const afterBreakMovesets = JSON.parse(localStorage.getItem('afterBreakMovesets') || '[]');
+      afterBreakMovesets.push(moveset);
+      localStorage.setItem('afterBreakMovesets', JSON.stringify(afterBreakMovesets));
+    } else {
+      // Player did not take a break, store moveset in "Before Break Movesets" array
+      const beforeBreakMovesets = JSON.parse(localStorage.getItem('beforeBreakMovesets') || '[]');
+      beforeBreakMovesets.push(moveset);
+      localStorage.setItem('beforeBreakMovesets', JSON.stringify(beforeBreakMovesets));
+    }
+
   }
+
   moveset = [];
 }
 
@@ -747,7 +753,7 @@ function showPopup(message, type) {
   popupMessage.innerHTML = message;
   form.reset();
   document.removeEventListener("keydown", handleKeyDown);
-
+  saveMoveset();
 
   function removePopup() {
     confirmButton.removeEventListener('click', handleBreakClick);
@@ -762,6 +768,7 @@ function showPopup(message, type) {
 
   if (type === 'control') {
     form.style.display = 'block';
+    resetLevel();
     recordTimeBeforeBreak();
     confirmButton.addEventListener('click', handleContinueClick)
   }
@@ -781,7 +788,6 @@ function showPopup(message, type) {
     event.preventDefault();
     localStorage.setItem('difficulty', document.querySelector('input[name="difficulty-puzzle"]:checked').value);
     localStorage.setItem('stuck', document.querySelector('input[name="stuck-feeling"]:checked').value);
-
     localStorage.setItem('r1b', document.querySelector('input[name="r1b"]:checked').value);
     localStorage.setItem('r2b', document.querySelector('input[name="r2b"]:checked').value);
     localStorage.setItem('r3b', document.querySelector('input[name="r3b"]:checked').value);
@@ -821,7 +827,6 @@ function showPopup(message, type) {
 
 // redirects participants to the corresponding type of break condition
 function redirectToBreak() {
-  saveMoveset();
   participantCondition = JSON.parse(localStorage.getItem('condition'))[0];
   isRedirecting = true;
   window.location.href = `break-${participantCondition}.html`;
