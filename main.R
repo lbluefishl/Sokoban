@@ -1,9 +1,9 @@
 library(readxl)
 library(lme4)
 library(lmerTest)
-data <- read_excel("pilotrawdata.xlsx", sheet = "578trimmed")
+data <- read_excel("data.xlsm", sheet = "fully processed")
 attach(data)
-level <- as.factor(level)
+level <- as.factor(levelNumber)
 condition <- as.factor(condition)
 id <- as.factor(prolificPID)
 
@@ -20,4 +20,3 @@ for (lvl in unique(level)) {
 }
 
 
-model <- glmer(completedLevel ~ level*condition + (1|id), family="binomial")

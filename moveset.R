@@ -1,7 +1,7 @@
 library(readxl)
 library(lme4)
 library(lmerTest)
-data <- read_excel("pilotrawdata.xlsx", sheet = "moveset")
+data <- read_excel("movesets.xlsx", sheet = "novelMoves")
 attach(data)
 level <- as.factor(level)
 condition <- as.factor(condition)

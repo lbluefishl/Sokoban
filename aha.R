@@ -1,0 +1,10 @@
+library(lme4)
+library(readxl)
+library(lmerTest)
+data <- read_excel("data.xlsm", sheet = "aha")
+attach(data)
+id <- as.factor(prolificPID)
+condition <- as.factor(condition)
+model <- lmer(aha ~ completedLevel + completedEarly + (1|prolificPID))
+
+summary(model)
