@@ -1,11 +1,12 @@
 library(readxl)
 library(lme4)
 library(lmerTest)
-data <- read_excel("data.xlsm", sheet = "fully processed")
+data <- read_excel("data.xlsm", sheet = "main")
 attach(data)
 level <- as.factor(levelNumber)
 condition <- as.factor(condition)
 id <- as.factor(prolificPID)
+sex <- as.factor(sex)
 
 for (lvl in unique(level)) {
   data_level <- data[level == lvl, ]
@@ -19,4 +20,4 @@ for (lvl in unique(level)) {
   print(contingency_table)
 }
 
-
+lm <- glmer(completedLevel ~ condition*level + (1|id), family="binomial")
