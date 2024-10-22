@@ -5,12 +5,17 @@ library(lme4)
 library(readxl)
 library(pbkrtest)
 library(lmerTest)
-data <- read_excel("data.xlsm", sheet = "fully processed")
+
+data <- read_excel("data.xlsx", sheet = "P2")
 attach(data)
 levels <- as.factor(levelNumber)
 id <- as.factor(prolificPID)
-difficultyModel <- lmer(difficultyValue ~ levels + (1|id))
-stuckModel <- lmer(stuckValue ~ levels + (1|id))
+
+#compare differences in levels
+difficultyModel <- lm(difficultyValue ~ levels)
+stuckModel <- lm(stuckValue ~ levels)
+
+#pairwise comparisons of difficulty and stuck feeling
 emmeans(difficultyModel, pairwise ~ levels)
 emmeans(stuckModel, pairwise ~ levels)
 
