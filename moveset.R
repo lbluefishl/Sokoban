@@ -14,6 +14,8 @@ library(ggplot2)
 data <- read_excel("data.xlsx", sheet = "P3B")
 #remove participants that did not make any moves, either before or after break
 data <- data[data$novel != 3, ]
+data <- data[data$sex != 2, ]
+data <- data[data$handedness != 3, ]
 
 attach(data)
 
@@ -24,7 +26,9 @@ condition <- as.factor(condition)
 levels(condition) <- c("No Break", "Non-HIS Break", "HIS Break")
 id <- as.factor(prolificPID)
 novel <- as.factor(novel)
-
+sex <- as.factor(sex)
+handedness <- as.factor(handedness)
+novel2 <- as.factor(novel2)
 
 
 for (lvl in unique(level)) {
