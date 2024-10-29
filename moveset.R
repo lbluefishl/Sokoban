@@ -29,7 +29,7 @@ novel <- as.factor(novel)
 sex <- as.factor(sex)
 handedness <- as.factor(handedness)
 novel2 <- as.factor(novel2)
-
+lengthBefore_scaled <- scale(lengthBefore)
 
 for (lvl in unique(level)) {
   data_level <- data[level == lvl, ]
@@ -43,7 +43,7 @@ for (lvl in unique(level)) {
   print(contingency_table)
 }
 
-lm <- glmer(novel ~ condition * level + (1 | id), family = "binomial")
+lm <- glmer(novel ~ condition * level + lengthBefore_scaled + (1 | id), family = "binomial")
 summary(lm)
 
 
@@ -55,3 +55,4 @@ plot(predictions) +
        x = "Level Difficulty", y = "Predicted Probability of New Strategy")
 
 lm2 <- glmer(completedLevel ~ novel + (1|id), family = "binomial")
+summary(lm2)
