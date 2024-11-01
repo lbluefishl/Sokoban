@@ -6,7 +6,7 @@ import pandas as pd
 #only one "movesets" object should be active at one time (i.e., change movesets7 to movesets if you want to test it)
 
 #level5
-movesets = [
+movesets5 = [
 "rrddlludrruulldluu",
 "luurdldrr",
 "rrddlludrruulldluuur",
@@ -785,7 +785,7 @@ movesets = [
 ]
 
 #level7
-movesets7 = [
+movesets = [
 "uurrrddlulurlldr",
 "rluurr",
 "uurrrddlulur",
@@ -1975,7 +1975,7 @@ for i in range(len(movesets)):
 print(dist_matrix)
 
 # Apply Agglomerative Clustering
-n_clusters = 11  # You can set a specific number of clusters if you prefer
+n_clusters = 21  # You can set a specific number of clusters if you prefer
 agg_clustering = AgglomerativeClustering(n_clusters=n_clusters, metric='precomputed', linkage='complete')
 cluster_labels = agg_clustering.fit_predict(dist_matrix)
 
