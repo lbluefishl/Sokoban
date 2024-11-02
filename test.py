@@ -6,7 +6,7 @@ from collections import defaultdict
 #only one "movesets" object should be active at one time (i.e., change movesets7 to movesets if you want to test it)
 
 #level5
-movesets = [
+movesets5 = [
 "rrddlludrruulldluu",
 "luurdldrr",
 "rrddlludrruulldluuur",
@@ -785,7 +785,7 @@ movesets = [
 ]
 
 #level7
-movesets7 = [
+movesets = [
 "uurrrddlulurlldr",
 "rluurr",
 "uurrrddlulur",
@@ -1972,7 +1972,7 @@ for i in range(len(movesets)):
 # print(dist_matrix)
 
 cluster_sum_distances = defaultdict(list)
-for n_clusters in range(1, 20):
+for n_clusters in range(1, 40):
     # Apply Agglomerative Clustering
     agg_clustering = AgglomerativeClustering(n_clusters=n_clusters, metric='precomputed', linkage='complete')
     cluster_labels = agg_clustering.fit_predict(dist_matrix)
