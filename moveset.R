@@ -11,11 +11,9 @@ library(ggeffects)
 library(ggplot2)
 
 
-data <- read_excel("data.xlsx", sheet = "P3B")
+data <- read_excel("data.xlsx", sheet = "P3B - final")
 #remove participants that did not make any moves, either before or after break
-data <- data[data$novel != 3, ]
-data <- data[data$sex != 2, ]
-data <- data[data$handedness != 3, ]
+
 
 attach(data)
 
@@ -25,11 +23,13 @@ level <- factor(level, levels = c("easy", "medium", "hard"))
 condition <- as.factor(condition)
 levels(condition) <- c("No Break", "Non-HIS Break", "HIS Break")
 id <- as.factor(prolificPID)
-novel <- as.factor(novel)
-sex <- as.factor(sex)
-handedness <- as.factor(handedness)
-novel2 <- as.factor(novel2)
-lengthBefore_scaled <- scale(lengthBefore)
+
+
+
+firstMoveNew <- as.factor(firstMoveNew)
+differentFirstStrategy <- as.factor(differentFirstStrategy)
+lengthBefore_scaled <- scale(movesBefore)
+
 
 for (lvl in unique(level)) {
   data_level <- data[level == lvl, ]
@@ -43,8 +43,10 @@ for (lvl in unique(level)) {
   print(contingency_table)
 }
 
-lm <- glmer(novel ~ condition * level + lengthBefore_scaled + (1 | id), family = "binomial")
+lm <- glmer(firstMoveNew ~ condition * level + lengthBefore_scaled + (1 | id), family = "binomial")
 summary(lm)
+lm2 <- glmer(differentFirstStrategy ~ condition * level + (1 | id), family = "binomial")
+summary(lm2)
 
 
 predictions <- ggpredict(lm, terms = c("level", "condition")) |> plot(colors = "bw")
@@ -54,5 +56,5 @@ plot(predictions) +
   labs(title = "",
        x = "Level Difficulty", y = "Predicted Probability of New Strategy")
 
-lm2 <- glmer(completedLevel ~ novel + (1|id), family = "binomial")
-summary(lm2)
+lm3 <- glmer(completedLevel ~ firstMoveNew + (1|id), family = "binomial")
+summary(lm3)

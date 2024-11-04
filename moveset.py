@@ -6,7 +6,7 @@ import pandas as pd
 #only one "movesets" object should be active at one time (i.e., change movesets7 to movesets if you want to test it)
 
 #level5
-movesets = [
+movesets5 = [
 "udzxulduuurdddrrddll",
 "luurdldrrldl",
 "luurdldrr",
@@ -229,7 +229,6 @@ movesets = [
 "zxdluudrul",
 "zxuddluu",
 "zxdluruul",
-"rrddll",
 "duluurdlddr",
 "uuddd",
 "zxuuld",
@@ -704,7 +703,7 @@ movesets7 = [
 "uurrrddlu",
 "rururrrddllulul",
 "rururrrddllulllur",
-"uurrdulldrrurrrddllulllurrrddr",
+"uurrdulldrrurulllurrrddr",
 "rulurrlddrrulur",
 "rrudlluurrdr",
 "rurulrr",
@@ -1427,7 +1426,7 @@ movesets7 = [
 ]
 
 #level8
-movesets8 = [
+movesets = [
 "drurrdlldluuu",
 "rlddruur",
 "rldrr",
@@ -1823,7 +1822,6 @@ movesets8 = [
 "druluurdldr",
 "drurrdlluluurdldduurdrdlu",
 "druudrrdlldluuurdd",
-"drrdldluuudrrdr",
 "rlddruuulddrrrulldluu",
 "drruldluuddr",
 "drruldluru",
@@ -1850,7 +1848,6 @@ movesets8 = [
 "rrdluldrrr",
 "rrdldluuudrdru",
 "rlddruudrrulldluuddruu",
-"rdlurrdl",
 "rrdldluuuru",
 "druuddrlurr",
 "rdrrullulddr",
@@ -1887,7 +1884,7 @@ for i in range(len(movesets)):
 print(dist_matrix)
 
 # Apply Agglomerative Clustering
-n_clusters = 16  # You can set a specific number of clusters if you prefer
+n_clusters = 18  # You can set a specific number of clusters if you prefer
 agg_clustering = AgglomerativeClustering(n_clusters=n_clusters, metric='precomputed', linkage='complete')
 cluster_labels = agg_clustering.fit_predict(dist_matrix)
 
