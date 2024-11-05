@@ -9,6 +9,7 @@ data <- read_excel("data.xlsx", sheet = "P4A")
 attach(data)
 id <- as.factor(prolificPID)
 condition <- as.factor(condition)
+levels(condition) <- c("Non-HIS Break", "-HIS Break")
 
 # differences between two break conditions
 #focused immersion
@@ -20,7 +21,7 @@ lm2 <- lmer(e ~ condition + (1|id))
 summary(lm2)
 
 #mind wandering
-lm3 <- lmer(mw ~ condition + sex + (1|id))
+lm3 <- lmer(mw ~ condition  + (1|id))
 summary(lm3)
 
 #working on puzzle during break
