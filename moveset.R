@@ -28,12 +28,12 @@ id <- as.factor(prolificPID)
 
 firstMoveNew <- as.factor(firstMoveNew)
 differentFirstStrategy <- as.factor(differentFirstStrategy)
-lengthBefore_scaled <- scale(movesBefore)
+lengthBefore_scaled <- scale(moveBefore)
 
 
 for (lvl in unique(level)) {
   data_level <- data[level == lvl, ]
-  contingency_table <- table(data_level$novel, data_level$condition)
+  contingency_table <- table(data_level$firstMoveNew, data_level$condition)
   rownames(contingency_table) <- c("No", "Yes")  
   colnames(contingency_table) <- c("no break","non-HIS", "HIS")  
   chi_square_result <- chisq.test(contingency_table)
@@ -43,7 +43,7 @@ for (lvl in unique(level)) {
   print(contingency_table)
 }
 
-lm <- glmer(firstMoveNew ~ condition * level + lengthBefore_scaled + (1 | id), family = "binomial")
+lm <- glmer(firstMoveNew ~ condition * level + lengthBefore_scaled + (1 | id), family = "binomial", control = glmerControl(optimizer = "bobyqa"))
 summary(lm)
 lm2 <- glmer(differentFirstStrategy ~ condition * level + (1 | id), family = "binomial")
 summary(lm2)
@@ -56,5 +56,5 @@ plot(predictions) +
   labs(title = "",
        x = "Level Difficulty", y = "Predicted Probability of New Strategy")
 
-lm3 <- glmer(completedLevel ~ firstMoveNew + (1|id), family = "binomial")
+lm3 <- glmer(completedLevel ~ firstMoveNew*level + (1|id), family = "binomial")
 summary(lm3)

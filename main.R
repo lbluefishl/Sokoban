@@ -8,6 +8,7 @@ library(readxl)
 library(lme4)
 library(lmerTest)
 library(ggeffects)
+library(dplyr)  
 library(ggplot2)
 
 data <- read_excel("data.xlsx", sheet = "P4")
@@ -36,7 +37,7 @@ for (lvl in unique(level)) {
   print(contingency_table)
 }
 
-lm <- glmer(completedLevel ~  level * condition + (1|id), family="binomial")
+lm <- glmer(completedLevel ~  level * condition + (1|id), family="binomial", control = glmerControl(optimizer = "bobyqa"))
 summary(lm)
 
 
