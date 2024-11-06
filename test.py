@@ -1426,7 +1426,7 @@ movesets7= [
 ]
 
 #level8
-movesets8 = [
+movesets = [
 "drurrdlldluuu",
 "rlddruur",
 "rldrr",
@@ -1881,7 +1881,7 @@ for i in range(len(movesets)):
 # print(dist_matrix)
 
 cluster_sum_distances = defaultdict(list)
-for n_clusters in range(1, 40):
+for n_clusters in range(1, 400):
     # Apply Agglomerative Clustering
     agg_clustering = AgglomerativeClustering(n_clusters=n_clusters, metric='precomputed', linkage='complete')
     cluster_labels = agg_clustering.fit_predict(dist_matrix)
