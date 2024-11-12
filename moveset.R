@@ -12,7 +12,6 @@ library(ggplot2)
 
 
 data <- read_excel("data.xlsx", sheet = "P3B - final")
-#remove participants that did not make any moves, either before or after break
 
 
 attach(data)
@@ -58,3 +57,8 @@ plot(predictions) +
 
 lm3 <- glmer(completedLevel ~ firstMoveNew*level + (1|id), family = "binomial")
 summary(lm3)
+
+#duration
+data <- data[data$completedLevel == 1,]
+lm8 <- lmer(data$totalTime ~ data$condition*data$level + (1|id))
+summary(lm8)
