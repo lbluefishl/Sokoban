@@ -3,8 +3,6 @@ install.packages('lme4')
 library(emmeans)
 library(lme4)
 library(readxl)
-library(pbkrtest)
-library(lmerTest)
 
 data <- read_excel("data.xlsx", sheet = "P2")
 attach(data)

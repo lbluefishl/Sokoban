@@ -1,0 +1,825 @@
+---
+title: "HIS Data Analysis"
+author: "Mike"
+date: "2025-06-30"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+pacman::p_load(lme4, readxl, tidyverse, psych, lmerTest, ggeffects, rmarkdown, jsonlite, cluster)
+```
+
+```{r, echo=FALSE}
+rm(list=ls())
+```
+
+## Importing Data and Preprocessing
+
+Our raw dataset consists of a file which includes data for each trial. Each participant also completed a survey, which we can match to the trial data with the prolific ID. We first preprocess the data by converting each column into their proper data types.  
+
+```{r warning=FALSE}
+data_raw <- fromJSON("fullstudy.combined.json")
+survey_raw <- fromJSON("fullstudy.surveys.json")
+
+numeric_cols_data <- c("aha1", "aha2", "aha3", "correctValue", "completedLevel", "completedEarly", "difficultyValue", "durationAfterBreak",
+                  "durationBeforeBreak", "durationBreak", "durationToBeatGame", "idleTime",
+                  "incorrectValue", "nm1", "nm2", "nm3", "r1b", "r2b", "r3b", "scrollCount",
+                  "sessionID", "stuckValue", "e1", "e2", "e3", "f1", "f2", "f3", "mw1", "mw2",
+                  "mw3", "pw", "r1", "r2", "r3", "ra")
+
+factor_cols_data <- c("condition", "levelNumber","prolificPID")
+
+numeric_cols_survey <- c("age")
+
+factor_cols_survey <- c("sex", "handedness", "trialOrder", "conditionOrder")
+
+data_raw <- data_raw %>% 
+  mutate(
+    across(all_of(numeric_cols_data), ~ as.numeric(.)),
+    across(all_of(factor_cols_data), ~ as.factor(.)),
+    condition = recode(condition,
+                       "1" = "No Break",
+                       "2" = "Non-HIS",
+                       "3" = "HIS"
+                       )
+  )
+
+survey_raw <- survey_raw %>% 
+  mutate(
+    across(all_of(numeric_cols_survey), ~ as.numeric(.)),
+    across(all_of(factor_cols_survey), ~ as.factor(.)),
+    across(c(videoGameHours, smartphoneHours, digitalDeviceHours, shortFormVideoHours), 
+           ~ as.numeric(recode(., 
+                               "lessThan1" = 1,
+                               "1to2" = 2,
+                               "2to3" = 3,
+                               "3to4" = 4,
+                               "5plus" = 5))),
+    sokobanFamiliarity = as.numeric(recode(sokobanFamiliarity,
+                            "notFamiliar" = 1,
+                            "somewhatFamiliar" = 2,
+                            "veryFamiliar" = 3
+                                           ))
+  )
+```
+
+The raw dataset consists of 1039 trials.
+
+```{r}
+dim(data_raw)
+names(data_raw)
+```
+
+The survey form recorded 351 submissions. 
+
+```{r}
+dim(survey_raw)
+names(survey_raw)
+```
+
+## Exclusions
+Note that there is not the expected ratio of 3 trials to 1 participant. This is because some individuals either timed out by being idle or did not complete the three practice trials within 10 minutes.Some participants also completed trials multiple times, likely because they refreshed the page or restarted the study. Furthermore, form submissions were sometimes duplicated internally. Some participants' data were also not recorded for some trials, so we decide to remove all of their trials. 
+
+```{r}
+problematic_ids <- data_raw %>%
+  group_by(prolificPID) %>%
+  summarise(row_count = n()) %>%
+  filter(row_count != 3) %>%
+  pull(prolificPID)
+
+data <- data_raw %>%
+  filter(
+    !prolificPID %in% problematic_ids,
+    prolificPID %in% survey_raw$prolificPID
+    )
+
+nrow(data)
+
+survey <- survey_raw %>% 
+  filter(
+    completedAllLevels != 0,
+    prolificPID %in% data$prolificPID,
+    ) %>% 
+  distinct(prolificPID, .keep_all = TRUE)
+  
+
+nrow(survey)
+```
+Aside from these technical exclusions, we decided to improve the quality of data by removing participants that showed very low engagement. We are careful in excluding people here and use multiple criteria to decide. We only consider participants that did not complete any of the three levels. We check whether these participants had ALL of the following:  
+
+- low number of move sets made
+- high idle time
+- low accuracy or quantity of responses on the choice reaction task (classify odd and even numbers)
+
+```{r}
+participants_excluded <- data %>% 
+  group_by(prolificPID) %>% 
+  filter(
+    all(completedLevel == 0),
+    all(lengths(afterBreakMovesets) < 4),
+    all(lengths(beforeBreakMovesets) < 4),
+    mean(idleTime) > 200,
+    any(condition == "Non-HIS" & incorrectValue + correctValue < 10)
+  )
+
+nrow(participants_excluded)
+
+data <- data %>% 
+  filter(!prolificPID %in% participants_excluded$prolificPID)
+```
+
+
+## Validity and Reliability of Measures
+
+For each construct, we use each participant's first possible use of the scale during the first trial (since participants could possibly respond to each scale multiple times). This would exclude participants who completed the puzzle early on their first trial and those that are in the no break condition for the first puzzle. Below, the trial order is taken from the survey data set.    
+
+```{r}
+items <- data %>%
+  filter(completedEarly == 0, condition != "No Break") %>%      
+  left_join(
+    survey %>%
+      mutate(first_trial = substr(trialOrder, 1, 1)) %>%
+      select(prolificPID, first_trial),                                 
+    by = "prolificPID"
+  ) %>%
+  filter(levelNumber == first_trial) %>%                  
+  select(starts_with("aha"), starts_with("nm"), starts_with("e"), starts_with("f"), starts_with("mw"), r1b, r2b, r3b, -first_trial) %>% 
+  drop_na()
+
+```
+
+We first use confirmatory factor analysis to check for convergent and divergent validity. Important variables include those used as a manipulation check (heightened enjoyment, focused immersion, and mind-wandering, insight experience) and supplemental variables (perceived use of new moves, resources). 
+
+```{r message=FALSE}
+fa_results <- fa(items, nfactors = 6, rotate = "oblimin")
+fa_results
+```
+
+We assess internal consistency using Cronbach's alpha.
+
+```{r}
+alpha(items[,1:3]) # insight experience
+
+alpha(items[,4:6]) # perceived use of new moves
+
+alpha(items[,7:9]) # heightened enjoyment
+
+alpha(items[,10:12]) # focused immersion
+
+alpha(items[,13:15]) # mind-wandering
+
+alpha(items[,16:18]) # resources
+```
+
+## General Performance
+
+Completion data for each level
+```{r}
+completion <- data %>%
+  group_by(levelNumber) %>%
+  summarise(
+    completed_count = sum(completedLevel),              
+    percent_completed = mean(completedLevel) * 100,     
+    sample_size = n()                                             
+  )
+
+completion
+```
+
+Early completion (trials excluded from main analyses)
+
+```{r}
+early_completion <- data %>%
+  group_by(levelNumber) %>%
+    summarize(
+      completed_early_count = sum(completedEarly),         
+      percent_completedearly = mean(completedEarly)*100,   
+      n = n()                                              
+    )
+
+early_completion
+```
+
+Completion duration
+```{r}
+completion_duration <- data %>%
+  filter(completedLevel == 1) %>% 
+  mutate(
+    durationBreak = replace_na(durationBreak, 0),
+    totalTime = durationToBeatGame - durationBreak
+    ) %>% 
+  group_by(levelNumber) %>%
+    summarize(duration_to_beat_puzzle = mean(totalTime, na.rm = TRUE))   
+              
+completion_duration 
+```
+
+For the ease of interpretation, rather than referring to the levels using the internal numbers, we can now classify based on their actual difficulties.
+
+```{r}
+data <- data %>%
+  mutate(levelNumber = recode(levelNumber,
+                              `5` = "hard",
+                              `7` = "easy",
+                              `8` = "medium")) %>%
+  rename(level = levelNumber) %>%
+  mutate(level = factor(level, levels = c("easy", "medium", "hard")))
+```
+
+For participants who did not complete puzzles early, we obtained brief 1-item measures for perceived difficulty and impasse.
+
+```{r}
+difficulty <- data %>% 
+  group_by(level) %>% 
+    summarize(
+      average_difficulty = mean(difficultyValue, na.rm = TRUE)     
+    )
+
+difficulty 
+
+impasse <- data %>% 
+  group_by(level) %>% 
+  summarize(
+    average_impasse = mean(stuckValue, na.rm = TRUE)     
+  )
+
+impasse 
+```
+
+## Manipulation Check
+
+We first check whether the non-HIS and HIS condition were different from each other. Here, we average our items for each construct. For resources, we take the difference to get a measure of the changes in resources after taking a break. 
+
+```{r}
+manipulation_data <- data %>%
+  filter(condition != "No Break") %>% 
+  drop_na(f1, f2, f3, nm1, nm2, nm3, e1, e2, e3, mw1, mw2, mw3, r1b, r2b, r3b, r1, r2, r3, ra, pw) %>% 
+  mutate(
+    focused_immersion = rowMeans(select(., f1, f2, f3)),
+    heightened_enjoyment = rowMeans(select(., e1, e2, e3)),
+    mind_wandering = rowMeans(select(., mw1, mw2, mw3)),
+    perceived_use_of_new_strategies = rowMeans(select(., nm1, nm2, nm3)),
+    resources_before = rowMeans(select(., r1b, r2b, r3b)),
+    resources_after = rowMeans(select(., r1, r2, r3)),
+    resources_difference = resources_after - resources_before
+  )
+
+
+```
+
+Mixed effects models are used here to account for the repeated measures in our experiment (i.e., control for baseline differences among participants). Note that the intercept represents the value of the Non-HIS condition. 
+
+Focused immersion
+```{r}
+fi_lm <- lmer(focused_immersion ~ condition + (1|prolificPID), data = manipulation_data)
+summary(fi_lm) 
+```
+
+Heightened enjoyment
+```{r}
+he_lm <- lmer(heightened_enjoyment ~ condition + (1|prolificPID), data = manipulation_data)
+summary(he_lm) 
+```
+
+Mind-wandering
+```{r}
+mw_lm <- lmer(mind_wandering ~ condition + (1|prolificPID), data = manipulation_data)
+summary(mw_lm) 
+```
+
+Active work on the puzzle during the break
+```{r}
+pw_lm <- lmer(pw ~ condition + (1|prolificPID), data = manipulation_data)
+summary(pw_lm)
+```
+
+Changes in resources
+```{r}
+rd_lm <- lmer(resources_difference ~ condition + (1|prolificPID), data = manipulation_data)
+summary(rd_lm)
+```
+
+Perceived recovery after break
+```{r}
+r_lm <- lmer(ra ~ condition + (1|prolificPID), data = manipulation_data)
+summary(r_lm) 
+```
+
+Perceived use of new strategies/moves after a break
+```{r}
+nm_lm <- lmer(perceived_use_of_new_strategies ~ condition + (1|prolificPID), data = manipulation_data)
+summary(nm_lm) 
+```
+
+If Sokoban is a suitable non-routine problem, participants may have insight experiences if they are able to solve the puzzles. They should be more likely to have insight experiences after returning from a break, compared to those that completed the puzzle early.
+
+```{r}
+insight_data  <- data %>% 
+  drop_na(aha1, aha2, aha3) %>% 
+  mutate(
+    aha = rowMeans(select(., aha1, aha2, aha3))
+  )
+
+i_lm <- lmer(aha ~ completedLevel + completedEarly + (1|prolificPID), data = insight_data)
+summary(i_lm) 
+```
+Here, we can see participants rated higher insight (3.22 + 2.88) if they completed a level. However, if they completed a level early, their rating of perceived insight decreases (3.22 + 2.88 - .49).
+
+## Main Analyses
+
+First, we check if any of the control variables are relevant. Not enough participants identified as neither male or female at birth and as ambidextrous, so these participants are excluded. However, they are used in the main analyses if we exclude these variables in the models. 
+
+```{r}
+main_data <- data %>%
+  left_join(
+    survey %>%
+      select(prolificPID, age, handedness, sex, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, shortFormVideoHours, trialOrder, conditionOrder),
+    by = "prolificPID"
+  ) %>%
+  filter(
+    sex %in% c(0, 1), # 1 participant put other
+    handedness %in% c("left","right"), # 5 participants put ambidextrous
+    prolificPID != "6466190f0491049a32d5b0fc", # this participant put an invalid age (-57)
+    completedEarly != 1 # include only those who encountered manipulations
+    ) %>%
+  mutate(sex = factor(sex, levels = c(0, 1), labels = c("Female", "Male")),)
+
+```
+
+We set our base model as the one which includes our key predictor (condition) and puzzle level (due to inherent differences in difficulty). We include participant ID (prolificPID) as a random intercept to account for repeated measures within participants. 
+
+```{r}
+model1_base <- glmer(completedLevel ~  level * condition + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+summary(model1_base)
+```
+
+We compare our base model to models including one control variable. 
+
+```{r warning=FALSE}
+model1_age <- glmer(completedLevel ~  level * condition + age + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_sex <- glmer(completedLevel ~  level * condition + sex + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_handedness <- glmer(completedLevel ~  level * condition + handedness + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_videoGames <- glmer(completedLevel ~  level * condition + videoGameHours + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_smartphones <- glmer(completedLevel ~  level * condition + smartphoneHours + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_sokoban <- glmer(completedLevel ~  level * condition + sokobanFamiliarity + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_digitalDevice <- glmer(completedLevel ~  level * condition + digitalDeviceHours + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_shortFormVideos <- glmer(completedLevel ~  level * condition + shortFormVideoHours + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_trialOrder <- glmer(completedLevel ~  level * condition + trialOrder + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_conditionOrder <- glmer(completedLevel ~  level * condition + conditionOrder + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+models1 <- list(
+  base = model1_base,
+  age = model1_age,
+  sex = model1_sex,
+  handedness = model1_handedness,
+  videoGames = model1_videoGames,
+  smartphones = model1_smartphones,
+  sokoban = model1_sokoban,
+  digitalDevice = model1_digitalDevice,
+  shortFormVideos = model1_shortFormVideos,
+  trialOrder = model1_trialOrder,
+  conditionOrder = model1_conditionOrder
+)
+
+aic_results1 <- sapply(models1, AIC)
+aic_results1 <- sort(aic_results1)
+aic_results1
+
+bic_results1 <- sapply(models1, BIC)
+bic_results1 <- sort(bic_results1)
+bic_results1
+
+anova(model1_sex, model1_base)
+```
+
+The model using sex as a control variable seems to perform the best. Our study reports the results of this model, including the ambidextrous participants but leaving out the one participant that responded with "other" for sex. Note that both models agree in terms of what variable or interaction is significant. Males seem to perform considerably better than females on solving Sokoban puzzles.  
+
+```{r}
+model1_data <- data %>%
+  left_join(
+    survey %>%
+      select(sex, prolificPID),
+    by = "prolificPID"
+  ) %>%
+  filter(sex %in% c(0, 1)) %>%
+  mutate(sex = factor(sex, levels = c(0, 1), labels = c("Female", "Male")),)
+
+model1_final <- glmer(completedLevel ~  level * condition + sex + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = model1_data)
+
+summary(model1_final)
+```
+
+We run a similar set of comparisons for the dependent variable: duration after break (to complete level).
+
+```{r}
+completed_data <- main_data %>%
+  filter(completedLevel == 1)
+
+model2_base <- lmer(durationAfterBreak ~  level * condition + (1|prolificPID), data = completed_data)
+
+model2_age <- lmer(durationAfterBreak ~  level * condition + age + (1|prolificPID), data = completed_data)
+
+model2_sex <- lmer(durationAfterBreak ~  level * condition + sex + (1|prolificPID), data = completed_data)
+
+model2_handedness <- lmer(durationAfterBreak ~  level * condition + handedness + (1|prolificPID), data = completed_data)
+
+model2_videoGames <- lmer(durationAfterBreak ~  level * condition + videoGameHours + (1|prolificPID), data = completed_data)
+
+model2_smartphones <- lmer(durationAfterBreak ~  level * condition + smartphoneHours + (1|prolificPID), data = completed_data)
+
+model2_sokoban <- lmer(durationAfterBreak ~  level * condition + sokobanFamiliarity + (1|prolificPID), data = completed_data)
+
+model2_digitalDevice <- lmer(durationAfterBreak ~  level * condition + digitalDeviceHours + (1|prolificPID), data = completed_data)
+
+model2_shortFormVideos <- lmer(durationAfterBreak ~  level * condition + shortFormVideoHours + (1|prolificPID), data = completed_data)
+
+model2_trialOrder <- lmer(durationAfterBreak ~  level * condition + trialOrder + (1|prolificPID), data = completed_data)
+
+model2_conditionOrder <- lmer(durationAfterBreak ~  level * condition + conditionOrder + (1|prolificPID), data = completed_data)
+
+models2 <- list(
+  base = model2_base,
+  age = model2_age,
+  sex = model2_sex,
+  handedness = model2_handedness,
+  videoGames = model2_videoGames,
+  smartphones = model2_smartphones,
+  sokoban = model2_sokoban,
+  digitalDevice = model2_digitalDevice,
+  shortFormVideos = model2_shortFormVideos,
+  trialOrder = model2_trialOrder,
+  conditionOrder = model2_conditionOrder
+)
+
+# Comparing Models
+aic_results2 <- sapply(models2, AIC)
+aic_results2 <- sort(aic_results2)
+aic_results2
+
+bic_results2 <- sapply(models2, BIC)
+bic_results2 <- sort(bic_results2)
+bic_results2
+```
+
+Trial order, condition order, sex, and handedness all potentially improve model fit. We compare each to the base model.
+
+```{r}
+anova(model2_trialOrder, model2_base)
+anova(model2_conditionOrder, model2_base)
+anova(model2_sex, model2_base)
+anova(model2_handedness,model2_base)
+```
+
+Comparing models using maximum likelihood generally favor the base model. We can therefore utilize all participants for this analysis.
+
+```{r}
+model2_data <- data %>%
+  left_join(
+    survey %>%
+      select(prolificPID),
+    by = "prolificPID"
+  ) %>% 
+  filter(completedLevel == 1)
+  
+model2_final <- lmer(durationAfterBreak ~  level * condition + (1|prolificPID), data = model2_data)
+
+summary(model2_final)
+
+preds <- ggpredict(model2_final, terms = c("level", "condition"))
+
+ggplot(preds, aes(x = x, y = predicted, color = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    x = "Level",
+    y = "Predicted Duration After Break",
+    color = "condition",
+    fill = "condition"
+  ) +
+  theme_minimal()
+```
+
+## Clustering Analysis
+
+We have a lot of data on the exact moves participants used while working on the puzzles. We can see how strategies shift when participants are interrupted to take a break. We can use clustering in order to cluster strategies by comparing move set similarity in each level. First, we use every participants' move sets to build a list of every move set made.
+
+
+```{r}
+data$allMovesets <- Map(c, data$beforeBreakMovesets, data$afterBreakMovesets)
+
+get_cleaned_movesets <- function(level_name) {
+  level_rows <- data[data$level == level_name, ]
+  combined_movesets <- unlist(level_rows$allMovesets, use.names = FALSE)
+  filtered <- combined_movesets[nchar(combined_movesets) >= 4]
+  unique(filtered)
+}
+
+easy_movesets   <- get_cleaned_movesets("easy")
+medium_movesets <- get_cleaned_movesets("medium")
+hard_movesets   <- get_cleaned_movesets("hard")
+
+```
+
+For the hard level, there are groups of moves that always occur together. To better identify strategies, we convert these patterns of moves.
+
+```{r}
+hard_movesets <- gsub("rrddllu", "z", hard_movesets)
+hard_movesets <- gsub("drruull", "x", hard_movesets)
+```
+
+Move sets will be considered similar if they have similar prefixes. For example, lrlrudud would be similar to lrluduu. The more prefixes they have in common, the more likely they are to be similar strategies in Sokoban. We compute a distance matrix for each level.
+
+```{r}
+prefix_distance <- function(a, b) {
+  min_len <- min(nchar(a), nchar(b))
+  match_length <- 0
+  for (i in seq_len(min_len)) {
+    if (substr(a, i, i) != substr(b, i, i)) break
+    match_length <- match_length + 1
+  }
+  return(1 - (match_length / min_len))
+}
+
+build_prefix_dist_matrix <- function(movesets) {
+  n <- length(movesets)
+  dist_mat <- matrix(0, n, n)
+  
+  for (i in 1:(n-1)) {
+    for (j in (i+1):n) {
+      d <- prefix_distance(movesets[i], movesets[j])
+      dist_mat[i, j] <- d
+      dist_mat[j, i] <- d 
+    }
+  }
+  
+  as.dist(dist_mat) 
+}
+
+easy_dist <- build_prefix_dist_matrix(easy_movesets)
+medium_dist <- build_prefix_dist_matrix(medium_movesets)
+hard_dist <- build_prefix_dist_matrix(hard_movesets)
+
+easy_clust <- hclust(easy_dist, method = "complete")
+medium_clust <- hclust(medium_dist, method = "complete")
+hard_clust <- hclust(hard_dist, method = "complete")
+
+```
+
+We use silhouette analysis to determine the optimal number of clusters.
+
+Easy Level
+```{r}
+
+avg_sil <- sapply(5:30, function(k) {
+  clusters <- cutree(easy_clust, k)
+  sil <- silhouette(clusters, easy_dist)
+  mean(sil[, 3])  
+})
+
+plot(5:30, avg_sil, type = "b",
+     xlab = "Number of clusters", ylab = "Average silhouette width")
+
+
+```
+
+Medium Level
+```{r}
+avg_sil <- sapply(5:30, function(k) {
+  clusters <- cutree(medium_clust, k)
+  sil <- silhouette(clusters, medium_dist)
+  mean(sil[, 3])  
+})
+
+plot(5:30, avg_sil, type = "b",
+     xlab = "Number of clusters", ylab = "Average silhouette width")
+
+```
+
+Hard Level
+```{r}
+avg_sil <- sapply(5:30, function(k) {
+  clusters <- cutree(hard_clust, k)
+  sil <- silhouette(clusters, hard_dist)
+  mean(sil[, 3])  
+})
+
+plot(5:30, avg_sil, type = "b",
+     xlab = "Number of clusters", ylab = "Average silhouette width")
+
+```
+
+Based on the plots, the number of clusters for the easy, medium, and hard puzzles will be 19, 18, and 17, respectively. 
+
+```{r}
+clusters_easy <- cutree(easy_clust, k = 19)
+clusters_medium <- cutree(medium_clust, k = 18)
+clusters_hard <- cutree(hard_clust, k = 17)
+```
+
+We generate new data columns which show the cluster number rather than the string of moves. A very few number of participants did not have move sets before or after break and are removed from this analysis.
+
+
+```{r}
+main_data$beforeBreakMovesets <- mapply(function(moves, level) {
+  moves <- moves[nchar(moves) >= 4]
+  if (level == "hard") {
+    moves <- gsub("rrddllu", "z", moves)
+    moves <- gsub("drruull", "x", moves)
+    
+  
+  }
+  return(moves)
+}, main_data$beforeBreakMovesets, main_data$level, SIMPLIFY = FALSE)
+
+main_data$afterBreakMovesets <- mapply(function(moves, level) {
+  moves <- moves[nchar(moves) >= 4]
+  if (level == "hard") {
+    moves <- gsub("rrddllu", "z", moves)
+    moves <- gsub("drruull", "x", moves)
+  }
+  
+  return(moves)
+
+}, main_data$afterBreakMovesets, main_data$level, SIMPLIFY = FALSE)
+
+
+
+moveset_data <- main_data[
+  lengths(main_data$beforeBreakMovesets) > 0 & 
+  lengths(main_data$afterBreakMovesets) > 0, 
+]
+
+
+lookup_easy <- setNames(clusters_easy, easy_movesets)
+lookup_medium <- setNames(clusters_medium, medium_movesets)
+lookup_hard <- setNames(clusters_hard, hard_movesets)
+
+map_moves_to_clusters <- function(moves, level) {
+  level <- as.character(level)
+  lookup <- switch(level,
+                   "easy" = lookup_easy,
+                   "medium" = lookup_medium,
+                   "hard" = lookup_hard)
+  
+  sapply(moves, function(m) lookup[[m]], USE.NAMES = FALSE)
+}
+
+
+moveset_data$beforeClusters <- mapply(map_moves_to_clusters,
+                                   moveset_data$beforeBreakMovesets,
+                                   moveset_data$level,
+                                   SIMPLIFY = FALSE)
+
+moveset_data$afterClusters <- mapply(map_moves_to_clusters,
+                                  moveset_data$afterBreakMovesets,
+                                  moveset_data$level,
+                                  SIMPLIFY = FALSE)
+
+
+```
+
+We now create a column which displays whether an individual's first move when returning to the problem after a break is a new strategy (new cluster) or a variation/copy of a previous strategy. We can also just compare the first strategy used in both periods.  
+
+
+We also count the number of moves made before the break for use as a control variable, since using a new strategy is more likely if you have less moves made before the break.
+
+```{r}
+
+moveset_data$newMove <- mapply(function(before, after) {
+  first_after <- after[1]
+  if (first_after %in% before) 0 else 1
+}, moveset_data$beforeClusters, moveset_data$afterClusters) 
+
+moveset_data$firstNewMove <- mapply(function(before, after) {
+  if (after[1] == before[1]) 0 else 1
+}, moveset_data$beforeClusters, moveset_data$afterClusters) 
+
+moveset_data$beforeBreakLength <- sapply(moveset_data$beforeBreakMovesets, length)
+
+```
+
+Let's check whether different conditions or levels predict the use of new moves. 
+
+```{r}
+model3_base <- glmer(newMove ~  level * condition + beforeBreakLength + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = moveset_data)
+
+summary(model3_base)
+
+
+preds <- ggpredict(model3_base, terms = c("level", "condition"))
+
+ggplot(preds, aes(x = x, y = predicted, color = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    x = "Level",
+    y = "Predicted Probability of New Move",
+    color = "Condition",
+    fill = "Condition"
+  ) +
+  theme_minimal()
+```
+There is some evidence that taking breaks results in move selection. Specifically, for the easy level, participants are more likely to repeat moves if they are interrupted with a break. For the hard levels, there is some evidence of the opposite.
+
+We can check whether using new moves affects completion likelihood or completion duration.
+
+```{r}
+
+model4_base <- glmer(completedLevel ~  level * newMove + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = moveset_data)
+
+summary(model4_base)
+
+preds <- ggpredict(model4_base, terms = c("level", "newMove"))
+
+ggplot(preds, aes(x = x, y = predicted, color = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    x = "Level",
+    y = "Predicted Probability of Completing Level",
+    color = "New Move",
+    fill = "New Move"
+  ) +
+  theme_minimal()
+```
+
+
+```{r}
+
+completed_moveset_data <- moveset_data %>%
+  filter(completedLevel == 1)
+
+model5_base <- lmer(durationAfterBreak ~  level* newMove + (1|prolificPID), data = completed_moveset_data)
+
+summary(model5_base)
+
+preds <- ggpredict(model5_base, terms = c("level", "newMove"))
+
+ggplot(preds, aes(x = x, y = predicted, color = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    x = "Level",
+    y = "Predicted Duration After Break",
+    color = "New Move",
+    fill = "New Move"
+  ) +
+  theme_minimal()
+
+```
+There is some evidence that using new strategies is helpful only for the easy puzzle, but not helpful for the harder puzzles. However, recall that breaks reduced the likelihood of using new moves for the easy puzzle, but this did not result in significant performance losses (model 1 and 2).   
+
+For the harder levels, there is evidence that using new strategies reduces performance. Break conditions, compared with no break, increase the likelihood of using new strategies. This corresponds with earlier models (1 and 2) which show reduced performance in the break conditions. 
+
+The relationship between new strategies and increased performance is not obvious. Why does it benefit the easy puzzle, but not the harder ones? We can explore the most common strategies used and compare them to the winning moves. 
+```{r}
+counts <- table(clusters_easy)
+props <- counts / length(clusters_easy)
+easy_prop <- data.frame(
+    cluster = names(counts),
+    proportion = round(as.numeric(props) * 100, 2)
+)
+print(easy_prop)
+```
+For the easy puzzle, the winning strategies come from cluster 1 and 14. These together make up around 12% of the moves used. It was far more common to use strategies from other clusters (such as cluster 4). Therefore, shifting strategies is helpful here. It would not be beneficial to explore the more commonly exploited clusters.
+
+```{r}
+counts <- table(clusters_medium)
+props <- counts / length(clusters_medium)
+medium_prop <- data.frame(
+    cluster = names(counts),
+    proportion = round(as.numeric(props) * 100, 2)
+)
+print(medium_prop)
+```
+The winning strategies for the medium puzzle come from cluster 3. This makes up around 20% of the moves used. 
+
+```{r}
+counts <- table(clusters_hard)
+props <- counts / length(clusters_hard)
+hard_prop <- data.frame(
+    cluster = names(counts),
+    proportion = round(as.numeric(props) * 100, 2)
+)
+print(hard_prop)
+```
+The winning strategies for the hard puzzle come from cluster 4, 5, and 10. This makes up around 41% of the moves used. 
+

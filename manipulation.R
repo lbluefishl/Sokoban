@@ -1,4 +1,4 @@
-utils::install.packages("lme4", type = "source")
+install.packages("lme4")
 install.packages("readxl")
 install.packages('lmerTest')
 
