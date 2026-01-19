@@ -7,7 +7,7 @@ output:html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-pacman::p_load(lme4, tidyverse, psych, lmerTest, ggeffects, rmarkdown, jsonlite, cluster, MuMIn)
+pacman::p_load(lme4, tidyverse, psych, lmerTest, ggeffects, rmarkdown, jsonlite, cluster)
 ```
 
 ```{r, echo=FALSE}
@@ -129,7 +129,6 @@ data <- data %>%
   filter(!prolificPID %in% participants_excluded$prolificPID)
 ```
 
-We used rather strict exclusion criteria here, and did not exclude any additional participants. However, an informal check of the data did reveal a lot of participants showing some inactivity on some, but not all levels. However, deciding the exact threshold would be quite subjective.
 
 ## Validity and Reliability of Measures
 
@@ -275,57 +274,42 @@ Focused immersion
 ```{r}
 fi_lm <- lmer(focused_immersion ~ condition + (1|prolificPID), data = manipulation_data)
 summary(fi_lm) 
-r.squaredGLMM(fi_lm)
-confint(fi_lm, method = "Wald")
 ```
 
 Heightened enjoyment
 ```{r}
 he_lm <- lmer(heightened_enjoyment ~ condition + (1|prolificPID), data = manipulation_data)
 summary(he_lm) 
-r.squaredGLMM(he_lm)
-confint(he_lm, method = "Wald")
 ```
 
 Mind-wandering
 ```{r}
 mw_lm <- lmer(mind_wandering ~ condition + (1|prolificPID), data = manipulation_data)
 summary(mw_lm) 
-r.squaredGLMM(mw_lm)
-confint(mw_lm, method = "Wald")
 ```
 
 Active work on the puzzle during the break
 ```{r}
 pw_lm <- lmer(pw ~ condition + (1|prolificPID), data = manipulation_data)
 summary(pw_lm)
-r.squaredGLMM(pw_lm)
-confint(pw_lm, method = "Wald")
 ```
 
 Changes in resources
 ```{r}
 rd_lm <- lmer(resources_difference ~ condition + (1|prolificPID), data = manipulation_data)
 summary(rd_lm)
-r.squaredGLMM(rd_lm)
-confint(rd_lm, method = "Wald")
-
 ```
 
 Perceived recovery after break
 ```{r}
 r_lm <- lmer(ra ~ condition + (1|prolificPID), data = manipulation_data)
 summary(r_lm) 
-r.squaredGLMM(r_lm)
-confint(r_lm, method = "Wald")
 ```
 
 Perceived use of new strategies/moves after a break
 ```{r}
 nm_lm <- lmer(perceived_use_of_new_strategies ~ condition + (1|prolificPID), data = manipulation_data)
 summary(nm_lm) 
-r.squaredGLMM(nm_lm)
-confint(nm_lm, method = "Wald")
 ```
 
 If Sokoban is a suitable non-routine problem, participants may have insight experiences if they are able to solve the puzzles. They should be more likely to have insight experiences after returning from a break, compared to those that completed the puzzle early.
@@ -339,8 +323,6 @@ insight_data  <- data %>%
 
 i_lm <- lmer(aha ~ completedLevel + completedEarly + (1|prolificPID), data = insight_data)
 summary(i_lm) 
-r.squaredGLMM(i_lm)
-confint(i_lm, method = "Wald")
 ```
 Here, we can see participants rated higher insight (3.22 + 2.88) if they completed a level. However, if they completed a level early, their rating of perceived insight decreases (3.22 + 2.88 - .49).
 
@@ -436,11 +418,6 @@ model1_data <- data %>%
 model1_final <- glmer(completedLevel ~  level * condition + sex + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = model1_data)
 
 summary(model1_final)
-r.squaredGLMM(model1_final)
-confint(model1_final, method = "Wald")
-
-emmeans(model1_final, ~ condition | level) %>%
-    pairs(adjust="none")
 ```
 
 We run a similar set of comparisons for the dependent variable: duration after break (to complete level).
@@ -518,12 +495,6 @@ model2_data <- data %>%
 model2_final <- lmer(durationAfterBreak ~  level * condition + (1|prolificPID), data = model2_data)
 
 summary(model2_final)
-
-r.squaredGLMM(model2_final)
-confint(model2_final, method = "Wald")
-
-emmeans(model2_final, ~ condition | level) %>%
-    pairs(adjust="none")
 
 preds <- ggpredict(model2_final, terms = c("level", "condition"))
 
@@ -745,11 +716,7 @@ Let's check whether different conditions or levels predict the use of new moves.
 model3_base <- glmer(newMove ~  level * condition + beforeBreakLength + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = moveset_data)
 
 summary(model3_base)
-r.squaredGLMM(model3_base)
-confint(model3_base, method = "Wald")
 
-emmeans(model3_base, ~ condition | level) %>%
-    pairs(adjust="none")
 
 preds <- ggpredict(model3_base, terms = c("level", "condition"))
 
