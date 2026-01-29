@@ -1,13 +1,13 @@
 ---
-title: "HIS Data Analysis"
-author: "Mike"
-date: "2025-06-30"
+title: "Study 1 (Sokoban) Analysis"
+author: "Mike Zhuang"
+date: "2025-01-28"
 output:html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-pacman::p_load(lme4, tidyverse, psych, lmerTest, ggeffects, rmarkdown, jsonlite, cluster, MuMIn)
+pacman::p_load(lme4, tidyverse, psych, lmerTest, ggeffects, rmarkdown, jsonlite, cluster, MuMIn, emmeans, effectsize)
 ```
 
 ```{r, echo=FALSE}
@@ -116,11 +116,9 @@ Aside from these technical exclusions, we decided to improve the quality of data
 participants_excluded <- data %>% 
   group_by(prolificPID) %>% 
   filter(
-    all(completedLevel == 0),
-    all(lengths(afterBreakMovesets) < 4),
-    all(lengths(beforeBreakMovesets) < 4),
-    mean(idleTime) > 200,
-    any(condition == "Non-HIS" & incorrectValue + correctValue < 10)
+    any(completedLevel == 0 & lengths(afterBreakMovesets) < 2) |
+    any(completedLevel == 0 & lengths(beforeBreakMovesets) < 2) |
+    any(completedLevel == 0 & durationBreak > 360)
   )
 
 nrow(participants_excluded)
@@ -373,9 +371,17 @@ model1_base <- glmer(completedLevel ~  level * condition + (1|prolificPID), fami
 summary(model1_base)
 ```
 
-We compare our base model to models including one control variable. 
+We compare our base model to other models. 
 
 ```{r warning=FALSE}
+model1_null <- glmer(completedLevel ~ (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_level <- glmer(completedLevel ~ level + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_condition<- glmer(completedLevel ~  condition + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
+model1_noint <- glmer(completedLevel ~ level + condition + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
+
 model1_age <- glmer(completedLevel ~  level * condition + age + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
 
 model1_sex <- glmer(completedLevel ~  level * condition + sex + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
@@ -397,6 +403,10 @@ model1_trialOrder <- glmer(completedLevel ~  level * condition + trialOrder + (1
 model1_conditionOrder <- glmer(completedLevel ~  level * condition + conditionOrder + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = main_data)
 
 models1 <- list(
+  null = model1_null,
+  level = model1_level,
+  condition = model1_condition,
+  noint = model1_noint,
   base = model1_base,
   age = model1_age,
   sex = model1_sex,
@@ -418,7 +428,7 @@ bic_results1 <- sapply(models1, BIC)
 bic_results1 <- sort(bic_results1)
 bic_results1
 
-anova(model1_sex, model1_base)
+
 ```
 
 The model using sex as a control variable seems to perform the best. Our study reports the results of this model, including the ambidextrous participants but leaving out the one participant that responded with "other" for sex. Note that both models agree in terms of what variable or interaction is significant. Males seem to perform considerably better than females on solving Sokoban puzzles.  
@@ -430,17 +440,20 @@ model1_data <- data %>%
       select(sex, prolificPID),
     by = "prolificPID"
   ) %>%
-  filter(sex %in% c(0, 1)) %>%
+  filter(
+    sex %in% c(0, 1),
+    completedEarly != 1
+    ) %>%
   mutate(sex = factor(sex, levels = c(0, 1), labels = c("Female", "Male")),)
 
-model1_final <- glmer(completedLevel ~  level * condition + sex + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = model1_data)
+model1_final <- glmer(completedLevel ~  level + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = model1_data)
 
 summary(model1_final)
 r.squaredGLMM(model1_final)
 confint(model1_final, method = "Wald")
+exp(fixef(model1_final))
+exp(confint(model1_final, parm = "beta_", method="Wald"))
 
-emmeans(model1_final, ~ condition | level) %>%
-    pairs(adjust="none")
 ```
 
 We run a similar set of comparisons for the dependent variable: duration after break (to complete level).
@@ -448,6 +461,14 @@ We run a similar set of comparisons for the dependent variable: duration after b
 ```{r}
 completed_data <- main_data %>%
   filter(completedLevel == 1)
+
+model2_null <- lmer(durationAfterBreak ~ (1|prolificPID), data = completed_data)
+
+model2_condition <- lmer(durationAfterBreak ~   condition + (1|prolificPID), data = completed_data)
+
+model2_level <- lmer(durationAfterBreak ~  level + (1|prolificPID), data = completed_data)
+
+model2_noint <- lmer(durationAfterBreak ~  level + condition + (1|prolificPID), data = completed_data)
 
 model2_base <- lmer(durationAfterBreak ~  level * condition + (1|prolificPID), data = completed_data)
 
@@ -472,6 +493,10 @@ model2_trialOrder <- lmer(durationAfterBreak ~  level * condition + trialOrder +
 model2_conditionOrder <- lmer(durationAfterBreak ~  level * condition + conditionOrder + (1|prolificPID), data = completed_data)
 
 models2 <- list(
+  null = model2_null,
+  condition = model2_condition,
+  level = model2_level,
+  noint = model2_noint,
   base = model2_base,
   age = model2_age,
   sex = model2_sex,
@@ -522,22 +547,43 @@ summary(model2_final)
 r.squaredGLMM(model2_final)
 confint(model2_final, method = "Wald")
 
-emmeans(model2_final, ~ condition | level) %>%
+contrasts <- emmeans(model2_final, ~ condition | level) %>%
     pairs(adjust="none")
 
-preds <- ggpredict(model2_final, terms = c("level", "condition"))
+emm <- emmeans(model2_final, ~ condition | level)
 
-ggplot(preds, aes(x = x, y = predicted, color = group)) +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
-  labs(
-    x = "Level",
-    y = "Predicted Duration After Break",
-    color = "condition",
-    fill = "condition"
+eff_size(emm, sigma = sigma(model2_final), edf = df.residual(model2_final))
+
+preds <- ggpredict(model2_final, terms = c("level", "condition"))
+plot2 <- ggplot(preds, aes(x = group, y = predicted)) +
+  geom_point(size = 2.5) +
+  geom_errorbar(
+    aes(ymin = conf.low, ymax = conf.high),
+    width = 0.15,
+    linewidth = 0.6
   ) +
-  theme_minimal()
+  facet_wrap(~ x, nrow = 1) +
+  labs(
+    x = "",
+    y = "Duration (seconds)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid = element_blank(),          # remove grid
+    strip.text = element_text(face = "bold"),
+    axis.line = element_line(linewidth = 0.6, color = "black"),  # add x and y axis lines
+    axis.ticks = element_line(linewidth = 0.6)
+  )
+
+ggsave(
+  filename = "solutionTime.pdf",
+  plot = plot2,
+  width = 7,
+  height = 3,
+  units = "in"
+)
+
+
 ```
 
 ## Clustering Analysis
@@ -649,12 +695,12 @@ plot(5:30, avg_sil, type = "b",
 
 ```
 
-Based on the plots, the number of clusters for the easy, medium, and hard puzzles will be 19, 18, and 17, respectively. 
+Based on the plots, the number of clusters for the easy, medium, and hard puzzles will be 12, 17, and 11, respectively. 
 
 ```{r}
-clusters_easy <- cutree(easy_clust, k = 19)
-clusters_medium <- cutree(medium_clust, k = 18)
-clusters_hard <- cutree(hard_clust, k = 17)
+clusters_easy <- cutree(easy_clust, k = 12)
+clusters_medium <- cutree(medium_clust, k = 17)
+clusters_hard <- cutree(hard_clust, k = 11)
 ```
 
 We generate new data columns which show the cluster number rather than the string of moves. A very few number of participants did not have move sets before or after break and are removed from this analysis.
@@ -748,78 +794,45 @@ summary(model3_base)
 r.squaredGLMM(model3_base)
 confint(model3_base, method = "Wald")
 
-emmeans(model3_base, ~ condition | level) %>%
+exp(fixef(model3_base))
+exp(confint(model3_base, parm = "beta_", method="Wald"))
+
+emmeans(model3_base, ~ condition | level, type = "response")
+emmeans(model3_base, ~ condition | level, type = "response") %>%
     pairs(adjust="none")
 
 preds <- ggpredict(model3_base, terms = c("level", "condition"))
-
-ggplot(preds, aes(x = x, y = predicted, color = group)) +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
-  labs(
-    x = "Level",
-    y = "Predicted Probability of New Move",
-    color = "Condition",
-    fill = "Condition"
+plot3 <- ggplot(preds, aes(x = group, y = predicted)) +
+  geom_point(size = 2.5) +
+  geom_errorbar(
+    aes(ymin = conf.low, ymax = conf.high),
+    width = 0.15,
+    linewidth = 0.6
   ) +
-  theme_minimal()
-```
-There is some evidence that taking breaks results in move selection. Specifically, for the easy level, participants are more likely to repeat moves if they are interrupted with a break. For the hard levels, there is some evidence of the opposite.
-
-We can check whether using new moves affects completion likelihood or completion duration.
-
-```{r}
-
-model4_base <- glmer(completedLevel ~  level * newMove + (1|prolificPID), family="binomial", control = glmerControl(optimizer = "bobyqa"), data = moveset_data)
-
-summary(model4_base)
-
-preds <- ggpredict(model4_base, terms = c("level", "newMove"))
-
-ggplot(preds, aes(x = x, y = predicted, color = group)) +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  facet_wrap(~ x, nrow = 1) +
   labs(
-    x = "Level",
-    y = "Predicted Probability of Completing Level",
-    color = "New Move",
-    fill = "New Move"
+    x = "",
+    y = "New Move Likelihood"
   ) +
-  theme_minimal()
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid = element_blank(),          # remove grid
+    strip.text = element_text(face = "bold"),
+    axis.line = element_line(linewidth = 0.6, color = "black"),  # add x and y axis lines
+    axis.ticks = element_line(linewidth = 0.6)
+  )
+
+ggsave(
+  filename = "newMove.pdf",
+  plot = plot3,
+  width = 7,
+  height = 3,
+  units = "in"
+)
+
+
 ```
 
-
-```{r}
-
-completed_moveset_data <- moveset_data %>%
-  filter(completedLevel == 1)
-
-model5_base <- lmer(durationAfterBreak ~  level* newMove + (1|prolificPID), data = completed_moveset_data)
-
-summary(model5_base)
-
-preds <- ggpredict(model5_base, terms = c("level", "newMove"))
-
-ggplot(preds, aes(x = x, y = predicted, color = group)) +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
-  labs(
-    x = "Level",
-    y = "Predicted Duration After Break",
-    color = "New Move",
-    fill = "New Move"
-  ) +
-  theme_minimal()
-
-```
-There is some evidence that using new strategies is helpful only for the easy puzzle, but not helpful for the harder puzzles. However, recall that breaks reduced the likelihood of using new moves for the easy puzzle, but this did not result in significant performance losses (model 1 and 2).   
-
-For the harder levels, there is evidence that using new strategies reduces performance. Break conditions, compared with no break, increase the likelihood of using new strategies. This corresponds with earlier models (1 and 2) which show reduced performance in the break conditions. 
-
-The relationship between new strategies and increased performance is not obvious. Why does it benefit the easy puzzle, but not the harder ones? We can explore the most common strategies used and compare them to the winning moves. 
 ```{r}
 counts <- table(clusters_easy)
 props <- counts / length(clusters_easy)
