@@ -1,0 +1,1972 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Study 1 (Sokoban) Analysis},
+  pdfauthor={Mike Zhuang},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Study 1 (Sokoban) Analysis}
+\author{Mike Zhuang}
+\date{2025-02-04}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(}\StringTok{"rmarkdown"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"This file requires the rmarkdown package to render. Please install it with install.packages(\textquotesingle{}rmarkdown\textquotesingle{})."}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Importing Data and
+Preprocessing}\label{importing-data-and-preprocessing}
+
+Our raw dataset consists of a file which includes data for each trial.
+Each participant also completed a survey, which we can match to the
+trial data with the prolific ID. We first preprocess the data by
+converting each column into their proper data types.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{raw\_data }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(}\StringTok{"fullstudy.combined.json"}\NormalTok{)}
+\NormalTok{raw\_survey }\OtherTok{\textless{}{-}} \FunctionTok{fromJSON}\NormalTok{(}\StringTok{"fullstudy.surveys.json"}\NormalTok{)}
+
+\NormalTok{numeric\_cols\_data }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"aha1"}\NormalTok{, }\StringTok{"aha2"}\NormalTok{, }\StringTok{"aha3"}\NormalTok{, }\StringTok{"correctValue"}\NormalTok{, }\StringTok{"completedLevel"}\NormalTok{, }\StringTok{"completedEarly"}\NormalTok{, }\StringTok{"difficultyValue"}\NormalTok{, }\StringTok{"durationAfterBreak"}\NormalTok{,}
+                  \StringTok{"durationBeforeBreak"}\NormalTok{, }\StringTok{"durationBreak"}\NormalTok{, }\StringTok{"durationToBeatGame"}\NormalTok{, }\StringTok{"idleTime"}\NormalTok{,}
+                  \StringTok{"incorrectValue"}\NormalTok{, }\StringTok{"nm1"}\NormalTok{, }\StringTok{"nm2"}\NormalTok{, }\StringTok{"nm3"}\NormalTok{, }\StringTok{"r1b"}\NormalTok{, }\StringTok{"r2b"}\NormalTok{, }\StringTok{"r3b"}\NormalTok{, }\StringTok{"scrollCount"}\NormalTok{,}
+                  \StringTok{"sessionID"}\NormalTok{, }\StringTok{"stuckValue"}\NormalTok{, }\StringTok{"e1"}\NormalTok{, }\StringTok{"e2"}\NormalTok{, }\StringTok{"e3"}\NormalTok{, }\StringTok{"f1"}\NormalTok{, }\StringTok{"f2"}\NormalTok{, }\StringTok{"f3"}\NormalTok{, }\StringTok{"mw1"}\NormalTok{, }\StringTok{"mw2"}\NormalTok{,}
+                  \StringTok{"mw3"}\NormalTok{, }\StringTok{"pw"}\NormalTok{, }\StringTok{"r1"}\NormalTok{, }\StringTok{"r2"}\NormalTok{, }\StringTok{"r3"}\NormalTok{, }\StringTok{"ra"}\NormalTok{)}
+
+\NormalTok{factor\_cols\_data }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"condition"}\NormalTok{, }\StringTok{"levelNumber"}\NormalTok{,}\StringTok{"prolificPID"}\NormalTok{)}
+
+\NormalTok{numeric\_cols\_survey }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"age"}\NormalTok{)}
+
+\NormalTok{factor\_cols\_survey }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"sex"}\NormalTok{, }\StringTok{"handedness"}\NormalTok{, }\StringTok{"trialOrder"}\NormalTok{, }\StringTok{"conditionOrder"}\NormalTok{)}
+
+\NormalTok{raw\_data }\OtherTok{\textless{}{-}}\NormalTok{ raw\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{all\_of}\NormalTok{(numeric\_cols\_data), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{as.numeric}\NormalTok{(.)),}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{all\_of}\NormalTok{(factor\_cols\_data), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{as.factor}\NormalTok{(.)),}
+    \AttributeTok{condition =} \FunctionTok{recode}\NormalTok{(condition,}
+                       \StringTok{"1"} \OtherTok{=} \StringTok{"No Break"}\NormalTok{,}
+                       \StringTok{"2"} \OtherTok{=} \StringTok{"Non{-}HIS"}\NormalTok{,}
+                       \StringTok{"3"} \OtherTok{=} \StringTok{"HIS"}
+\NormalTok{                       )}
+\NormalTok{  )}
+
+\NormalTok{raw\_survey }\OtherTok{\textless{}{-}}\NormalTok{ raw\_survey }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{all\_of}\NormalTok{(numeric\_cols\_survey), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{as.numeric}\NormalTok{(.)),}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{all\_of}\NormalTok{(factor\_cols\_survey), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{as.factor}\NormalTok{(.)),}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{c}\NormalTok{(videoGameHours, smartphoneHours, digitalDeviceHours, shortFormVideoHours), }
+           \SpecialCharTok{\textasciitilde{}} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{recode}\NormalTok{(., }
+                               \StringTok{"lessThan1"} \OtherTok{=} \DecValTok{1}\NormalTok{,}
+                               \StringTok{"1to2"} \OtherTok{=} \DecValTok{2}\NormalTok{,}
+                               \StringTok{"2to3"} \OtherTok{=} \DecValTok{3}\NormalTok{,}
+                               \StringTok{"3to4"} \OtherTok{=} \DecValTok{4}\NormalTok{,}
+                               \StringTok{"5plus"} \OtherTok{=} \DecValTok{5}\NormalTok{))),}
+    \AttributeTok{sokobanFamiliarity =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{recode}\NormalTok{(sokobanFamiliarity,}
+                            \StringTok{"notFamiliar"} \OtherTok{=} \DecValTok{1}\NormalTok{,}
+                            \StringTok{"somewhatFamiliar"} \OtherTok{=} \DecValTok{2}\NormalTok{,}
+                            \StringTok{"veryFamiliar"} \OtherTok{=} \DecValTok{3}
+\NormalTok{                                           ))}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Exclusions}\label{exclusions}
+
+Note that there is not the expected ratio of 3 trials to 1 participant.
+This is because some individuals either timed out by being idle or did
+not complete the three practice trials within 10 minutes. Some
+participants also completed trials multiple times, likely because they
+refreshed the page or restarted the study. Furthermore, form submissions
+were sometimes duplicated internally. Some participants' data were also
+not recorded for some trials, so we decide to remove all of their
+trials.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{problematic\_ids }\OtherTok{\textless{}{-}}\NormalTok{ raw\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(prolificPID) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{row\_count =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(row\_count }\SpecialCharTok{!=} \DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pull}\NormalTok{(prolificPID)}
+
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ raw\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}
+    \SpecialCharTok{!}\NormalTok{prolificPID }\SpecialCharTok{\%in\%}\NormalTok{ problematic\_ids,}
+\NormalTok{    prolificPID }\SpecialCharTok{\%in\%}\NormalTok{ raw\_survey}\SpecialCharTok{$}\NormalTok{prolificPID}
+\NormalTok{    )}
+
+\NormalTok{survey }\OtherTok{\textless{}{-}}\NormalTok{ raw\_survey }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}
+\NormalTok{    completedAllLevels }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{,}
+\NormalTok{    prolificPID }\SpecialCharTok{\%in\%}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{prolificPID,}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{distinct}\NormalTok{(prolificPID, }\AttributeTok{.keep\_all =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Aside from these technical exclusions, we decided to improve the quality
+of data by removing participants that showed very low engagement during
+one of their trials. We removed participants who had only one or no move
+sets before or after the break. We also removed them if they went idle
+during the break periods (which should only last around 180 seconds plus
+the time it takes to respond to questions).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{participants\_excluded }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(prolificPID) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}
+    \FunctionTok{any}\NormalTok{(completedLevel }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&} \FunctionTok{lengths}\NormalTok{(afterBreakMovesets) }\SpecialCharTok{\textless{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{|}
+    \FunctionTok{any}\NormalTok{(completedLevel }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&} \FunctionTok{lengths}\NormalTok{(beforeBreakMovesets) }\SpecialCharTok{\textless{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{|}
+    \FunctionTok{any}\NormalTok{(completedLevel }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&}\NormalTok{ durationBreak }\SpecialCharTok{\textgreater{}} \DecValTok{360}\NormalTok{)}
+\NormalTok{  )}
+
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{prolificPID }\SpecialCharTok{\%in\%}\NormalTok{ participants\_excluded}\SpecialCharTok{$}\NormalTok{prolificPID)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Validity and Reliability of
+Measures}\label{validity-and-reliability-of-measures}
+
+For each construct, we use each participant's first possible use of the
+scale during the first trial (since participants could possibly respond
+to each scale multiple times). This would exclude participants who
+completed the puzzle early on their first trial and those that are in
+the no break condition for the first puzzle.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{items }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(completedEarly }\SpecialCharTok{==} \DecValTok{0}\NormalTok{, condition }\SpecialCharTok{!=} \StringTok{"No Break"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}      
+  \FunctionTok{left\_join}\NormalTok{(}
+\NormalTok{    survey }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{mutate}\NormalTok{(}\AttributeTok{first\_trial =} \FunctionTok{substr}\NormalTok{(trialOrder, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{select}\NormalTok{(prolificPID, first\_trial),                                 }
+    \AttributeTok{by =} \StringTok{"prolificPID"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(levelNumber }\SpecialCharTok{==}\NormalTok{ first\_trial) }\SpecialCharTok{\%\textgreater{}\%}                  
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"aha"}\NormalTok{), }\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"nm"}\NormalTok{), }\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"e"}\NormalTok{), }\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"f"}\NormalTok{), }\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"mw"}\NormalTok{), r1b, r2b, r3b, }\SpecialCharTok{{-}}\NormalTok{first\_trial) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{drop\_na}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+We first use confirmatory factor analysis to check for convergent and
+divergent validity. Important variables include those used as a
+manipulation check (heightened enjoyment, focused immersion, and
+mind-wandering, insight experience) and supplemental variables
+(perceived use of new moves, resources).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fa}\NormalTok{(items, }\AttributeTok{nfactors =} \DecValTok{6}\NormalTok{, }\AttributeTok{rotate =} \StringTok{"oblimin"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required namespace: GPArotation
+\end{verbatim}
+
+\begin{verbatim}
+## Factor Analysis using method =  minres
+## Call: fa(r = items, nfactors = 6, rotate = "oblimin")
+## Standardized loadings (pattern matrix) based upon correlation matrix
+##        MR5   MR1   MR2   MR4   MR3   MR6   h2    u2 com
+## aha1  0.02 -0.07  0.92 -0.02  0.00 -0.10 0.82 0.178 1.0
+## aha2 -0.06  0.02  0.95  0.05 -0.03  0.07 0.96 0.042 1.0
+## aha3  0.04  0.06  0.85  0.02  0.07  0.05 0.79 0.215 1.0
+## nm1   0.01 -0.11  0.04  0.82  0.06  0.01 0.78 0.223 1.1
+## nm2  -0.03 -0.03 -0.02  0.93 -0.04  0.02 0.81 0.186 1.0
+## nm3   0.11  0.11  0.08  0.84  0.04 -0.06 0.84 0.164 1.1
+## e1    0.93  0.03  0.02  0.06 -0.09  0.07 0.93 0.069 1.0
+## e2    0.92  0.02  0.02 -0.01  0.04  0.04 0.89 0.114 1.0
+## e3    0.84 -0.12 -0.07  0.01  0.10 -0.05 0.77 0.229 1.1
+## f1    0.06 -0.06 -0.06  0.08 -0.03  0.73 0.63 0.366 1.1
+## f2    0.06 -0.18  0.11  0.00  0.14  0.60 0.71 0.295 1.4
+## f3    0.17 -0.12  0.10 -0.15  0.06  0.67 0.78 0.223 1.4
+## mw1   0.05  0.92 -0.01  0.01 -0.09  0.05 0.77 0.226 1.0
+## mw2  -0.04  0.88 -0.02 -0.04  0.05 -0.09 0.92 0.079 1.0
+## mw3  -0.08  0.81  0.02  0.00  0.06 -0.08 0.80 0.196 1.1
+## r1b   0.09 -0.03  0.03  0.01  0.76 -0.04 0.60 0.399 1.0
+## r2b   0.01 -0.01  0.04 -0.02  0.90 -0.02 0.81 0.186 1.0
+## r3b  -0.15  0.07 -0.09  0.18  0.63  0.25 0.56 0.437 1.7
+## 
+##                        MR5  MR1  MR2  MR4  MR3  MR6
+## SS loadings           2.71 2.64 2.61 2.42 1.97 1.82
+## Proportion Var        0.15 0.15 0.15 0.13 0.11 0.10
+## Cumulative Var        0.15 0.30 0.44 0.58 0.69 0.79
+## Proportion Explained  0.19 0.19 0.18 0.17 0.14 0.13
+## Cumulative Proportion 0.19 0.38 0.56 0.73 0.87 1.00
+## 
+##  With factor correlations of 
+##       MR5   MR1   MR2   MR4   MR3   MR6
+## MR5  1.00 -0.48  0.14  0.26  0.11  0.54
+## MR1 -0.48  1.00 -0.12 -0.06 -0.13 -0.63
+## MR2  0.14 -0.12  1.00  0.49  0.24  0.19
+## MR4  0.26 -0.06  0.49  1.00  0.34  0.11
+## MR3  0.11 -0.13  0.24  0.34  1.00  0.29
+## MR6  0.54 -0.63  0.19  0.11  0.29  1.00
+## 
+## Mean item complexity =  1.1
+## Test of the hypothesis that 6 factors are sufficient.
+## 
+## df null model =  153  with the objective function =  16.63 with Chi Square =  1898.33
+## df of  the model are 60  and the objective function was  0.94 
+## 
+## The root mean square of the residuals (RMSR) is  0.01 
+## The df corrected root mean square of the residuals is  0.02 
+## 
+## The harmonic n.obs is  122 with the empirical chi square  4.14  with prob <  1 
+## The total n.obs was  122  with Likelihood Chi Square =  103.97  with prob <  0.00037 
+## 
+## Tucker Lewis Index of factoring reliability =  0.933
+## RMSEA index =  0.077  and the 90 % confidence intervals are  0.052 0.102
+## BIC =  -184.27
+## Fit based upon off diagonal values = 1
+## Measures of factor score adequacy             
+##                                                    MR5  MR1  MR2  MR4  MR3  MR6
+## Correlation of (regression) scores with factors   0.90 0.87 0.94 0.90 0.90 0.71
+## Multiple R square of scores with factors          0.81 0.75 0.89 0.81 0.81 0.51
+## Minimum correlation of possible factor scores     0.62 0.50 0.79 0.62 0.62 0.02
+\end{verbatim}
+
+We assess internal consistency using Cronbach's alpha.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{scales }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{insight =}\NormalTok{ items[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{],}
+  \AttributeTok{new\_moves =}\NormalTok{ items[,}\DecValTok{4}\SpecialCharTok{:}\DecValTok{6}\NormalTok{],}
+  \AttributeTok{enjoyment =}\NormalTok{ items[,}\DecValTok{7}\SpecialCharTok{:}\DecValTok{9}\NormalTok{],}
+  \AttributeTok{immersion =}\NormalTok{ items[,}\DecValTok{10}\SpecialCharTok{:}\DecValTok{12}\NormalTok{],}
+  \AttributeTok{mind\_wandering =}\NormalTok{ items[,}\DecValTok{13}\SpecialCharTok{:}\DecValTok{15}\NormalTok{],}
+  \AttributeTok{resources =}\NormalTok{ items[,}\DecValTok{16}\SpecialCharTok{:}\DecValTok{18}\NormalTok{]}
+\NormalTok{)}
+
+\FunctionTok{sapply}\NormalTok{(scales, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{alpha}\NormalTok{(x)}\SpecialCharTok{$}\NormalTok{total}\SpecialCharTok{$}\NormalTok{raw\_alpha)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        insight      new_moves      enjoyment      immersion mind_wandering 
+##      0.9408975      0.9182255      0.9418180      0.8647786      0.9303154 
+##      resources 
+##      0.8357699
+\end{verbatim}
+
+\subsection{General Performance}\label{general-performance}
+
+Completion data for each level
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{completion }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(levelNumber) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{completed\_count =} \FunctionTok{sum}\NormalTok{(completedLevel),              }
+    \AttributeTok{percent\_completed =} \FunctionTok{mean}\NormalTok{(completedLevel) }\SpecialCharTok{*} \DecValTok{100}\NormalTok{,     }
+    \AttributeTok{sample\_size =} \FunctionTok{n}\NormalTok{()                                             }
+\NormalTok{  )}
+
+\NormalTok{completion}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 4
+##   levelNumber completed_count percent_completed sample_size
+##   <fct>                 <dbl>             <dbl>       <int>
+## 1 5                        85              31.2         272
+## 2 7                       199              73.2         272
+## 3 8                       157              57.7         272
+\end{verbatim}
+
+Completion duration
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{completion\_duration }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(completedLevel }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{durationBreak =} \FunctionTok{replace\_na}\NormalTok{(durationBreak, }\DecValTok{0}\NormalTok{),}
+    \AttributeTok{totalTime =}\NormalTok{ durationToBeatGame }\SpecialCharTok{{-}}\NormalTok{ durationBreak}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(levelNumber) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarize}\NormalTok{(}\AttributeTok{duration\_to\_beat\_puzzle =} \FunctionTok{mean}\NormalTok{(totalTime, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{))   }
+              
+\NormalTok{completion\_duration }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   levelNumber duration_to_beat_puzzle
+##   <fct>                         <dbl>
+## 1 5                              160.
+## 2 7                              102.
+## 3 8                              144.
+\end{verbatim}
+
+For the ease of interpretation, rather than referring to the levels
+using the internal numbers, we can now classify based on their actual
+difficulties.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{levelNumber =} \FunctionTok{recode}\NormalTok{(levelNumber,}
+                              \StringTok{\textasciigrave{}}\AttributeTok{5}\StringTok{\textasciigrave{}} \OtherTok{=} \StringTok{"hard"}\NormalTok{,}
+                              \StringTok{\textasciigrave{}}\AttributeTok{7}\StringTok{\textasciigrave{}} \OtherTok{=} \StringTok{"easy"}\NormalTok{,}
+                              \StringTok{\textasciigrave{}}\AttributeTok{8}\StringTok{\textasciigrave{}} \OtherTok{=} \StringTok{"medium"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{level =}\NormalTok{ levelNumber) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{level =} \FunctionTok{factor}\NormalTok{(level, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"easy"}\NormalTok{, }\StringTok{"medium"}\NormalTok{, }\StringTok{"hard"}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+For participants who did not complete puzzles early, we obtained brief
+1-item measures for perceived difficulty and impasse.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(level) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{summarize}\NormalTok{(}
+      \AttributeTok{average\_difficulty =} \FunctionTok{mean}\NormalTok{(difficultyValue, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)     }
+\NormalTok{    )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   level  average_difficulty
+##   <fct>               <dbl>
+## 1 easy                 5.98
+## 2 medium               6.08
+## 3 hard                 5.92
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{impasse }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(level) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarize}\NormalTok{(}
+    \AttributeTok{average\_impasse =} \FunctionTok{mean}\NormalTok{(stuckValue, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)     }
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Manipulation Check}\label{manipulation-check}
+
+We first check whether the non-HIS and HIS condition were different from
+each other. Here, we average our items for each construct. For
+resources, we take the difference to get a measure of the changes in
+resources after taking a break.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{manipulation\_data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(condition }\SpecialCharTok{!=} \StringTok{"No Break"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{drop\_na}\NormalTok{(f1, f2, f3, nm1, nm2, nm3, e1, e2, e3, mw1, mw2, mw3, r1b, r2b, r3b, r1, r2, r3, ra, pw) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{focused\_immersion =} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{select}\NormalTok{(., f1, f2, f3)),}
+    \AttributeTok{heightened\_enjoyment =} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{select}\NormalTok{(., e1, e2, e3)),}
+    \AttributeTok{mind\_wandering =} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{select}\NormalTok{(., mw1, mw2, mw3)),}
+    \AttributeTok{perceived\_use\_of\_new\_strategies =} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{select}\NormalTok{(., nm1, nm2, nm3)),}
+    \AttributeTok{resources\_before =} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{select}\NormalTok{(., r1b, r2b, r3b)),}
+    \AttributeTok{resources\_after =} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{select}\NormalTok{(., r1, r2, r3)),}
+    \AttributeTok{resources\_difference =}\NormalTok{ resources\_after }\SpecialCharTok{{-}}\NormalTok{ resources\_before}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+Mixed effects models are used here to account for the repeated measures
+in our experiment (i.e., control for baseline differences among
+participants). Note that the intercept represents the value of the
+Non-HIS condition. For parsimony we do not include any control
+variables.
+
+Focused immersion
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fi\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(focused\_immersion }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ manipulation\_data)}
+\FunctionTok{summary}\NormalTok{(fi\_lm) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: focused_immersion ~ condition + (1 | prolificPID)
+##    Data: manipulation_data
+## 
+## REML criterion at convergence: 1213.5
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.32671 -0.64176  0.04075  0.67388  1.83771 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.5421   0.7363  
+##  Residual                1.5849   1.2589  
+## Number of obs: 339, groups:  prolificPID, 227
+## 
+## Fixed effects:
+##              Estimate Std. Error       df t value Pr(>|t|)    
+## (Intercept)    4.3341     0.1101 335.0397  39.359  < 2e-16 ***
+## conditionHIS   0.5971     0.1431 191.0656   4.172 4.58e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## conditinHIS -0.634
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(fi\_lm, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  2.5 %    97.5 %
+## .sig01              NA        NA
+## .sigma              NA        NA
+## (Intercept)  4.1182661 4.5499154
+## conditionHIS 0.3165688 0.8775336
+\end{verbatim}
+
+Heightened enjoyment
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{he\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(heightened\_enjoyment }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ manipulation\_data)}
+\FunctionTok{summary}\NormalTok{(he\_lm) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: heightened_enjoyment ~ condition + (1 | prolificPID)
+##    Data: manipulation_data
+## 
+## REML criterion at convergence: 1271.2
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.6413 -0.7811  0.1560  0.7007  2.2502 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.2229   0.4722  
+##  Residual                2.2528   1.5009  
+## Number of obs: 339, groups:  prolificPID, 227
+## 
+## Fixed effects:
+##              Estimate Std. Error       df t value Pr(>|t|)    
+## (Intercept)    3.2884     0.1195 336.7772   27.51   <2e-16 ***
+## conditionHIS   1.9989     0.1656 202.8529   12.07   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## conditinHIS -0.678
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(he\_lm, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 2.5 %   97.5 %
+## .sig01             NA       NA
+## .sigma             NA       NA
+## (Intercept)  3.054174 3.522704
+## conditionHIS 1.674256 2.323489
+\end{verbatim}
+
+Mind-wandering
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mw\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(mind\_wandering }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ manipulation\_data)}
+\FunctionTok{summary}\NormalTok{(mw\_lm) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: mind_wandering ~ condition + (1 | prolificPID)
+##    Data: manipulation_data
+## 
+## REML criterion at convergence: 1347.4
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.0274 -0.8238  0.1344  0.7195  1.7392 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.879    0.9376  
+##  Residual                2.299    1.5162  
+## Number of obs: 339, groups:  prolificPID, 227
+## 
+## Fixed effects:
+##              Estimate Std. Error       df t value Pr(>|t|)    
+## (Intercept)    4.3889     0.1344 334.4833  32.649  < 2e-16 ***
+## conditionHIS  -0.6579     0.1731 183.6581  -3.801 0.000196 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## conditinHIS -0.628
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(mw\_lm, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   2.5 %     97.5 %
+## .sig01               NA         NA
+## .sigma               NA         NA
+## (Intercept)   4.1254595  4.6524148
+## conditionHIS -0.9970325 -0.3186774
+\end{verbatim}
+
+Active work on the puzzle during the break
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pw\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(pw }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ manipulation\_data)}
+\FunctionTok{summary}\NormalTok{(pw\_lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: pw ~ condition + (1 | prolificPID)
+##    Data: manipulation_data
+## 
+## REML criterion at convergence: 1239.8
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.00447 -0.44442 -0.07953  0.20347  2.63989 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 1.418    1.191   
+##  Residual                1.125    1.061   
+## Number of obs: 339, groups:  prolificPID, 227
+## 
+## Fixed effects:
+##              Estimate Std. Error       df t value Pr(>|t|)    
+## (Intercept)    2.6752     0.1171 323.0635  22.855  < 2e-16 ***
+## conditionHIS  -0.6097     0.1280 162.5902  -4.765 4.17e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## conditinHIS -0.532
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(pw\_lm, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   2.5 %     97.5 %
+## .sig01               NA         NA
+## .sigma               NA         NA
+## (Intercept)   2.4458157  2.9046495
+## conditionHIS -0.8605267 -0.3589025
+\end{verbatim}
+
+Changes in resources
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rd\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(resources\_difference }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ manipulation\_data)}
+\FunctionTok{summary}\NormalTok{(rd\_lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: resources_difference ~ condition + (1 | prolificPID)
+##    Data: manipulation_data
+## 
+## REML criterion at convergence: 595.5
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.8560 -0.5021  0.0271  0.4471  3.3140 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.05208  0.2282  
+##  Residual                0.28306  0.5320  
+## Number of obs: 339, groups:  prolificPID, 227
+## 
+## Fixed effects:
+##               Estimate Std. Error        df t value Pr(>|t|)    
+## (Intercept)   -0.24704    0.04390 336.29360  -5.627 3.87e-08 ***
+## conditionHIS   0.22997    0.05939 195.55922   3.872 0.000147 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## conditinHIS -0.661
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(rd\_lm, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   2.5 %     97.5 %
+## .sig01               NA         NA
+## .sigma               NA         NA
+## (Intercept)  -0.3330828 -0.1609907
+## conditionHIS  0.1135609  0.3463700
+\end{verbatim}
+
+Perceived recovery after break
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{r\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(ra }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ manipulation\_data)}
+\FunctionTok{summary}\NormalTok{(r\_lm) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: ra ~ condition + (1 | prolificPID)
+##    Data: manipulation_data
+## 
+## REML criterion at convergence: 1280.8
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.4403 -0.4551  0.1229  0.6640  1.8205 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.561    0.749   
+##  Residual                2.020    1.421   
+## Number of obs: 339, groups:  prolificPID, 227
+## 
+## Fixed effects:
+##              Estimate Std. Error       df t value Pr(>|t|)    
+## (Intercept)    3.7943     0.1215 335.4786  31.221  < 2e-16 ***
+## conditionHIS   0.9484     0.1604 186.1565   5.911 1.59e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## conditinHIS -0.645
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(r\_lm, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  2.5 %   97.5 %
+## .sig01              NA       NA
+## .sigma              NA       NA
+## (Intercept)  3.5560933 4.032478
+## conditionHIS 0.6339818 1.262903
+\end{verbatim}
+
+Perceived use of new strategies/moves after a break
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nm\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(perceived\_use\_of\_new\_strategies }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ manipulation\_data)}
+\FunctionTok{summary}\NormalTok{(nm\_lm) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: perceived_use_of_new_strategies ~ condition + (1 | prolificPID)
+##    Data: manipulation_data
+## 
+## REML criterion at convergence: 1183.7
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.9913 -0.3855  0.2648  0.4875  1.7853 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.4612   0.6791  
+##  Residual                1.4800   1.2166  
+## Number of obs: 339, groups:  prolificPID, 227
+## 
+## Fixed effects:
+##                Estimate Std. Error         df t value Pr(>|t|)    
+## (Intercept)    5.244190   0.105293 335.603891  49.806   <2e-16 ***
+## conditionHIS  -0.003022   0.137848 207.508313  -0.022    0.983    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## conditinHIS -0.639
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(nm\_lm, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  2.5 %    97.5 %
+## .sig01              NA        NA
+## .sigma              NA        NA
+## (Intercept)   5.037820 5.4505605
+## conditionHIS -0.273199 0.2671549
+\end{verbatim}
+
+If Sokoban is a suitable non-routine problem, participants may have
+insight experiences if they are able to solve the puzzles. They should
+be more likely to have insight experiences after returning from a break,
+compared to those that completed the puzzle early.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{insight\_data  }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{drop\_na}\NormalTok{(aha1, aha2, aha3) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{aha =} \FunctionTok{rowMeans}\NormalTok{(}\FunctionTok{select}\NormalTok{(., aha1, aha2, aha3))}
+\NormalTok{  )}
+
+\NormalTok{i\_lm }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(aha }\SpecialCharTok{\textasciitilde{}}\NormalTok{ completedLevel }\SpecialCharTok{+}\NormalTok{ completedEarly }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ insight\_data)}
+\FunctionTok{summary}\NormalTok{(i\_lm) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: aha ~ completedLevel + completedEarly + (1 | prolificPID)
+##    Data: insight_data
+## 
+## REML criterion at convergence: 2771.1
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.5774 -0.5689  0.0595  0.5273  2.4892 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.8219   0.9066  
+##  Residual                1.1943   1.0928  
+## Number of obs: 816, groups:  prolificPID, 272
+## 
+## Fixed effects:
+##                 Estimate Std. Error        df t value Pr(>|t|)    
+## (Intercept)      3.06493    0.08248 487.62581   37.16  < 2e-16 ***
+## completedLevel   3.02033    0.11740 709.52766   25.73  < 2e-16 ***
+## completedEarly  -0.49198    0.12330 706.77200   -3.99  7.3e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) cmpltL
+## completdLvl -0.439       
+## compltdErly -0.006 -0.652
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(i\_lm, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     2.5 %     97.5 %
+## .sig01                 NA         NA
+## .sigma                 NA         NA
+## (Intercept)     2.9032779  3.2265772
+## completedLevel  2.7902191  3.2504381
+## completedEarly -0.7336538 -0.2503109
+\end{verbatim}
+
+Here, we can see participants rated higher insight (3.22 + 2.88) if they
+completed a level. However, if they completed a level early, their
+rating of perceived insight decreases (3.22 + 2.88 - .49).
+
+\subsection{Main Analyses}\label{main-analyses}
+
+First, we check if any of the control variables are relevant.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{main\_data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(}
+\NormalTok{    survey }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{select}\NormalTok{(prolificPID, age, handedness, sex, videoGameHours, smartphoneHours, sokobanFamiliarity, digitalDeviceHours, shortFormVideoHours, trialOrder, conditionOrder),}
+    \AttributeTok{by =} \StringTok{"prolificPID"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}
+\NormalTok{    handedness }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"left"}\NormalTok{,}\StringTok{"right"}\NormalTok{), }\CommentTok{\# 5 participants put ambidextrous}
+\NormalTok{    completedEarly }\SpecialCharTok{!=} \DecValTok{1} \CommentTok{\# include only those who encountered manipulations}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{sex =} \FunctionTok{factor}\NormalTok{(sex, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Female"}\NormalTok{, }\StringTok{"Male"}\NormalTok{)),)}
+\end{Highlighting}
+\end{Shaded}
+
+We compare a null model (with random intercepts) to other models.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model1\_null }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_level }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{ level }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_condition}\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{  condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_base }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{*}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_noint }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{ level }\SpecialCharTok{+}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_age }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{  age }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_sex }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{   sex }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_handedness }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{   handedness }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_videoGames }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{   videoGameHours }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_smartphones }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{   smartphoneHours }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_sokoban }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{   sokobanFamiliarity }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_digitalDevice }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{   digitalDeviceHours }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_shortFormVideos }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{   shortFormVideoHours }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_trialOrder }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{   trialOrder }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{model1\_conditionOrder }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{  conditionOrder }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\NormalTok{models1 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{null =}\NormalTok{ model1\_null,}
+  \AttributeTok{level =}\NormalTok{ model1\_level,}
+  \AttributeTok{condition =}\NormalTok{ model1\_condition,}
+  \AttributeTok{noint =}\NormalTok{ model1\_noint,}
+  \AttributeTok{base =}\NormalTok{ model1\_base,}
+  \AttributeTok{age =}\NormalTok{ model1\_age,}
+  \AttributeTok{sex =}\NormalTok{ model1\_sex,}
+  \AttributeTok{handedness =}\NormalTok{ model1\_handedness,}
+  \AttributeTok{videoGames =}\NormalTok{ model1\_videoGames,}
+  \AttributeTok{smartphones =}\NormalTok{ model1\_smartphones,}
+  \AttributeTok{sokoban =}\NormalTok{ model1\_sokoban,}
+  \AttributeTok{digitalDevice =}\NormalTok{ model1\_digitalDevice,}
+  \AttributeTok{shortFormVideos =}\NormalTok{ model1\_shortFormVideos,}
+  \AttributeTok{trialOrder =}\NormalTok{ model1\_trialOrder,}
+  \AttributeTok{conditionOrder =}\NormalTok{ model1\_conditionOrder}
+\NormalTok{)}
+
+\NormalTok{aic\_results1 }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(models1, AIC)}
+\NormalTok{aic\_results1 }\OtherTok{\textless{}{-}} \FunctionTok{sort}\NormalTok{(aic\_results1)}
+\NormalTok{aic\_results1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           level           noint            base             sex      trialOrder 
+##        629.7355        631.7117        638.3125        657.1704        659.3084 
+##     smartphones             age            null      videoGames      handedness 
+##        662.2627        663.1969        663.5225        663.8692        663.9336 
+## shortFormVideos         sokoban   digitalDevice       condition  conditionOrder 
+##        664.9993        665.2521        665.4753        666.1675        671.4257
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bic\_results1 }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(models1, BIC)}
+\NormalTok{bic\_results1 }\OtherTok{\textless{}{-}} \FunctionTok{sort}\NormalTok{(bic\_results1)}
+\NormalTok{bic\_results1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           level           noint             sex            null     smartphones 
+##        646.8720        657.4165        670.0228        672.0908        675.1151 
+##             age      videoGames      handedness shortFormVideos         sokoban 
+##        676.0493        676.7216        676.7860        677.8517        678.1045 
+##   digitalDevice            base       condition      trialOrder  conditionOrder 
+##        678.3277        681.1538        683.3040        689.2974        701.4146
+\end{verbatim}
+
+The model with level as a predictor performs the best. Sex is a relevant
+covariate that improves the model fit. Most models agree in terms of
+what variable or interaction is significant. Males seem to perform
+considerably better than females on solving Sokoban puzzles.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model1\_level\_sex }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{+}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ main\_data)}
+
+\FunctionTok{anova}\NormalTok{(model1\_level\_sex, model1\_level)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Data: main_data
+## Models:
+## model1_level: completedLevel ~ level + (1 | prolificPID)
+## model1_level_sex: completedLevel ~ level + sex + (1 | prolificPID)
+##                  npar    AIC    BIC  logLik -2*log(L)  Chisq Df Pr(>Chisq)   
+## model1_level        4 629.74 646.87 -310.87    621.74                        
+## model1_level_sex    5 622.44 643.86 -306.22    612.44 9.2947  1   0.002298 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model1\_data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(}
+\NormalTok{    survey }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{select}\NormalTok{(sex, prolificPID),}
+    \AttributeTok{by =} \StringTok{"prolificPID"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}
+\NormalTok{    completedEarly }\SpecialCharTok{!=} \DecValTok{1}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{sex =} \FunctionTok{factor}\NormalTok{(sex, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Female"}\NormalTok{, }\StringTok{"Male"}\NormalTok{)),)}
+
+\NormalTok{model1\_final }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(completedLevel }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{+}\NormalTok{ sex }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ model1\_data)}
+
+\FunctionTok{summary}\NormalTok{(model1\_final)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: completedLevel ~ level + sex + (1 | prolificPID)
+##    Data: model1_data
+## Control: glmerControl(optimizer = "bobyqa")
+## 
+##       AIC       BIC    logLik -2*log(L)  df.resid 
+##     623.9     645.3    -306.9     613.9       534 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.1056 -0.6053 -0.4133  0.9643  2.7045 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.4151   0.6442  
+## Number of obs: 539, groups:  prolificPID, 254
+## 
+## Fixed effects:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)  -0.5868     0.2258  -2.599  0.00936 ** 
+## levelmedium  -0.2652     0.2530  -1.048  0.29453    
+## levelhard    -1.4813     0.2821  -5.251 1.51e-07 ***
+## sexMale       0.6910     0.2299   3.006  0.00265 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) lvlmdm lvlhrd
+## levelmedium -0.642              
+## levelhard   -0.500  0.544       
+## sexMale     -0.499  0.010 -0.127
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{r.squaredGLMM}\NormalTok{(model1\_final, }\AttributeTok{null =}\NormalTok{ model1\_null)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                    R2m       R2c
+## theoretical 0.12972424 0.2272186
+## delta       0.09732719 0.1704735
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(model1\_final, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  2.5 %     97.5 %
+## .sig01              NA         NA
+## (Intercept) -1.0293674 -0.1442088
+## levelmedium -0.7611471  0.2306906
+## levelhard   -2.0342063 -0.9283823
+## sexMale      0.2404481  1.1414866
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{exp}\NormalTok{(}\FunctionTok{fixef}\NormalTok{(model1\_final))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## (Intercept) levelmedium   levelhard     sexMale 
+##   0.5561106   0.7670309   0.2273433   1.9956451
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{exp}\NormalTok{(}\FunctionTok{confint}\NormalTok{(model1\_final, }\AttributeTok{parm =} \StringTok{"beta\_"}\NormalTok{, }\AttributeTok{method=}\StringTok{"Wald"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 2.5 %    97.5 %
+## (Intercept) 0.3572329 0.8657069
+## levelmedium 0.4671303 1.2594695
+## levelhard   0.1307842 0.3951925
+## sexMale     1.2718189 3.1314201
+\end{verbatim}
+
+We run a similar set of comparisons for the dependent variable: duration
+after break (to complete level).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{completed\_data }\OtherTok{\textless{}{-}}\NormalTok{ main\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(completedLevel }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
+
+\NormalTok{model2\_null }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_condition }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{   condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## boundary (singular) fit: see help('isSingular')
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model2\_level }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_noint }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{+}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_base }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{*}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_age }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  age }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_sex }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  sex }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_handedness }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{   handedness }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## boundary (singular) fit: see help('isSingular')
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model2\_videoGames }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{ videoGameHours }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_smartphones }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{   smartphoneHours }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_sokoban }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  sokobanFamiliarity }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_digitalDevice }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  digitalDeviceHours }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_shortFormVideos }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  shortFormVideoHours }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_trialOrder }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{   trialOrder }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{model2\_conditionOrder }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{   conditionOrder }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\NormalTok{models2 }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+  \AttributeTok{null =}\NormalTok{ model2\_null,}
+  \AttributeTok{condition =}\NormalTok{ model2\_condition,}
+  \AttributeTok{level =}\NormalTok{ model2\_level,}
+  \AttributeTok{noint =}\NormalTok{ model2\_noint,}
+  \AttributeTok{base =}\NormalTok{ model2\_base,}
+  \AttributeTok{age =}\NormalTok{ model2\_age,}
+  \AttributeTok{sex =}\NormalTok{ model2\_sex,}
+  \AttributeTok{handedness =}\NormalTok{ model2\_handedness,}
+  \AttributeTok{videoGames =}\NormalTok{ model2\_videoGames,}
+  \AttributeTok{smartphones =}\NormalTok{ model2\_smartphones,}
+  \AttributeTok{sokoban =}\NormalTok{ model2\_sokoban,}
+  \AttributeTok{digitalDevice =}\NormalTok{ model2\_digitalDevice,}
+  \AttributeTok{shortFormVideos =}\NormalTok{ model2\_shortFormVideos,}
+  \AttributeTok{trialOrder =}\NormalTok{ model2\_trialOrder,}
+  \AttributeTok{conditionOrder =}\NormalTok{ model2\_conditionOrder}
+\NormalTok{)}
+
+\CommentTok{\# Comparing Models}
+\NormalTok{aic\_results2 }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(models2, AIC)}
+\NormalTok{aic\_results2 }\OtherTok{\textless{}{-}} \FunctionTok{sort}\NormalTok{(aic\_results2)}
+\NormalTok{aic\_results2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            base           noint      trialOrder  conditionOrder       condition 
+##        1626.437        1655.532        1655.937        1657.617        1668.882 
+##           level             sex      handedness      videoGames         sokoban 
+##        1669.175        1676.363        1676.377        1678.272        1679.130 
+##     smartphones   digitalDevice shortFormVideos            null             age 
+##        1679.937        1680.112        1680.318        1682.355        1683.052
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bic\_results2 }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(models2, BIC)}
+\NormalTok{bic\_results2 }\OtherTok{\textless{}{-}} \FunctionTok{sort}\NormalTok{(bic\_results2)}
+\NormalTok{bic\_results2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            base           noint      trialOrder  conditionOrder       condition 
+##        1660.535        1677.231        1680.736        1682.416        1684.381 
+##           level             sex      handedness      videoGames         sokoban 
+##        1684.675        1688.763        1688.777        1690.672        1691.530 
+##            null     smartphones   digitalDevice shortFormVideos             age 
+##        1691.655        1692.337        1692.511        1692.718        1695.451
+\end{verbatim}
+
+Level and condition, along with their interaction, is the best fitting
+model. Trial and condition order seem like relevant covariates.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model2\_trialOrder\_base }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{*}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ trialOrder }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+\NormalTok{model2\_conditionOrder\_base }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{*}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ conditionOrder }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ completed\_data)}
+
+\FunctionTok{anova}\NormalTok{(model2\_trialOrder\_base, model2\_base)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## refitting model(s) with ML (instead of REML)
+\end{verbatim}
+
+\begin{verbatim}
+## Data: completed_data
+## Models:
+## model2_base: durationAfterBreak ~ level * condition + (1 | prolificPID)
+## model2_trialOrder_base: durationAfterBreak ~ level * condition + trialOrder + (1 | prolificPID)
+##                        npar    AIC    BIC  logLik -2*log(L)  Chisq Df
+## model2_base              11 1683.0 1717.1 -830.49    1661.0          
+## model2_trialOrder_base   16 1689.3 1738.9 -828.67    1657.3 3.6487  5
+##                        Pr(>Chisq)
+## model2_base                      
+## model2_trialOrder_base      0.601
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{anova}\NormalTok{(model2\_conditionOrder\_base, model2\_base)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## refitting model(s) with ML (instead of REML)
+\end{verbatim}
+
+\begin{verbatim}
+## Data: completed_data
+## Models:
+## model2_base: durationAfterBreak ~ level * condition + (1 | prolificPID)
+## model2_conditionOrder_base: durationAfterBreak ~ level * condition + conditionOrder + (1 | prolificPID)
+##                            npar    AIC    BIC  logLik -2*log(L)  Chisq Df
+## model2_base                  11 1683.0 1717.1 -830.49    1661.0          
+## model2_conditionOrder_base   16 1690.8 1740.4 -829.42    1658.8 2.1535  5
+##                            Pr(>Chisq)
+## model2_base                          
+## model2_conditionOrder_base     0.8275
+\end{verbatim}
+
+Comparing models using maximum likelihood generally favor the base
+model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model2\_data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(}
+\NormalTok{    survey }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{select}\NormalTok{(prolificPID),}
+    \AttributeTok{by =} \StringTok{"prolificPID"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(completedLevel }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}
+  
+\NormalTok{model2\_final }\OtherTok{\textless{}{-}} \FunctionTok{lmer}\NormalTok{(durationAfterBreak }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{*}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{data =}\NormalTok{ model2\_data)}
+
+\FunctionTok{summary}\NormalTok{(model2\_final)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: durationAfterBreak ~ level * condition + (1 | prolificPID)
+##    Data: model2_data
+## 
+## REML criterion at convergence: 1604.4
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -1.68642 -0.66530 -0.09806  0.66015  2.06554 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept)  274     16.55   
+##  Residual                1287     35.88   
+## Number of obs: 164, groups:  prolificPID, 131
+## 
+## Fixed effects:
+##                              Estimate Std. Error      df t value Pr(>|t|)    
+## (Intercept)                    77.716      9.018 153.975   8.617  7.7e-15 ***
+## levelmedium                    -5.399     11.960 153.580  -0.451   0.6523    
+## levelhard                     -10.391     13.333 153.488  -0.779   0.4370    
+## conditionNon-HIS              -13.750     12.893 149.256  -1.066   0.2880    
+## conditionHIS                   -8.152     12.600 154.380  -0.647   0.5186    
+## levelmedium:conditionNon-HIS   30.840     17.499 154.999   1.762   0.0800 .  
+## levelhard:conditionNon-HIS     39.352     20.813 146.197   1.891   0.0606 .  
+## levelmedium:conditionHIS       38.811     17.203 147.821   2.256   0.0255 *  
+## levelhard:conditionHIS         40.548     19.700 154.840   2.058   0.0412 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) lvlmdm lvlhrd cN-HIS cndHIS lvlm:N-HIS lvlh:N-HIS lvlm:HIS
+## levelmedium -0.754                                                           
+## levelhard   -0.676  0.510                                                    
+## cndtnNn-HIS -0.698  0.542  0.494                                             
+## conditinHIS -0.716  0.554  0.489  0.501                                      
+## lvlmd:N-HIS  0.515 -0.694 -0.358 -0.747 -0.376                               
+## lvlhr:N-HIS  0.455 -0.353 -0.669 -0.649 -0.330  0.480                        
+## lvlmdm:cHIS  0.536 -0.715 -0.367 -0.379 -0.751  0.490      0.253             
+## lvlhrd:cHIS  0.471 -0.354 -0.688 -0.326 -0.652  0.239      0.449      0.482
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{r.squaredGLMM}\NormalTok{(model2\_final, }\AttributeTok{null =}\NormalTok{ model2\_base)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            R2m       R2c
+## [1,] 0.1090213 0.2653782
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(model2\_final, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                   2.5 %   97.5 %
+## .sig01                               NA       NA
+## .sigma                               NA       NA
+## (Intercept)                   60.039842 95.39169
+## levelmedium                  -28.840394 18.04206
+## levelhard                    -36.523799 15.74244
+## conditionNon-HIS             -39.020403 11.52118
+## conditionHIS                 -32.846637 16.54307
+## levelmedium:conditionNon-HIS  -3.457362 65.13743
+## levelhard:conditionNon-HIS    -1.441003 80.14536
+## levelmedium:conditionHIS       5.093781 72.52849
+## levelhard:conditionHIS         1.935471 79.15961
+\end{verbatim}
+
+Here we explore contrasts in each level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{emm2 }\OtherTok{\textless{}{-}} \FunctionTok{emmeans}\NormalTok{(model2\_final, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{|}\NormalTok{ level)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Cannot use mode = "kenward-roger" because *pbkrtest* package is not installed
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pairs}\NormalTok{(emm2, }\AttributeTok{adjust =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## level = easy:
+##  contrast             estimate   SE  df t.ratio p.value
+##  No Break - (Non-HIS)    13.75 12.9 149   1.066  0.2880
+##  No Break - HIS           8.15 12.6 154   0.647  0.5186
+##  (Non-HIS) - HIS         -5.60 12.7 150  -0.439  0.6610
+## 
+## level = medium:
+##  contrast             estimate   SE  df t.ratio p.value
+##  No Break - (Non-HIS)   -17.09 11.6 154  -1.468  0.1441
+##  No Break - HIS         -30.66 11.4 154  -2.698  0.0078
+##  (Non-HIS) - HIS        -13.57 11.9 155  -1.142  0.2554
+## 
+## level = hard:
+##  contrast             estimate   SE  df t.ratio p.value
+##  No Break - (Non-HIS)   -25.60 15.8 154  -1.616  0.1081
+##  No Break - HIS         -32.40 14.9 143  -2.169  0.0317
+##  (Non-HIS) - HIS         -6.79 16.8 148  -0.405  0.6861
+## 
+## Degrees-of-freedom method: satterthwaite
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{eff\_size}\NormalTok{(emm2, }\AttributeTok{sigma =} \FunctionTok{sigma}\NormalTok{(model2\_final), }\AttributeTok{edf =} \FunctionTok{df.residual}\NormalTok{(model2\_final))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## level = easy:
+##  contrast             effect.size    SE  df lower.CL upper.CL
+##  No Break - (Non-HIS)       0.383 0.360 146   -0.328   1.0947
+##  No Break - HIS             0.227 0.351 154   -0.467   0.9214
+##  (Non-HIS) - HIS           -0.156 0.355 146   -0.858   0.5460
+## 
+## level = medium:
+##  contrast             effect.size    SE  df lower.CL upper.CL
+##  No Break - (Non-HIS)      -0.476 0.326 154   -1.120   0.1669
+##  No Break - HIS            -0.855 0.320 154   -1.488  -0.2214
+##  (Non-HIS) - HIS           -0.378 0.332 155   -1.034   0.2776
+## 
+## level = hard:
+##  contrast             effect.size    SE  df lower.CL upper.CL
+##  No Break - (Non-HIS)      -0.714 0.443 153   -1.590   0.1625
+##  No Break - HIS            -0.903 0.419 139   -1.732  -0.0736
+##  (Non-HIS) - HIS           -0.189 0.468 139   -1.114   0.7353
+## 
+## sigma used for effect sizes: 35.88 
+## Degrees-of-freedom method: inherited from satterthwaite when re-gridding 
+## Confidence level used: 0.95
+\end{verbatim}
+
+A simple plot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preds1 }\OtherTok{\textless{}{-}} \FunctionTok{ggpredict}\NormalTok{(model2\_final, }\AttributeTok{terms =} \FunctionTok{c}\NormalTok{(}\StringTok{"level"}\NormalTok{, }\StringTok{"condition"}\NormalTok{))}
+\NormalTok{plot1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(preds1, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ group, }\AttributeTok{y =}\NormalTok{ predicted)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \FloatTok{2.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ conf.low, }\AttributeTok{ymax =}\NormalTok{ conf.high),}
+    \AttributeTok{width =} \FloatTok{0.15}\NormalTok{,}
+    \AttributeTok{linewidth =} \FloatTok{0.6}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ x, }\AttributeTok{nrow =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{x =} \StringTok{""}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Duration (s)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{panel.grid =} \FunctionTok{element\_blank}\NormalTok{(),        }
+    \AttributeTok{strip.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{axis.line =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{linewidth =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{),  }
+    \AttributeTok{axis.ticks =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{linewidth =} \FloatTok{0.6}\NormalTok{)}
+\NormalTok{  )}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"solutionTime.pdf"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ plot1,}
+  \AttributeTok{width =} \DecValTok{7}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{3}\NormalTok{,}
+  \AttributeTok{units =} \StringTok{"in"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Clustering Analysis}\label{clustering-analysis}
+
+We have a lot of data on the exact moves participants used while working
+on the puzzles. We can see how strategies shift when participants are
+interrupted to take a break. We can use clustering in order to cluster
+strategies by comparing move set similarity in each level. First, we use
+every participants' move sets to build a list of every move set made.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data}\SpecialCharTok{$}\NormalTok{allMovesets }\OtherTok{\textless{}{-}} \FunctionTok{Map}\NormalTok{(c, data}\SpecialCharTok{$}\NormalTok{beforeBreakMovesets, data}\SpecialCharTok{$}\NormalTok{afterBreakMovesets)}
+
+\NormalTok{get\_cleaned\_movesets }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(level\_name) \{}
+\NormalTok{  level\_rows }\OtherTok{\textless{}{-}}\NormalTok{ data[data}\SpecialCharTok{$}\NormalTok{level }\SpecialCharTok{==}\NormalTok{ level\_name, ]}
+\NormalTok{  combined\_movesets }\OtherTok{\textless{}{-}} \FunctionTok{unlist}\NormalTok{(level\_rows}\SpecialCharTok{$}\NormalTok{allMovesets, }\AttributeTok{use.names =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  filtered }\OtherTok{\textless{}{-}}\NormalTok{ combined\_movesets[}\FunctionTok{nchar}\NormalTok{(combined\_movesets) }\SpecialCharTok{\textgreater{}=} \DecValTok{4}\NormalTok{]}
+  \FunctionTok{unique}\NormalTok{(filtered)}
+\NormalTok{\}}
+
+\NormalTok{easy\_movesets   }\OtherTok{\textless{}{-}} \FunctionTok{get\_cleaned\_movesets}\NormalTok{(}\StringTok{"easy"}\NormalTok{)}
+\NormalTok{medium\_movesets }\OtherTok{\textless{}{-}} \FunctionTok{get\_cleaned\_movesets}\NormalTok{(}\StringTok{"medium"}\NormalTok{)}
+\NormalTok{hard\_movesets   }\OtherTok{\textless{}{-}} \FunctionTok{get\_cleaned\_movesets}\NormalTok{(}\StringTok{"hard"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+For the hard level, there are groups of moves that always occur
+together. To better identify strategies, we convert these patterns of
+moves.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hard\_movesets }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"rrddllu"}\NormalTok{, }\StringTok{"z"}\NormalTok{, hard\_movesets)}
+\NormalTok{hard\_movesets }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"drruull"}\NormalTok{, }\StringTok{"x"}\NormalTok{, hard\_movesets)}
+\end{Highlighting}
+\end{Shaded}
+
+Move sets will be considered similar if they have similar prefixes. For
+example, lrlrudud would be similar to lrluduu. The more prefixes they
+have in common, the more likely they are to be similar strategies in
+Sokoban. We compute a distance matrix for each level.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prefix\_distance }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(a, b) \{}
+\NormalTok{  min\_len }\OtherTok{\textless{}{-}} \FunctionTok{min}\NormalTok{(}\FunctionTok{nchar}\NormalTok{(a), }\FunctionTok{nchar}\NormalTok{(b))}
+\NormalTok{  match\_length }\OtherTok{\textless{}{-}} \DecValTok{0}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(min\_len)) \{}
+    \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{substr}\NormalTok{(a, i, i) }\SpecialCharTok{!=} \FunctionTok{substr}\NormalTok{(b, i, i)) }\ControlFlowTok{break}
+\NormalTok{    match\_length }\OtherTok{\textless{}{-}}\NormalTok{ match\_length }\SpecialCharTok{+} \DecValTok{1}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ (match\_length }\SpecialCharTok{/}\NormalTok{ min\_len))}
+\NormalTok{\}}
+
+\NormalTok{build\_prefix\_dist\_matrix }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(movesets) \{}
+\NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(movesets)}
+\NormalTok{  dist\_mat }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{, n, n)}
+  
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{(n}\DecValTok{{-}1}\NormalTok{)) \{}
+    \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in}\NormalTok{ (i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\NormalTok{n) \{}
+\NormalTok{      d }\OtherTok{\textless{}{-}} \FunctionTok{prefix\_distance}\NormalTok{(movesets[i], movesets[j])}
+\NormalTok{      dist\_mat[i, j] }\OtherTok{\textless{}{-}}\NormalTok{ d}
+\NormalTok{      dist\_mat[j, i] }\OtherTok{\textless{}{-}}\NormalTok{ d }
+\NormalTok{    \}}
+\NormalTok{  \}}
+  
+  \FunctionTok{as.dist}\NormalTok{(dist\_mat) }
+\NormalTok{\}}
+
+\NormalTok{easy\_dist }\OtherTok{\textless{}{-}} \FunctionTok{build\_prefix\_dist\_matrix}\NormalTok{(easy\_movesets)}
+\NormalTok{medium\_dist }\OtherTok{\textless{}{-}} \FunctionTok{build\_prefix\_dist\_matrix}\NormalTok{(medium\_movesets)}
+\NormalTok{hard\_dist }\OtherTok{\textless{}{-}} \FunctionTok{build\_prefix\_dist\_matrix}\NormalTok{(hard\_movesets)}
+
+\NormalTok{easy\_clust }\OtherTok{\textless{}{-}} \FunctionTok{hclust}\NormalTok{(easy\_dist, }\AttributeTok{method =} \StringTok{"complete"}\NormalTok{)}
+\NormalTok{medium\_clust }\OtherTok{\textless{}{-}} \FunctionTok{hclust}\NormalTok{(medium\_dist, }\AttributeTok{method =} \StringTok{"complete"}\NormalTok{)}
+\NormalTok{hard\_clust }\OtherTok{\textless{}{-}} \FunctionTok{hclust}\NormalTok{(hard\_dist, }\AttributeTok{method =} \StringTok{"complete"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We use silhouette analysis to determine the optimal number of clusters.
+
+Easy Level
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{avg\_sil }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{5}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(k) \{}
+\NormalTok{  clusters }\OtherTok{\textless{}{-}} \FunctionTok{cutree}\NormalTok{(easy\_clust, k)}
+\NormalTok{  sil }\OtherTok{\textless{}{-}} \FunctionTok{silhouette}\NormalTok{(clusters, easy\_dist)}
+  \FunctionTok{mean}\NormalTok{(sil[, }\DecValTok{3}\NormalTok{])  }
+\NormalTok{\})}
+
+\FunctionTok{plot}\NormalTok{(}\DecValTok{5}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, avg\_sil, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"Number of clusters"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Average silhouette width"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{data-analysis_files/figure-latex/unnamed-chunk-33-1.pdf}
+
+Medium Level
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{avg\_sil }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{5}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(k) \{}
+\NormalTok{  clusters }\OtherTok{\textless{}{-}} \FunctionTok{cutree}\NormalTok{(medium\_clust, k)}
+\NormalTok{  sil }\OtherTok{\textless{}{-}} \FunctionTok{silhouette}\NormalTok{(clusters, medium\_dist)}
+  \FunctionTok{mean}\NormalTok{(sil[, }\DecValTok{3}\NormalTok{])  }
+\NormalTok{\})}
+
+\FunctionTok{plot}\NormalTok{(}\DecValTok{5}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, avg\_sil, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"Number of clusters"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Average silhouette width"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{data-analysis_files/figure-latex/unnamed-chunk-34-1.pdf}
+
+Hard Level
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{avg\_sil }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{5}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, }\ControlFlowTok{function}\NormalTok{(k) \{}
+\NormalTok{  clusters }\OtherTok{\textless{}{-}} \FunctionTok{cutree}\NormalTok{(hard\_clust, k)}
+\NormalTok{  sil }\OtherTok{\textless{}{-}} \FunctionTok{silhouette}\NormalTok{(clusters, hard\_dist)}
+  \FunctionTok{mean}\NormalTok{(sil[, }\DecValTok{3}\NormalTok{])  }
+\NormalTok{\})}
+
+\FunctionTok{plot}\NormalTok{(}\DecValTok{5}\SpecialCharTok{:}\DecValTok{30}\NormalTok{, avg\_sil, }\AttributeTok{type =} \StringTok{"b"}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{"Number of clusters"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Average silhouette width"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{data-analysis_files/figure-latex/unnamed-chunk-35-1.pdf}
+
+Based on the plots, the number of clusters for the easy, medium, and
+hard puzzles will be 12, 17, and 11, respectively. Using slightly
+different numbers of clusters results in similar results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{clusters\_easy }\OtherTok{\textless{}{-}} \FunctionTok{cutree}\NormalTok{(easy\_clust, }\AttributeTok{k =} \DecValTok{12}\NormalTok{)}
+\NormalTok{clusters\_medium }\OtherTok{\textless{}{-}} \FunctionTok{cutree}\NormalTok{(medium\_clust, }\AttributeTok{k =} \DecValTok{17}\NormalTok{)}
+\NormalTok{clusters\_hard }\OtherTok{\textless{}{-}} \FunctionTok{cutree}\NormalTok{(hard\_clust, }\AttributeTok{k =} \DecValTok{11}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We generate new data columns which show the cluster number rather than
+the string of moves. A very few number of participants did not have move
+sets before or after break and are removed from this analysis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{main\_data}\SpecialCharTok{$}\NormalTok{beforeBreakMovesets }\OtherTok{\textless{}{-}} \FunctionTok{mapply}\NormalTok{(}\ControlFlowTok{function}\NormalTok{(moves, level) \{}
+\NormalTok{  moves }\OtherTok{\textless{}{-}}\NormalTok{ moves[}\FunctionTok{nchar}\NormalTok{(moves) }\SpecialCharTok{\textgreater{}=} \DecValTok{4}\NormalTok{]}
+  \ControlFlowTok{if}\NormalTok{ (level }\SpecialCharTok{==} \StringTok{"hard"}\NormalTok{) \{}
+\NormalTok{    moves }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"rrddllu"}\NormalTok{, }\StringTok{"z"}\NormalTok{, moves)}
+\NormalTok{    moves }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"drruull"}\NormalTok{, }\StringTok{"x"}\NormalTok{, moves)}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(moves)}
+\NormalTok{\}, main\_data}\SpecialCharTok{$}\NormalTok{beforeBreakMovesets, main\_data}\SpecialCharTok{$}\NormalTok{level, }\AttributeTok{SIMPLIFY =} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{main\_data}\SpecialCharTok{$}\NormalTok{afterBreakMovesets }\OtherTok{\textless{}{-}} \FunctionTok{mapply}\NormalTok{(}\ControlFlowTok{function}\NormalTok{(moves, level) \{}
+\NormalTok{  moves }\OtherTok{\textless{}{-}}\NormalTok{ moves[}\FunctionTok{nchar}\NormalTok{(moves) }\SpecialCharTok{\textgreater{}=} \DecValTok{4}\NormalTok{]}
+  \ControlFlowTok{if}\NormalTok{ (level }\SpecialCharTok{==} \StringTok{"hard"}\NormalTok{) \{}
+\NormalTok{    moves }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"rrddllu"}\NormalTok{, }\StringTok{"z"}\NormalTok{, moves)}
+\NormalTok{    moves }\OtherTok{\textless{}{-}} \FunctionTok{gsub}\NormalTok{(}\StringTok{"drruull"}\NormalTok{, }\StringTok{"x"}\NormalTok{, moves)}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(moves)}
+\NormalTok{\}, main\_data}\SpecialCharTok{$}\NormalTok{afterBreakMovesets, main\_data}\SpecialCharTok{$}\NormalTok{level, }\AttributeTok{SIMPLIFY =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{moveset\_data }\OtherTok{\textless{}{-}}\NormalTok{ main\_data[}
+  \FunctionTok{lengths}\NormalTok{(main\_data}\SpecialCharTok{$}\NormalTok{beforeBreakMovesets) }\SpecialCharTok{\textgreater{}} \DecValTok{0} \SpecialCharTok{\&} 
+  \FunctionTok{lengths}\NormalTok{(main\_data}\SpecialCharTok{$}\NormalTok{afterBreakMovesets) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{, }
+\NormalTok{]}
+
+\NormalTok{lookup\_easy }\OtherTok{\textless{}{-}} \FunctionTok{setNames}\NormalTok{(clusters\_easy, easy\_movesets)}
+\NormalTok{lookup\_medium }\OtherTok{\textless{}{-}} \FunctionTok{setNames}\NormalTok{(clusters\_medium, medium\_movesets)}
+\NormalTok{lookup\_hard }\OtherTok{\textless{}{-}} \FunctionTok{setNames}\NormalTok{(clusters\_hard, hard\_movesets)}
+
+\NormalTok{map\_moves\_to\_clusters }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(moves, level) \{}
+\NormalTok{  level }\OtherTok{\textless{}{-}} \FunctionTok{as.character}\NormalTok{(level)}
+\NormalTok{  lookup }\OtherTok{\textless{}{-}} \ControlFlowTok{switch}\NormalTok{(level,}
+                   \StringTok{"easy"} \OtherTok{=}\NormalTok{ lookup\_easy,}
+                   \StringTok{"medium"} \OtherTok{=}\NormalTok{ lookup\_medium,}
+                   \StringTok{"hard"} \OtherTok{=}\NormalTok{ lookup\_hard)}
+  
+  \FunctionTok{sapply}\NormalTok{(moves, }\ControlFlowTok{function}\NormalTok{(m) lookup[[m]], }\AttributeTok{USE.NAMES =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{moveset\_data}\SpecialCharTok{$}\NormalTok{beforeClusters }\OtherTok{\textless{}{-}} \FunctionTok{mapply}\NormalTok{(map\_moves\_to\_clusters,}
+\NormalTok{                                   moveset\_data}\SpecialCharTok{$}\NormalTok{beforeBreakMovesets,}
+\NormalTok{                                   moveset\_data}\SpecialCharTok{$}\NormalTok{level,}
+                                   \AttributeTok{SIMPLIFY =} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{moveset\_data}\SpecialCharTok{$}\NormalTok{afterClusters }\OtherTok{\textless{}{-}} \FunctionTok{mapply}\NormalTok{(map\_moves\_to\_clusters,}
+\NormalTok{                                  moveset\_data}\SpecialCharTok{$}\NormalTok{afterBreakMovesets,}
+\NormalTok{                                  moveset\_data}\SpecialCharTok{$}\NormalTok{level,}
+                                  \AttributeTok{SIMPLIFY =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We now create a column which displays whether an individual's first move
+when returning to the problem after a break is a new strategy (new
+cluster) or a variation/copy of a previous strategy. We can also just
+compare the first strategy used in both periods.
+
+We also count the number of moves made before the break for use as a
+control variable, since using a new strategy is more likely if you have
+less moves made before the break.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{moveset\_data}\SpecialCharTok{$}\NormalTok{newMove }\OtherTok{\textless{}{-}} \FunctionTok{mapply}\NormalTok{(}\ControlFlowTok{function}\NormalTok{(before, after) \{}
+\NormalTok{  first\_after }\OtherTok{\textless{}{-}}\NormalTok{ after[}\DecValTok{1}\NormalTok{]}
+  \ControlFlowTok{if}\NormalTok{ (first\_after }\SpecialCharTok{\%in\%}\NormalTok{ before) }\DecValTok{0} \ControlFlowTok{else} \DecValTok{1}
+\NormalTok{\}, moveset\_data}\SpecialCharTok{$}\NormalTok{beforeClusters, moveset\_data}\SpecialCharTok{$}\NormalTok{afterClusters) }
+
+\NormalTok{moveset\_data}\SpecialCharTok{$}\NormalTok{firstNewMove }\OtherTok{\textless{}{-}} \FunctionTok{mapply}\NormalTok{(}\ControlFlowTok{function}\NormalTok{(before, after) \{}
+  \ControlFlowTok{if}\NormalTok{ (after[}\DecValTok{1}\NormalTok{] }\SpecialCharTok{==}\NormalTok{ before[}\DecValTok{1}\NormalTok{]) }\DecValTok{0} \ControlFlowTok{else} \DecValTok{1}
+\NormalTok{\}, moveset\_data}\SpecialCharTok{$}\NormalTok{beforeClusters, moveset\_data}\SpecialCharTok{$}\NormalTok{afterClusters) }
+
+\NormalTok{moveset\_data}\SpecialCharTok{$}\NormalTok{beforeBreakLength }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(moveset\_data}\SpecialCharTok{$}\NormalTok{beforeBreakMovesets, length)}
+\end{Highlighting}
+\end{Shaded}
+
+Let's check whether different conditions or levels predict the use of
+new moves. We use the number of moves made before the break as a
+covariate.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model3\_null }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(newMove }\SpecialCharTok{\textasciitilde{}}\NormalTok{  (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ moveset\_data)}
+\NormalTok{model3\_base }\OtherTok{\textless{}{-}} \FunctionTok{glmer}\NormalTok{(newMove }\SpecialCharTok{\textasciitilde{}}\NormalTok{  level }\SpecialCharTok{*}\NormalTok{ condition }\SpecialCharTok{+}\NormalTok{ beforeBreakLength }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{|}\NormalTok{prolificPID), }\AttributeTok{family=}\StringTok{"binomial"}\NormalTok{, }\AttributeTok{control =} \FunctionTok{glmerControl}\NormalTok{(}\AttributeTok{optimizer =} \StringTok{"bobyqa"}\NormalTok{), }\AttributeTok{data =}\NormalTok{ moveset\_data)}
+
+\FunctionTok{summary}\NormalTok{(model3\_base)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: newMove ~ level * condition + beforeBreakLength + (1 | prolificPID)
+##    Data: moveset_data
+## Control: glmerControl(optimizer = "bobyqa")
+## 
+##       AIC       BIC    logLik -2*log(L)  df.resid 
+##     683.9     731.0    -331.0     661.9       522 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.7786 -0.7541 -0.4717  0.8871  2.3915 
+## 
+## Random effects:
+##  Groups      Name        Variance Std.Dev.
+##  prolificPID (Intercept) 0.294    0.5422  
+## Number of obs: 533, groups:  prolificPID, 252
+## 
+## Fixed effects:
+##                               Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                   1.848738   0.435188   4.248 2.16e-05 ***
+## levelmedium                  -0.475798   0.443553  -1.073   0.2834    
+## levelhard                    -1.063275   0.432884  -2.456   0.0140 *  
+## conditionNon-HIS             -0.661457   0.484976  -1.364   0.1726    
+## conditionHIS                 -1.190130   0.511768  -2.326   0.0200 *  
+## beforeBreakLength            -0.309774   0.055631  -5.568 2.57e-08 ***
+## levelmedium:conditionNon-HIS  0.002222   0.641513   0.003   0.9972    
+## levelhard:conditionNon-HIS    1.084620   0.612914   1.770   0.0768 .  
+## levelmedium:conditionHIS      0.875208   0.660770   1.325   0.1853    
+## levelhard:conditionHIS        1.068307   0.638320   1.674   0.0942 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) lvlmdm lvlhrd cN-HIS cndHIS bfrBrL lvlm:N-HIS lvlh:N-HIS
+## levelmedium -0.633                                                         
+## levelhard   -0.680  0.619                                                  
+## cndtnNn-HIS -0.575  0.560  0.577                                           
+## conditinHIS -0.575  0.534  0.557  0.493                                    
+## bfrBrkLngth -0.614  0.036  0.086  0.024  0.068                             
+## lvlmd:N-HIS  0.449 -0.705 -0.436 -0.763 -0.372 -0.030                      
+## lvlhr:N-HIS  0.460 -0.442 -0.716 -0.800 -0.395 -0.017  0.603               
+## lvlmdm:cHIS  0.445 -0.686 -0.430 -0.387 -0.783 -0.044  0.477      0.307    
+## lvlhrd:cHIS  0.481 -0.429 -0.697 -0.396 -0.809 -0.079  0.298      0.490    
+##             lvlm:HIS
+## levelmedium         
+## levelhard           
+## cndtnNn-HIS         
+## conditinHIS         
+## bfrBrkLngth         
+## lvlmd:N-HIS         
+## lvlhr:N-HIS         
+## lvlmdm:cHIS         
+## lvlhrd:cHIS  0.626
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{r.squaredGLMM}\NormalTok{(model3\_base, }\AttributeTok{null =}\NormalTok{ model3\_null)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   R2m       R2c
+## theoretical 0.1486770 0.2185116
+## delta       0.1233586 0.1813009
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{confint}\NormalTok{(model3\_base, }\AttributeTok{method =} \StringTok{"Wald"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                   2.5 %     97.5 %
+## .sig01                               NA         NA
+## (Intercept)                   0.9957846  2.7016911
+## levelmedium                  -1.3451455  0.3935496
+## levelhard                    -1.9117116 -0.2148388
+## conditionNon-HIS             -1.6119918  0.2890777
+## conditionHIS                 -2.1931755 -0.1870836
+## beforeBreakLength            -0.4188081 -0.2007400
+## levelmedium:conditionNon-HIS -1.2551212  1.2595652
+## levelhard:conditionNon-HIS   -0.1166696  2.2859101
+## levelmedium:conditionHIS     -0.4198774  2.1702926
+## levelhard:conditionHIS       -0.1827762  2.3193909
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{exp}\NormalTok{(}\FunctionTok{fixef}\NormalTok{(model3\_base))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  (Intercept)                  levelmedium 
+##                    6.3517975                    0.6213890 
+##                    levelhard             conditionNon-HIS 
+##                    0.3453229                    0.5160988 
+##                 conditionHIS            beforeBreakLength 
+##                    0.3041819                    0.7336127 
+## levelmedium:conditionNon-HIS   levelhard:conditionNon-HIS 
+##                    1.0022245                    2.9583162 
+##     levelmedium:conditionHIS       levelhard:conditionHIS 
+##                    2.3993734                    2.9104489
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{exp}\NormalTok{(}\FunctionTok{confint}\NormalTok{(model3\_base, }\AttributeTok{parm =} \StringTok{"beta\_"}\NormalTok{, }\AttributeTok{method=}\StringTok{"Wald"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                  2.5 %     97.5 %
+## (Intercept)                  2.7068473 14.9049159
+## levelmedium                  0.2605018  1.4822328
+## levelhard                    0.1478271  0.8066714
+## conditionNon-HIS             0.1994899  1.3351955
+## conditionHIS                 0.1115619  0.8293744
+## beforeBreakLength            0.6578304  0.8181251
+## levelmedium:conditionNon-HIS 0.2850413  3.5238890
+## levelhard:conditionNon-HIS   0.8898791  9.8346327
+## levelmedium:conditionHIS     0.6571274  8.7608472
+## levelhard:conditionHIS       0.8329545 10.1694782
+\end{verbatim}
+
+Pairwise contrasts.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{emmeans}\NormalTok{(model3\_base, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ condition }\SpecialCharTok{|}\NormalTok{ level, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pairs}\NormalTok{(}\AttributeTok{adjust=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## level = easy:
+##  contrast             odds.ratio    SE  df null z.ratio p.value
+##  No Break / (Non-HIS)      1.938 0.940 Inf    1   1.364  0.1726
+##  No Break / HIS            3.288 1.680 Inf    1   2.326  0.0200
+##  (Non-HIS) / HIS           1.697 0.852 Inf    1   1.052  0.2926
+## 
+## level = medium:
+##  contrast             odds.ratio    SE  df null z.ratio p.value
+##  No Break / (Non-HIS)      1.933 0.801 Inf    1   1.590  0.1117
+##  No Break / HIS            1.370 0.564 Inf    1   0.766  0.4440
+##  (Non-HIS) / HIS           0.709 0.304 Inf    1  -0.802  0.4225
+## 
+## level = hard:
+##  contrast             odds.ratio    SE  df null z.ratio p.value
+##  No Break / (Non-HIS)      0.655 0.241 Inf    1  -1.152  0.2495
+##  No Break / HIS            1.130 0.424 Inf    1   0.325  0.7452
+##  (Non-HIS) / HIS           1.725 0.647 Inf    1   1.453  0.1463
+## 
+## Tests are performed on the log odds ratio scale
+\end{verbatim}
+
+Simple plot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preds2 }\OtherTok{\textless{}{-}} \FunctionTok{ggpredict}\NormalTok{(model3\_base, }\AttributeTok{terms =} \FunctionTok{c}\NormalTok{(}\StringTok{"level"}\NormalTok{, }\StringTok{"condition"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## You are calculating adjusted predictions on the population-level (i.e.
+##   `type = "fixed"`) for a *generalized* linear mixed model.
+##   This may produce biased estimates due to Jensen's inequality. Consider
+##   setting `bias_correction = TRUE` to correct for this bias.
+##   See also the documentation of the `bias_correction` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plot2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(preds2, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ group, }\AttributeTok{y =}\NormalTok{ predicted)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \FloatTok{2.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ conf.low, }\AttributeTok{ymax =}\NormalTok{ conf.high),}
+    \AttributeTok{width =} \FloatTok{0.15}\NormalTok{,}
+    \AttributeTok{linewidth =} \FloatTok{0.6}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ x, }\AttributeTok{nrow =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{x =} \StringTok{""}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"New Strategy Likelihood (\%)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{panel.grid =} \FunctionTok{element\_blank}\NormalTok{(),         }
+    \AttributeTok{strip.text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{),}
+    \AttributeTok{axis.line =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{linewidth =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{),  }
+    \AttributeTok{axis.ticks =} \FunctionTok{element\_line}\NormalTok{(}\AttributeTok{linewidth =} \FloatTok{0.6}\NormalTok{)}
+\NormalTok{  )}
+
+\FunctionTok{ggsave}\NormalTok{(}
+  \AttributeTok{filename =} \StringTok{"newMove.pdf"}\NormalTok{,}
+  \AttributeTok{plot =}\NormalTok{ plot2,}
+  \AttributeTok{width =} \DecValTok{7}\NormalTok{,}
+  \AttributeTok{height =} \DecValTok{3}\NormalTok{,}
+  \AttributeTok{units =} \StringTok{"in"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
